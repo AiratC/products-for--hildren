@@ -3,6 +3,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import dotenv from 'dotenv';
 import pool from "./config/db.js";
+import authRouter from "./routes/auth.route.js";
 
 dotenv.config();
 const app = express();
@@ -19,10 +20,7 @@ app.use(
    })
 );
 
-// Тестовый роут, чтобы проверить, что всё работает
-app.get("/", (req, res) => {
-   res.send("API Baby Shop is running...");
-});
+app.use('/api/auth', authRouter);
 
 
 // Запуск сервера с обработкой ошибок
