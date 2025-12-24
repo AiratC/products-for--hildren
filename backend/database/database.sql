@@ -1,11 +1,6 @@
 -- БАЗА ДАННЫХ ОНЛАЙН ГИПЕРМАРКЕТ ТОВАРОВ ДЛЯ ДЕТЕЙ
 
 
--- 1. Справочники и Роли
-DROP TABLE IF EXISTS Roles, Users, Catalog, Categories, Products, Cart, Cart_Items, 
-Favorites, Favorites_Items, Blogs, Stock, Contacts, Found_Cheaper, 
-Wholesale_Customers, Reviews, Orders, Order_Items CASCADE;
-
 CREATE TYPE user_role_type AS ENUM ('Админ', 'Пользователь', 'Гость');
 
 -- Создание таблицы ролей
@@ -34,6 +29,7 @@ CREATE TABLE Users (
    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
+-- !!!
 -- Таблица каталог
 CREATE TABLE Catalog (
    catalog_id SERIAL PRIMARY KEY,
