@@ -29,7 +29,6 @@ CREATE TABLE Users (
    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
--- !!!
 -- Таблица каталог
 CREATE TABLE Catalog (
    catalog_id SERIAL PRIMARY KEY,
@@ -63,6 +62,9 @@ CREATE TABLE Products (
    -- Характеристики
    characteristics JSONB DEFAULT '{}',
    product_images JSONB DEFAULT '[]',
+   is_new BOOLEAN DEFAULT FALSE,
+   is_popular BOOLEAN DEFAULT FALSE,
+   is_on_sale BOOLEAN DEFAULT FALSE,
    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
@@ -124,7 +126,7 @@ CREATE TABLE Contacts (
    phone VARCHAR(30) UNIQUE,
    message TEXT,
    -- Соглашение на обработку данных и пользовательское соглашение
-   isAgree BOOLEAN NOT NULL
+   is_agree BOOLEAN NOT NULL
 );
 
 -- Создание таблицы нашли дешевле - любой пользователь сможет отправить форму если нашел товар дешевле
@@ -147,7 +149,7 @@ CREATE TABLE Wholesale_Customers (
    -- Вставить капчу
    captcha TEXT,
    -- Соглашение на обработку данных и пользовательское соглашение
-   isAgree BOOLEAN NOT NULL DEFAULT TRUE
+   is_agree BOOLEAN NOT NULL DEFAULT TRUE
 );
 
 -- ====================================================================================

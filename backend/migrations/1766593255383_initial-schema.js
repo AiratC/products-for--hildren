@@ -49,8 +49,8 @@ export const up = (pgm) => {
  */
 export const down = (pgm) => {
    pgm.sql(`
-      DROP TABLE Users;
-      DROP TABLE Roles;
-      DROP TYPE user_role_type;
+      DROP TABLE IF EXISTS Users CASCADE;
+      DROP TABLE IF EXISTS Roles CASCADE;
+      DROP TYPE IF EXISTS user_role_type;
    `);
 };
