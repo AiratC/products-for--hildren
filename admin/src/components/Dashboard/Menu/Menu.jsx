@@ -1,51 +1,59 @@
-import React, { useEffect, useState } from 'react'
-import { MdKeyboardArrowDown } from "react-icons/md";
-import { MdKeyboardArrowUp } from "react-icons/md";
+import React, { useEffect, useMemo, useState } from 'react'
 import { Menu as AntMenu, Spin } from 'antd';
 import {
    AppstoreOutlined,
    ShoppingOutlined,
    RocketOutlined,
-   HeartOutlined,
    MessageOutlined
 } from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
 import { fetchAxios } from '../../../utils/fetchAxios';
 
+const STATIC_MENU_ITEMS = [
+   { key: 'blog', label: 'Блог', icon: <MessageOutlined /> },
+   { key: 'orders', label: 'Заказы', icon: <ShoppingOutlined /> },
+   { key: 'opt', label: 'ОПТ Клиенты', icon: <RocketOutlined /> },
+]
 
 const Menu = () => {
-   const [menuItems, setMenuItems] = useState([]);
+   const [catalogData, setCatalogData] = useState([]);
    const [loading, setLoading] = useState(true);
-   const navigate = useNavigate();
+
 
    useEffect(() => {
+      // ОТменяем запрос если компонент размонтироваля
+      let isMounted = true;
+
       const fetchMenu = async () => {
          try {
             const response = await fetchAxios.get(`/api/catalog/menu-structure`);
-
-            // Собираем финальный массив с фиксированными пунктами (Заказы, Блог) + данные из БД
-            const dynamicCatalog = {
-               key: `catalog-root`,
-               label: `Каталог`,
-               icon: <AppstoreOutlined />,
-               children: response.data
+            if (isMounted) {
+               setCatalogData(response.data || []);
             }
 
-            setMenuItems([
-               dynamicCatalog,
-               { key: 'blog', label: 'Блог', icon: <MessageOutlined /> },
-               { key: 'orders', label: 'Заказы', icon: <ShoppingOutlined /> },
-               { key: 'opt', label: 'ОПТ Клиенты', icon: <RocketOutlined /> },
-            ])
          } catch (error) {
             console.error('Ошибка загрузки меню', error)
          } finally {
-            setLoading(false)
+            if (isMounted) setLoading(false);
          }
       }
 
       fetchMenu()
+      return () => { isMounted = false; }
    }, [])
+
+   // Формируем итоговый массив
+   const menuItems = useMemo(() => {
+      const dynamicCatalog = {
+         key: `catalog-root`,
+         label: `Каталог`,
+         icon: <AppstoreOutlined />,
+         // Показываем children только если они реально пришли с базы данных
+         children: catalogData.length > 0 ? catalogData : undefined,
+      }
+
+      return [dynamicCatalog, ...STATIC_MENU_ITEMS]
+
+   }, [catalogData])
 
 
    const onClick = (e) => {
@@ -53,8 +61,8 @@ const Menu = () => {
       // Здесь можно делать navigate(`/admin/${e.key}`)
    };
 
-   if(loading) {
-      return <div style={{ textAlign: 'center' }}><Spin style={{  margin: '20px'}}/></div>
+   if (loading) {
+      return <div style={{ textAlign: 'center' }}><Spin style={{ margin: '20px' }} /></div>
    }
 
    return (
