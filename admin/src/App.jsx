@@ -1,12 +1,16 @@
+import { Route, Routes } from "react-router-dom"
+import Dashboard from "./components/Dashboard/Dashboard"
 
 
 function App() {
 
 
    return (
-      <>
-         <h1>Admin Panel</h1>
-      </>
+      <Routes>
+         <Route path="/dashboard" element={<Dashboard/>}>
+            
+         </Route>
+      </Routes>
    )
 }
 

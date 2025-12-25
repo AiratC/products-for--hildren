@@ -1,0 +1,16 @@
+.menuContainer {
+   display: flex;
+   flex-direction: column;
+   gap: 10px;
+   color: white;
+   margin-top: 20px;
+   padding: 0 7px;
+}
+
+.menuContainer .liLevel1 {
+   background-color: #6b6b6b;
+   padding: 6px 6px;
+   border-radius: 4px;
+   text-align: center;
+   cursor: pointer;
+}
