@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import dotenv from 'dotenv';
 import pool from "./config/db.js";
 import authRouter from "./routes/auth.route.js";
+import authAdminRouter from "./routes/authAdmin.route.js";
 
 dotenv.config();
 const app = express();
@@ -21,6 +22,7 @@ app.use(
 );
 
 app.use('/api/auth', authRouter);
+app.use('/api/admin', authAdminRouter);
 
 
 // Запуск сервера с обработкой ошибок
