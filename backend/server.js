@@ -5,14 +5,12 @@ import dotenv from 'dotenv';
 import pool from "./config/db.js";
 import authRouter from "./routes/auth.route.js";
 import authAdminRouter from "./routes/authAdmin.route.js";
+import catalogRouter from "./routes/catalog.route.js";
 
 dotenv.config();
 const app = express();
 
 const PORT = process.env.PORT || 8000;
-
-app.use(express.json());
-app.use(cookieParser());
 
 app.use(
    cors({
@@ -21,8 +19,12 @@ app.use(
    })
 );
 
+app.use(express.json());
+app.use(cookieParser());
+
 app.use('/api/auth', authRouter);
 app.use('/api/admin', authAdminRouter);
+app.use('/api/catalog', catalogRouter);
 
 
 // Запуск сервера с обработкой ошибок
