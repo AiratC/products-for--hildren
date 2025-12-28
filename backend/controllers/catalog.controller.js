@@ -31,3 +31,23 @@ export const getMenuStructure = async (req, res) => {
    }
 }
 
+// ! Получаем каталог
+export const getAllCatalog = async (req, res) => {
+   try {
+      const result = await query(`SELECT * FROM Catalog ORDER BY name ASC`);
+      
+      return res.status(200).json({
+         message: 'Каталог получен',
+         error: false,
+         success: true,
+         catalog: result.rows
+      });
+   } catch (error) {
+      return res.status(500).json({
+         message: 'Ошибка при получении каталога на сервере',
+         error: true,
+         success: false
+      });
+   };
+};
+

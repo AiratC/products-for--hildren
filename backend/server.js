@@ -6,6 +6,7 @@ import pool from "./config/db.js";
 import authRouter from "./routes/auth.route.js";
 import authAdminRouter from "./routes/authAdmin.route.js";
 import catalogRouter from "./routes/catalog.route.js";
+import categoryRouter from "./routes/categories.route.js";
 
 dotenv.config();
 const app = express();
@@ -25,6 +26,7 @@ app.use(cookieParser());
 app.use('/api/auth', authRouter);
 app.use('/api/admin', authAdminRouter);
 app.use('/api/catalog', catalogRouter);
+app.use('/api/categories', categoryRouter);
 
 
 // Запуск сервера с обработкой ошибок
