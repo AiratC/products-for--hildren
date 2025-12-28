@@ -6,17 +6,21 @@ import {
    RocketOutlined,
    MessageOutlined
 } from '@ant-design/icons';
+import { MdCategory } from "react-icons/md";
 import { fetchAxios } from '../../../utils/fetchAxios';
+import { useNavigate } from 'react-router-dom';
 
 const STATIC_MENU_ITEMS = [
    { key: 'blog', label: 'Блог', icon: <MessageOutlined /> },
    { key: 'orders', label: 'Заказы', icon: <ShoppingOutlined /> },
    { key: 'opt', label: 'ОПТ Клиенты', icon: <RocketOutlined /> },
+   { key: 'category', label: 'Категории', icon: <MdCategory /> },
 ]
 
 const Menu = () => {
    const [catalogData, setCatalogData] = useState([]);
    const [loading, setLoading] = useState(true);
+   const navigate = useNavigate();
 
 
    useEffect(() => {
@@ -58,7 +62,7 @@ const Menu = () => {
 
    const onClick = (e) => {
       console.log('Нажали на:', e.key);
-      // Здесь можно делать navigate(`/admin/${e.key}`)
+      navigate(`${e.key}`)
    };
 
    if (loading) {
