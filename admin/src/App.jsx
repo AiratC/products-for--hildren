@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { Spin } from "antd"
 import { useEffect } from "react"
 import { checkAuth } from "./redux/slices/authAdminSlice"
+import CategoryProductsView from "./pages/CategoryProductsView/CategoryProductsView"
 
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
             <Route path="orders" element={<OrdersPage />}></Route>
             <Route path="opt" element={<OptPage />}></Route>
             <Route path="category" element={<CategoryPage />}></Route>
+            <Route path="category-products-view/:id" element={<CategoryProductsView/>}></Route>
          </Route>
       </Routes>
    )

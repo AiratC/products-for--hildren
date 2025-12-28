@@ -63,8 +63,14 @@ const Menu = () => {
 
 
    const onClick = (e) => {
-      console.log('Нажали на:', e.key);
-      navigate(`${e.key}`)
+      if(e.key.includes('category-')) {
+         const id = e.key.split('-')[1]
+         navigate(`/dashboard/category-products-view/${id}`)
+      } else {
+         console.log('Нажали на:', e.key);
+         navigate(`/dashboard/${e.key}`)
+      }
+      
    };
 
    if (loading) {
