@@ -99,3 +99,31 @@ export const logoutAdmin = async (req, res) => {
       });
    }
 }
+
+// ! Контроллер getMe
+export const getMe = async (req, res) => {
+   try {
+      const result = await query(`SELECT user_id, name, email, role_id FROM Users WHERE user_id = $1`, [req.user.userId]);
+
+      if(result.rows.length === 0) {
+         return res.status(404).json({
+            message: "Пользователь не найден",
+            error: true,
+            success: false
+         })
+      }
+
+      return res.status(200).json({
+         message: 'Вы админ',
+         success: true,
+         error: false,
+         user: result.rows[0]
+      })
+   } catch (error) {
+      return res.status(500).json({
+         message: 'Ошибка при проверки сессии на сервере',
+         error: true,
+         success: false
+      });
+   }
+}

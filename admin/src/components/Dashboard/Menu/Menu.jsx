@@ -4,7 +4,8 @@ import {
    AppstoreOutlined,
    ShoppingOutlined,
    RocketOutlined,
-   MessageOutlined
+   MessageOutlined,
+   UserOutlined
 } from '@ant-design/icons';
 import { MdCategory } from "react-icons/md";
 import { fetchAxios } from '../../../utils/fetchAxios';
@@ -15,6 +16,7 @@ const STATIC_MENU_ITEMS = [
    { key: 'orders', label: 'Заказы', icon: <ShoppingOutlined /> },
    { key: 'opt', label: 'ОПТ Клиенты', icon: <RocketOutlined /> },
    { key: 'category', label: 'Категории', icon: <MdCategory /> },
+   { key: 'admin-profile', label: 'Админка', icon: <UserOutlined /> },
 ]
 
 const Menu = () => {
