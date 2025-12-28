@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { fetchAxios } from '../../utils/fetchAxios'
 
 
+// ! Создание категории
 export const createCategory = createAsyncThunk(
    'admin/fetchByCreateCategory',
    async (values, thunkAPI) => {
@@ -12,6 +13,19 @@ export const createCategory = createAsyncThunk(
          return thunkAPI.rejectWithValue(error.response.data)
       }
    },
+);
+
+// ! Получаем категории
+export const getCategories = createAsyncThunk(
+   'admin/fetchCategories',
+   async (_, thunkAPI) => {
+      try {
+         const response = await fetchAxios.get('/api/categories/get-all-categories');
+         return response.data;
+      } catch (error) {
+         return thunkAPI.rejectWithValue(error.response.data);
+      }
+   }
 )
 
 
@@ -64,6 +78,23 @@ export const categorySlice = createSlice({
          state.message = action.payload?.message || 'Ошибка при создании категории';
 
          console.log(`createCategory.rejected: `, action)
+      }),
+      // ! Получаем все категории
+      builder.addCase(getCategories.pending, (state) => {
+         state.loading = true;
+         state.error = false;
+         state.success = false;
+      }),
+      builder.addCase(getCategories.fulfilled, (state, action) => {
+         state.loading = false;
+         state.success = action.payload.success;
+         state.error = action.payload.error;
+         state.categories = action.payload.categories || action.payload;
+      }),
+      builder.addCase(getCategories.rejected, (state, action) => {
+         state.loading = false;
+         state.success = action.payload.success;
+         state.error = action.payload.error;
       })
    }
 })
