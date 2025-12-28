@@ -1,11 +1,13 @@
 import React from 'react'
-import { Form, Input, Button, Select, Space, Card } from 'antd';
+import { Form, Input, Button, Select, Space, Card, message } from 'antd';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons'
-
-const AddCategoryForm = ({ catalogs }) => {
+import { useDispatch } from 'react-redux';
+import { createCategory } from '../../redux/slices/categorySlice';
+const AddCategoryForm = ({ catalogs, onSuccess }) => {
+   const dispatch = useDispatch();
    const [form] = Form.useForm();
 
-   const onFinish = (values) => {
+   const onFinish = async (values) => {
       // Глубокое копирование, чтобы не менять стейт формы напрямую
       const formattedValues = {
          ...values,
@@ -15,11 +17,24 @@ const AddCategoryForm = ({ catalogs }) => {
             options: typeof filter.options === 'string'
                ? filter.options.split(',').map(opt => opt.trim())
                : filter.options
-         }))
-      }
-      // values.filter_config будет массивом объектов, который сохраним в JSONB
+         })) || []
+      };
+      
       console.log('Данные для отправки: ', formattedValues);
-      // Здесь делаем fetchAxios.post('/api/categories', formattedValues)
+      
+      try {
+         const result = await dispatch(createCategory(formattedValues)).unwrap();
+         if(result.success) {
+            message.success(result.message);
+            form.resetFields(); // Очищаем форму
+            
+            if(onSuccess) onSuccess();
+         };
+
+      } catch (error) {
+         console.log(error);
+         message.error(error || 'Ошибка при добавлении категории')
+      }
    }
 
    return (
@@ -81,31 +96,31 @@ const AddCategoryForm = ({ catalogs }) => {
                                           <Select.Option value='radio_group'>Группа radio кнопок</Select.Option>
                                           <Select.Option value='input'>Текст</Select.Option>
                                        </Select>
+                                    </Form.Item>
 
-                                       {/* Опции */}
-                                       <Form.Item
-                                          noStyle
-                                          shouldUpdate={
-                                             (prevValues, currentValues) =>
-                                                prevValues.filter_config !== currentValues.filter_config
-                                          }
-                                       >
-                                          {({ getFieldValue }) => {
-                                             // Проверям какой тип выбран для текущего поля
-                                             const filedType = getFieldValue(['filter_config', name, 'type']);
-                                             const needsOptions = ['select', 'checkbox_group', 'radio_group'].includes(filedType);
+                                    {/* Опции */}
+                                    <Form.Item
+                                       noStyle
+                                       shouldUpdate={
+                                          (prevValues, currentValues) =>
+                                             prevValues.filter_config !== currentValues.filter_config
+                                       }
+                                    >
+                                       {({ getFieldValue }) => {
+                                          // Проверям какой тип выбран для текущего поля
+                                          const filedType = getFieldValue(['filter_config', name, 'type']);
+                                          const needsOptions = ['select', 'checkbox_group', 'radio_group'].includes(filedType);
 
-                                             return needsOptions ? (
-                                                <Form.Item
-                                                   {...restField}
-                                                   name={[name, 'options']}
-                                                   rules={[{ required: true, message: 'Введите вариант через запятую' }]}
-                                                >
-                                                   <Input placeholder='Опции: Белый, Чёрный, Серый' style={{ width: 250 }} />
-                                                </Form.Item>
-                                             ) : null;
-                                          }}
-                                       </Form.Item>
+                                          return needsOptions ? (
+                                             <Form.Item
+                                                {...restField}
+                                                name={[name, 'options']}
+                                                rules={[{ required: true, message: 'Введите вариант через запятую' }]}
+                                             >
+                                                <Input placeholder='Опции: Белый, Чёрный, Серый' style={{ width: 250 }} />
+                                             </Form.Item>
+                                          ) : null;
+                                       }}
                                     </Form.Item>
 
                                     <MinusCircleOutlined onClick={() => remove(name)} />
