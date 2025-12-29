@@ -37,6 +37,19 @@ export const createProduct = createAsyncThunk(
    }
 );
 
+// ! Получаем товары конкретной категории
+export const fetchProductsByCategory = createAsyncThunk(
+   'product/fetchByCategory',
+   async (categoryId, { rejectWithValue }) => {
+      try {
+         const response = await fetchAxios.get(`/api/products/get-category/${categoryId}`);
+         return response.data;
+      } catch (error) {
+         return rejectWithValue(error.response.data)
+      }
+   }
+)
+
 const initialState = {
    products: [],
    loading: false,
@@ -55,6 +68,7 @@ const productSlice = createSlice({
    },
    extraReducers: (builder) => {
       builder
+         // ! Создаем товар
          .addCase(createProduct.pending, (state) => {
             state.loading = true;
          })
@@ -65,6 +79,20 @@ const productSlice = createSlice({
             message.success('Товар успешно создан')
          })
          .addCase(createProduct.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload.error;
+            message.error(action.payload.message || 'Ошибка при создании товара');
+         })
+         // ! Получаем товары по конкретной категории
+         .addCase(fetchProductsByCategory.pending, (state) => {
+            state.loading = true;
+         })
+         .addCase(fetchProductsByCategory.fulfilled, (state, action) => {
+            state.loading = false;
+            state.success = action.payload.success;
+            state.products = action.payload.products;
+         })
+         .addCase(fetchProductsByCategory.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload.error;
             message.error(action.payload.message || 'Ошибка при создании товара');

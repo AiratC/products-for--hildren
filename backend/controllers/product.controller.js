@@ -50,3 +50,28 @@ export const createProduct = async (req, res) => {
       });
    }
 };
+
+// ! Получаем товары конкретной категории
+export const getProductsByCategory = async (req, res) => {
+   try {
+      const { id } = req.params; // id категории из URL
+
+      const result = await query(
+         `SELECT * FROM Products WHERE category_id = $1 ORDER BY product_id DESC`,
+         [id]
+      );
+
+      return res.status(200).json({
+         success: true,
+         error: false,
+         products: result.rows
+      })
+   } catch (error) {
+      console.log(error)
+      return res.status(500).json({
+         message: 'Ошибка на сервере при получении товаров',
+         error: true,
+         success: false
+      })
+   }
+}
