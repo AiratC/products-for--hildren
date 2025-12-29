@@ -1,21 +1,31 @@
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Divider, Form, Input, InputNumber, Select, Space, Upload } from 'antd'
 import React from 'react'
+import { useDispatch, useSelector } from 'react-redux';
+import { createProduct } from '../../redux/slices/productSlice';
 
 const AddProductForm = ({ filter_config, onSuccess, categoryID }) => {
    // Импортируем TextArea отдельно для удобства, либо используем Input.TextArea
    const { TextArea } = Input;
    const [form] = Form.useForm();
 
+   const dispatch = useDispatch();
+   const { loading } = useSelector(state => state.product);
+
    const onFinish = (values) => {
       // Превращаем массив из Upload в простой массив URL или объектов для базы
       const formattedValues = {
          ...values,
-         product_images: values.product_images?.map(file => file.url || file.thumbUrl) || []
+         category_id: categoryID,
+         product_images: values.product_images?.map(file => file)
       }
-      console.log('Данные для отправки: ', { category_id: categoryID, ...formattedValues });
+      console.log('Данные для отправки: ', formattedValues );
       // Здесь будет dispatch(createProduct(formattedValues))
-      onSuccess();
+      dispatch(createProduct(formattedValues)).then((res) => {
+         if(res.meta.requestStatus === 'fulfilled') {
+            onSuccess(); // Закрываем модалку только при успехе
+         }
+      })
    };
 
    // Функция для предотвращения автоматической отправки файла на сервер сразу (если будем грузить вручеую)
@@ -52,7 +62,7 @@ const AddProductForm = ({ filter_config, onSuccess, categoryID }) => {
             </Space>
 
             {/* Секция изображений */}
-            <Divider orientation='left'>Изображения товара</Divider>
+            <Divider titlePlacement='left'>Изображения товара</Divider>
             <Form.Item
                label='Загрузить фото (массив)'
                name={`product_images`}
@@ -105,7 +115,7 @@ const AddProductForm = ({ filter_config, onSuccess, categoryID }) => {
             }
 
             <Form.Item>
-               <Button type='primary' htmlType='submit' block>
+               <Button type='primary' htmlType='submit' block loading={loading}>
                   Создать товар
                </Button>
             </Form.Item>

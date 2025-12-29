@@ -14,7 +14,7 @@ const CategoryProductsView = () => {
 
    useEffect(() => {
       dispatch(getCategories())
-   }, []);
+   }, [dispatch]);
 
    const handleSuccess = useCallback(() => {
       setOpenAddProductForm(false)
