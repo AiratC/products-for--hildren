@@ -48,6 +48,19 @@ export const fetchProductsByCategory = createAsyncThunk(
          return rejectWithValue(error.response.data)
       }
    }
+);
+
+// ! Удаляем товар
+export const deleteProduct = createAsyncThunk(
+   'product/deleteProduct',
+   async (productId, { rejectWithValue }) => {
+      try {
+         await fetchAxios.delete(`/api/products/delete-product/${productId}`);
+         return productId; // Возвращаем id удалённого товара для обновления стейта
+      } catch (error) {
+         return rejectWithValue(error.response.data)
+      }
+   }
 )
 
 const initialState = {
@@ -95,7 +108,21 @@ const productSlice = createSlice({
          .addCase(fetchProductsByCategory.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload.error;
-            message.error(action.payload.message || 'Ошибка при создании товара');
+         })
+         // ! Удаляем товар по id
+         .addCase(deleteProduct.pending, (state) => {
+            state.loading = true;
+         })
+         .addCase(deleteProduct.fulfilled, (state, action) => {
+            state.loading = false;
+            state.success = action.payload.success;
+            state.products = state.products.filter((product) => product.product_id !== action.payload);
+            message.success('Товар удален!')
+         })
+         .addCase(deleteProduct.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action?.payload?.error;
+            message.error(action?.payload?.message || 'Ошибка при создании товара');
          })
    }
 });

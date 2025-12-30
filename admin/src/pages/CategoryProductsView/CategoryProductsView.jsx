@@ -1,29 +1,14 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom'
 import { getCategories } from '../../redux/slices/categorySlice';
-import { Button, Image, Modal, Spin, Table } from 'antd';
+import { Button, Image, Modal, Popconfirm, Space, Spin, Table } from 'antd';
 import AddProductForm from '../../components/AddProductForm/AddProductForm';
-import { fetchProductsByCategory } from '../../redux/slices/productSlice';
+import { deleteProduct, fetchProductsByCategory } from '../../redux/slices/productSlice';
+import { DeleteOutlined } from '@ant-design/icons';
 
 
-const columns = [
-   {
-      title: 'Фото',
-      dataIndex: 'product_images',
-      key: 'image',
-      render: (images) => (
-         <Image
-            src={images && images[0]}
-            width={50}
-            fallback="https://via.placeholder.com/50"
-         />
-      ),
-   },
-   { title: 'Название', dataIndex: 'title', key: 'title' },
-   { title: 'Артикул', dataIndex: 'article', key: 'article' },
-   { title: 'Цена', dataIndex: 'price', key: 'price', render: (p) => `${p} ₽` },
-];
+
 
 const CategoryProductsView = () => {
    const { id } = useParams();
@@ -31,6 +16,44 @@ const CategoryProductsView = () => {
    const { products, loading } = useSelector(state => state.product);
    const currentCategory = useSelector(state => state.category.categories.find(cat => cat.category_id === Number(id)));
    const dispatch = useDispatch();
+
+
+   const columns = useMemo(() => {
+      return [
+         {
+            title: 'Фото',
+            dataIndex: 'product_images',
+            key: 'image',
+            render: (images) => (
+               <Image
+                  src={images && images[0]}
+                  width={50}
+                  fallback="https://via.placeholder.com/50"
+               />
+            ),
+         },
+         { title: 'Название', dataIndex: 'title', key: 'title' },
+         { title: 'Артикул', dataIndex: 'article', key: 'article' },
+         { title: 'Цена', dataIndex: 'price', key: 'price', render: (p) => `${p} ₽` },
+         {
+            title: 'Действия',
+            key: 'actions',
+            render: (_, record) => (
+               <Space size="middle">
+                  <Popconfirm
+                     title="Удалить товар?"
+                     description="Вы уверены, что хотите удалить этот товар?"
+                     onConfirm={() => dispatch(deleteProduct(record.product_id))}
+                     okText="Да"
+                     cancelText="Нет"
+                  >
+                     <Button danger icon={<DeleteOutlined />} />
+                  </Popconfirm>
+               </Space>
+            ),
+         },
+      ];
+   }, [dispatch])
 
    useEffect(() => {
       dispatch(fetchProductsByCategory(id))
