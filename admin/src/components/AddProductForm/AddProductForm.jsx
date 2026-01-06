@@ -13,8 +13,6 @@ const AddProductForm = ({ filter_config, onSuccess, categoryID, initialValues })
    const dispatch = useDispatch();
    const { loading } = useSelector(state => state.product);
 
-   console.log(`render AddProductForm`)
-
    useEffect(() => {
       // 1. Сбрасываем форму и файлы при каждом изменении initialValues (включая открытие пустой формы)
       form.resetFields();

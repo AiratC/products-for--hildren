@@ -154,7 +154,7 @@ const productSlice = createSlice({
             state.error = action?.payload?.error;
             message.error(action?.payload?.message || 'Ошибка при создании товара');
          })
-         // ! Обновляем
+         // ! Обновляем товар
          .addCase(updateProduct.pending, (state) => {
             state.loading = true;
          })

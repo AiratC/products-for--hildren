@@ -150,29 +150,49 @@ export const deleteProduct = async (req, res) => {
 export const updateProduct = async (req, res) => {
    try {
       const { id } = req.params;
-      const { category_id, title, description, article, price, characteristics } = req.body;
+      const { category_id, title, description, article, price, characteristics, product_images } = req.body;
 
       // Обрабатываем характеристики (как при создании)
       const characteristicsForDb = typeof characteristics === 'string'
       ? characteristics : JSON.stringify(characteristics || {});
 
-      // Если есть новые фото 
-      const newImages = req.files ? req.files.map(file => file.path) : null;
+      // Логика сохранения картинок
+      let finalImages = [];
+
+      // Собираем старые фото, которые остались (приходят сроками в массиве или как JSON строка)
+      if(product_images) {
+         const oldImages = Array.isArray(product_images)
+         ? product_images
+         : [product_images]
+
+         // Фильтруем только строки (URL), так как новые файлы придут в req.files
+         finalImages = oldImages.filter(img => typeof img === 'string');
+      }
+
+      // Добавляем новые фото из Multer/Cloudinary
+      if(req.files && req.files.length > 0) {
+         const newImagesPaths = req.files.map(file => file.path);
+         finalImages = [...finalImages, ...newImagesPaths]
+      }
 
       let querySql = `
-      UPDATE Products SET category_id = $1, title = $2, description = $3, article = $4, price = $5, characteristics = $6
+      UPDATE Products 
+      SET category_id = $1, title = $2, description = $3, article = $4, price = $5, 
+      characteristics = $6, product_images = $7
+      WHERE product_id = $8
       `;
 
-      const values = [Number(category_id), title, description || '', article, price, characteristicsForDb];
 
-      // Если есть новые фото то добавляем их
-      if(newImages) {
-         querySql += `, product_images = $7`
-         values.push(JSON.stringify(newImages));
-      };
-
-      querySql += ` WHERE product_id = $${values.length + 1} RETURNING *`;
-      values.push(id);
+      const values = [
+         Number(category_id), 
+         title, 
+         description || '', 
+         article, 
+         price, 
+         characteristicsForDb,
+         JSON.string(finalImages),
+         id
+      ];
 
       const result = await query(querySql, values);
 
