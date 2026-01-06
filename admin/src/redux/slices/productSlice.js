@@ -77,14 +77,23 @@ export const updateProduct = createAsyncThunk(
          formData.append('category_id', productData.category_id);
          formData.append('characteristics', JSON.stringify(productData.characteristics));
 
-         if(productData.product_images) {
-            productData.product_images.forEach(file => {
-               if(file.originFileObj) { // Добавляем только новые файлы
-                  formData.append('product_images', file.originFileObj);
-               }
-            })
-         };
+         // Массив для хранения URL-ов старых картинок
+         const existingImages = [];
 
+         if (productData.product_images) {
+            productData.product_images.forEach(file => {
+               if (file.originFileObj) {
+                  // Это новый файл — добавляем в multipart
+                  formData.append('product_images', file.originFileObj);
+               } else if (file.url) {
+                  // Это старый файл — сохраняем его URL
+                  existingImages.push(file.url);
+               }
+            });
+         }
+
+         // ВАЖНО: отправляем список старых картинок, которые НЕ НАДО удалять
+         formData.append('existing_images', JSON.stringify(existingImages));
          const response = await fetchAxios.patch(`/api/products/update-product/${id}`, formData);
          return response.data;
       } catch (error) {
@@ -162,7 +171,7 @@ const productSlice = createSlice({
             state.loading = false;
             state.success = action.payload.success;
             const index = state.products.findIndex(p => p.product_id === action.payload.product.product_id);
-            if(index !== -1) {
+            if (index !== -1) {
                state.products[index] = action.payload.product
             };
             message.success('Товар обновлен')

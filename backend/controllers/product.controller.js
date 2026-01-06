@@ -88,7 +88,7 @@ export const deleteProduct = async (req, res) => {
          [id]
       );
 
-      if(result.rowCount === 0) {
+      if (result.rowCount === 0) {
          return res.status(404).json({
             message: 'Товар не найден',
             success: false,
@@ -125,7 +125,7 @@ export const deleteProduct = async (req, res) => {
             console.log(deletePromises)
             await Promise.all(deletePromises);
             console.log('Изображения успешно удалены из Cloudinary: ', deletePromises.length)
-            
+
          } catch (error) {
             console.error(`Ошибка при очистке Cloudinary: `, error)
          }
@@ -150,62 +150,54 @@ export const deleteProduct = async (req, res) => {
 export const updateProduct = async (req, res) => {
    try {
       const { id } = req.params;
-      const { category_id, title, description, article, price, characteristics, product_images } = req.body;
+      const { title, description, article, price, characteristics, existing_images } = req.body;
 
-      // Обрабатываем характеристики (как при создании)
-      const characteristicsForDb = typeof characteristics === 'string'
-      ? characteristics : JSON.stringify(characteristics || {});
+      // 1. Получаем текущие фото из БД, чтобы понять, что было удалено
+      const oldProduct = await query('SELECT product_images FROM Products WHERE product_id = $1', [id]);
+      const currentDbImages = oldProduct.rows[0]?.product_images || [];
+      const keptImages = JSON.parse(existing_images || "[]");
 
-      // Логика сохранения картинок
-      let finalImages = [];
+      // 2. Находим фото, которые нужно удалить из Cloudinary
+      const imagesToDelete = currentDbImages.filter(img => !keptImages.includes(img));
 
-      // Собираем старые фото, которые остались (приходят сроками в массиве или как JSON строка)
-      if(product_images) {
-         const oldImages = Array.isArray(product_images)
-         ? product_images
-         : [product_images]
+      for (const url of imagesToDelete) {
+         try {
+            // 1. Декодируем URL (убираем %C3%91 и т.д.)
+            const decodedUrl = decodeURIComponent(url);
 
-         // Фильтруем только строки (URL), так как новые файлы придут в req.files
-         finalImages = oldImages.filter(img => typeof img === 'string');
+            // 2. Извлекаем всё, что идет ПОСЛЕ версии (v1767030536) и ДО расширения (.webp)
+            // Ссылка: .../upload/v1767030536/products/filename.webp
+            const regex = /\/v\d+\/(.+)\.\w+$/;
+            const match = decodedUrl.match(regex);
+
+            if (match && match[1]) {
+               const publicId = match[1];
+               // Теперь publicId будет "products/1767030623793-romack-синий-1"
+
+               console.log("Попытка удаления Public ID:", publicId);
+               const cloudRes = await cloudinary.uploader.destroy(publicId);
+               console.log("Результат Cloudinary:", cloudRes);
+            }
+         } catch (err) {
+            console.error("Ошибка при удалении из Cloudinary:", err);
+         }
       }
 
-      // Добавляем новые фото из Multer/Cloudinary
-      if(req.files && req.files.length > 0) {
-         const newImagesPaths = req.files.map(file => file.path);
-         finalImages = [...finalImages, ...newImagesPaths]
-      }
+      // 3. Собираем итоговый массив: старые (оставшиеся) + новые (загруженные)
+      const newImages = req.files ? req.files.map(f => f.path) : [];
+      const finalImages = [...keptImages, ...newImages];
 
-      let querySql = `
-      UPDATE Products 
-      SET category_id = $1, title = $2, description = $3, article = $4, price = $5, 
-      characteristics = $6, product_images = $7
-      WHERE product_id = $8
-      `;
+      // 4. SQL запрос
+      const querySql = `
+         UPDATE Products 
+         SET title = $1, description = $2, article = $3, price = $4, 
+            characteristics = $5, product_images = $6
+         WHERE product_id = $7 RETURNING *`;
 
-
-      const values = [
-         Number(category_id), 
-         title, 
-         description || '', 
-         article, 
-         price, 
-         characteristicsForDb,
-         JSON.string(finalImages),
-         id
-      ];
-
+      const values = [title, description, article, price, characteristics, JSON.stringify(finalImages), id];
       const result = await query(querySql, values);
 
-      if(result.rowCount === 0) {
-         return res.status(404).json({
-            message: 'Товар не найден',
-            success: false,
-            error: true
-         })
-      }
-
       return res.status(200).json({
-         message: 'Товар обновлен',
          success: true,
          error: false,
          product: result.rows[0]
@@ -213,9 +205,9 @@ export const updateProduct = async (req, res) => {
 
    } catch (error) {
       return res.status(500).json({
-         message: 'Ошибка при обновлении товара на сервере',
-         success: true,
-         error: false,
+         success: false,
+         error: true,
+         message: error.message
       });
    }
-}
+};
