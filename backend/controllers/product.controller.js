@@ -144,4 +144,58 @@ export const deleteProduct = async (req, res) => {
          success: false
       })
    }
+};
+
+// ! Обновляем товар
+export const updateProduct = async (req, res) => {
+   try {
+      const { id } = req.params;
+      const { category_id, title, description, article, price, characteristics } = req.body;
+
+      // Обрабатываем характеристики (как при создании)
+      const characteristicsForDb = typeof characteristics === 'string'
+      ? characteristics : JSON.stringify(characteristics || {});
+
+      // Если есть новые фото 
+      const newImages = req.files ? req.files.map(file => file.path) : null;
+
+      let querySql = `
+      UPDATE Products SET category_id = $1, title = $2, description = $3, article = $4, price = $5, characteristics = $6
+      `;
+
+      const values = [Number(category_id), title, description || '', article, price, characteristicsForDb];
+
+      // Если есть новые фото то добавляем их
+      if(newImages) {
+         querySql += `, product_images = $7`
+         values.push(JSON.stringify(newImages));
+      };
+
+      querySql += ` WHERE product_id = $${values.length + 1} RETURNING *`;
+      values.push(id);
+
+      const result = await query(querySql, values);
+
+      if(result.rowCount === 0) {
+         return res.status(404).json({
+            message: 'Товар не найден',
+            success: false,
+            error: true
+         })
+      }
+
+      return res.status(200).json({
+         message: 'Товар обновлен',
+         success: true,
+         error: false,
+         product: result.rows[0]
+      });
+
+   } catch (error) {
+      return res.status(500).json({
+         message: 'Ошибка при обновлении товара на сервере',
+         success: true,
+         error: false,
+      });
+   }
 }

@@ -5,7 +5,7 @@ import { getCategories } from '../../redux/slices/categorySlice';
 import { Button, Image, Modal, Popconfirm, Space, Spin, Table } from 'antd';
 import AddProductForm from '../../components/AddProductForm/AddProductForm';
 import { deleteProduct, fetchProductsByCategory } from '../../redux/slices/productSlice';
-import { DeleteOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 
 
 
@@ -16,6 +16,13 @@ const CategoryProductsView = () => {
    const { products, loading } = useSelector(state => state.product);
    const currentCategory = useSelector(state => state.category.categories.find(cat => cat.category_id === Number(id)));
    const dispatch = useDispatch();
+   const [editingProduct, setEditingProduct] = useState(null);
+
+   // Функция для закрытия модалки
+   const handleCloseModal = () => {
+      setOpenAddProductForm(false);
+      setEditingProduct(null);
+   }
 
 
    const columns = useMemo(() => {
@@ -40,6 +47,13 @@ const CategoryProductsView = () => {
             key: 'actions',
             render: (_, record) => (
                <Space size="middle">
+                  <Button
+                     icon={<EditOutlined />}
+                     onClick={() => {
+                        setEditingProduct(record);
+                        setOpenAddProductForm(true)
+                     }}
+                  />
                   <Popconfirm
                      title="Удалить товар?"
                      description="Вы уверены, что хотите удалить этот товар?"
@@ -92,13 +106,18 @@ const CategoryProductsView = () => {
          {
             openAddProductForm && (
                <Modal
-                  title="Добавление нового товара"
+                  title={editingProduct ? 'Редактирование товара' : "Добавление нового товара"}
                   open={openAddProductForm}
-                  onCancel={() => setOpenAddProductForm(false)}
+                  onCancel={handleCloseModal}
                   footer={null} // Чтобы использовать кнопку внутри самой формы
                   width={550}
                >
-                  <AddProductForm categoryID={id} filter_config={currentCategory?.filter_config} onSuccess={handleSuccess} />
+                  <AddProductForm
+                     categoryID={id}
+                     filter_config={currentCategory?.filter_config}
+                     onSuccess={handleSuccess}
+                     initialValues={editingProduct}
+                  />
                </Modal>
             )
          }

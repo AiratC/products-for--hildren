@@ -61,6 +61,36 @@ export const deleteProduct = createAsyncThunk(
          return rejectWithValue(error.response.data)
       }
    }
+);
+
+// ! Обновление товара
+export const updateProduct = createAsyncThunk(
+   'product/updateProduct',
+   async ({ id, productData }, { rejectWithValue }) => {
+      try {
+         const formData = new FormData();
+
+         formData.append('title', productData.title);
+         formData.append('description', productData.description);
+         formData.append('price', productData.price);
+         formData.append('article', productData.article);
+         formData.append('category_id', productData.category_id);
+         formData.append('characteristics', JSON.stringify(productData.characteristics));
+
+         if(productData.product_images) {
+            productData.product_images.forEach(file => {
+               if(file.originFileObj) { // Добавляем только новые файлы
+                  formData.append('product_images', file.originFileObj);
+               }
+            })
+         };
+
+         const response = await fetchAxios.patch(`/api/products/update-product/${id}`, formData);
+         return response.data;
+      } catch (error) {
+         return rejectWithValue(error.response.data);
+      }
+   }
 )
 
 const initialState = {
@@ -123,6 +153,25 @@ const productSlice = createSlice({
             state.loading = false;
             state.error = action?.payload?.error;
             message.error(action?.payload?.message || 'Ошибка при создании товара');
+         })
+         // ! Обновляем
+         .addCase(updateProduct.pending, (state) => {
+            state.loading = true;
+         })
+         .addCase(updateProduct.fulfilled, (state, action) => {
+            state.loading = false;
+            state.success = action.payload.success;
+            const index = state.products.findIndex(p => p.product_id === action.payload.product.product_id);
+            if(index !== -1) {
+               state.products[index] = action.payload.product
+            };
+            message.success('Товар обновлен')
+
+         })
+         .addCase(updateProduct.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action?.payload?.error;
+            message.error(action?.payload?.message || 'Ошибка при обновлении товара');
          })
    }
 });
