@@ -10,9 +10,21 @@ const MessagesPage = () => {
    const dispatch = useDispatch();
 
    useEffect(() => {
-      // Загружаем первую страницу
-      dispatch(getAllMessages({ page: 1, limit: 10 }))
-   }, [dispatch]);
+      // 1. Сразу загружаем данные при входе (текущая страница или 1-ая по умолчанию)
+      const currentPage = pagination.currentPage || 1;
+      dispatch(getAllMessages({ page: currentPage, limit: 10 }));
+
+      // 2. Устанавливаем интервал
+      const interval = setInterval(() => {
+         // Берем актуальное значение из стейта
+         // Таким образом, если мы на 4-ой странице, он обновит именно 4-ю
+         dispatch(getAllMessages({ page: pagination.currentPage, limit: 10 }));
+      }, 30000);
+
+      // 3. Очищаем интервал при размотировании
+      return () => clearInterval(interval);
+
+   }, [dispatch, pagination.currentPage]);
 
    const handlePageChange = (page) => {
       dispatch(getAllMessages({ page, limit: 10 }));

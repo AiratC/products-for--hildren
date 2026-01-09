@@ -6,7 +6,6 @@ import { message } from "antd";
 export const getAllMessages = createAsyncThunk(
    'contact/fetchGetAllMessages',
    async ({ page = 1, limit = 10 }, { rejectWithValue }) => {
-      console.log(page)
       try {
          const response = await fetchAxios.get(`/api/contact/get-all-messages?page=${page}&limit=${limit}`);
          return response.data;
@@ -53,7 +52,11 @@ const contactSlice = createSlice({
       builder
       // ! Получаем все сообщения
       .addCase(getAllMessages.pending, (state) => {
-         state.loading = true;
+         // Показываем загрузку только если массив пустой
+         // Если данные уже есть, обновляем их в фоновом режиме без спинера
+         if(state.messages.length === 0) {
+            state.loading = true;
+         }
       })
       .addCase(getAllMessages.fulfilled, (state, action) => {
          state.loading = false;
