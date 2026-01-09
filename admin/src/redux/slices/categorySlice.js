@@ -65,9 +65,6 @@ export const categorySlice = createSlice({
          if(action.payload.category) {
             state.categories.unshift(action.payload.category)
          };
-
-
-         console.log(`createCategory.fulfilled: `, action)
          
       }),
       builder.addCase(createCategory.rejected, (state, action) => {
@@ -76,8 +73,6 @@ export const categorySlice = createSlice({
          state.success = action.payload.success;
          // Берём сообщение об ошибке, которое прислал нам бэкенд через rejectWithValue
          state.message = action.payload?.message || 'Ошибка при создании категории';
-
-         console.log(`createCategory.rejected: `, action)
       }),
       // ! Получаем все категории
       builder.addCase(getCategories.pending, (state) => {

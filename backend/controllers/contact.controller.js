@@ -57,20 +57,68 @@ export const sendMessage = async (req, res) => {
 // ! Получение всех сообщений для админки
 export const getMessages = async (req, res) => {
    try {
+      // Получаем страницу
+      const page = parseInt(req.query.page) || 1;
+      // Лимит
+      const limit = parseInt(req.query.limit) || 10;
+      // Смещение
+      const offset = (page - 1) * limit;
+
+      // Получаем общее кол-во сообщений для расчета страниц на фронте
+      const countResult = await query(`SELECT COUNT(*) FROM Contacts`);
+      const totalMessage = parseInt(countResult.rows[0].count);
+
+      // Получаем только нужную порцию данных
       const result = await query(
-         `SELECT * FROM Contacts ORDER BY created_at DESC`
-      );
+         `
+         SELECT * FROM Contacts
+         ORDER BY created_at DESC
+         LIMIT $1 OFFSET $2
+         `,
+         [limit, offset]
+      )
 
       return res.status(200).json({
          success: true,
          error: false,
-         data: result.rows
-      })
+         data: result.rows,
+         pagination: {
+            total: totalMessage,
+            currentPage: page,
+            totalPages: Math.ceil(totalMessage / limit),
+            limit
+         }
+      });
+      
    } catch (error) {
       return res.status(500).json({
          message: "Ошибка при получении сообщений на сервере",
          error: true,
          success: false
+      })
+   }
+}
+
+// ! Обновление статуса сообщения на прочитано
+export const markAsRead = async (req, res) => {
+   const { id } = req.params;
+
+   try {
+      await query(
+         `UPDATE Contacts SET status = 'read' WHERE contact_id = $1`,
+         [id]
+      );
+
+      return res.status(200).json({
+         message: 'Прочитано',
+         success: true,
+         error: false
+      })
+   } catch (error) {
+      return res.status(500).json({
+         message: 'Ошибка при смене статуса сообщения на сервере',
+         success: false,
+         error: true
       })
    }
 }
