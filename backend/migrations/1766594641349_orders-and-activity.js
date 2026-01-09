@@ -60,16 +60,6 @@ export const up = (pgm) => {
          updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW()
       );
 
-      -- Создание таблицы контакты
-      CREATE TABLE Contacts (
-         contact_id SERIAL PRIMARY KEY,
-         name VARCHAR(300),
-         phone VARCHAR(30),
-         message TEXT,
-         -- Соглашение на обработку данных и пользовательское соглашение
-         is_agree BOOLEAN NOT NULL
-      );
-
       -- Создание таблицы нашли дешевле - любой пользователь сможет отправить форму если нашел товар дешевле
       CREATE TABLE Found_Cheaper (
          id SERIAL PRIMARY KEY,
@@ -159,7 +149,6 @@ export const down = (pgm) => {
       DROP TABLE IF EXISTS Reviews CASCADE;
       DROP TABLE IF EXISTS Wholesale_Customers CASCADE;
       DROP TABLE IF EXISTS Found_Cheaper CASCADE;
-      DROP TABLE IF EXISTS Contacts CASCADE;
       DROP TABLE IF EXISTS Stock CASCADE;
       DROP TABLE IF EXISTS Blogs CASCADE;
       DROP TABLE IF EXISTS Favorites_Items CASCADE; -- Удаляем СНАЧАЛА дочернюю

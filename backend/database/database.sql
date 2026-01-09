@@ -126,7 +126,9 @@ CREATE TABLE Contacts (
    phone VARCHAR(30),
    message TEXT,
    -- Соглашение на обработку данных и пользовательское соглашение
-   is_agree BOOLEAN NOT NULL
+   is_agree BOOLEAN NOT NULL,
+   status VARCHAR(20) DEFAULT 'new',
+   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 );
 
 -- Создание таблицы нашли дешевле - любой пользователь сможет отправить форму если нашел товар дешевле
