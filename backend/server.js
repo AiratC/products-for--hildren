@@ -8,6 +8,7 @@ import authAdminRouter from "./routes/authAdmin.route.js";
 import catalogRouter from "./routes/catalog.route.js";
 import categoryRouter from "./routes/categories.route.js";
 import productRouter from "./routes/product.route.js";
+import userRouter from "./routes/user.route.js";
 
 dotenv.config();
 const app = express();
@@ -30,6 +31,7 @@ app.use('/api/admin', authAdminRouter);
 app.use('/api/catalog', catalogRouter);
 app.use('/api/categories', categoryRouter);
 app.use('/api/products', productRouter);
+app.use('/api/user', userRouter);
 
 
 // Запуск сервера с обработкой ошибок
