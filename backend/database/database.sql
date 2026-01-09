@@ -123,7 +123,7 @@ CREATE TABLE Stock (
 CREATE TABLE Contacts (
    contact_id SERIAL PRIMARY KEY,
    name VARCHAR(300),
-   phone VARCHAR(30) UNIQUE,
+   phone VARCHAR(30),
    message TEXT,
    -- Соглашение на обработку данных и пользовательское соглашение
    is_agree BOOLEAN NOT NULL
