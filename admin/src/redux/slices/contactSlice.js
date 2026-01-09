@@ -42,7 +42,10 @@ const contactSlice = createSlice({
       .addCase(getAllMessages.fulfilled, (state, action) => {
          state.loading = false;
          state.messages = action.payload.data
-         console.log(action)
+      })
+      .addCase(getAllMessages.rejected, (state, action) => {
+         state.loading = false;
+         state.error = action.payload.error;
       })
       
 
