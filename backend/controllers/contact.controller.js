@@ -89,7 +89,7 @@ export const getMessages = async (req, res) => {
             limit
          }
       });
-      
+
    } catch (error) {
       return res.status(500).json({
          message: "Ошибка при получении сообщений на сервере",
@@ -117,6 +117,39 @@ export const markAsRead = async (req, res) => {
    } catch (error) {
       return res.status(500).json({
          message: 'Ошибка при смене статуса сообщения на сервере',
+         success: false,
+         error: true
+      })
+   }
+};
+
+// ! Удаляем сообщение
+export const deleteMessage = async (req, res) => {
+   try {
+      const { id } = req.params;
+
+      const result = await query(
+         `DELETE FROM Contacts WHERE contact_id = $1 RETURNING *`,
+         [id]
+      );
+
+      if(result.rowCount === 0) {
+         return res.status(404).json({
+            message: 'Сообщение не найдено',
+            success: false,
+            error: true
+         })
+      };
+
+      return res.status(200).json({
+         message: 'Сообщение успешно удалено',
+         success: true,
+         error: false
+      });
+
+   } catch (error) {
+      return res.status(500).json({
+         message: 'Ошибка на сервере при удалении сообщения',
          success: false,
          error: true
       })

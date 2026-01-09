@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 import styles from './MessageCard.module.css'
 import { useDispatch } from 'react-redux';
-import { markMessageRead } from '../../../redux/slices/contactSlice';
+import { deleteMessage, markMessageRead } from '../../../redux/slices/contactSlice';
+import { Popconfirm } from 'antd';
+import { DeleteOutlined } from '@ant-design/icons';
 
 const MessageCard = ({ msg }) => {
    const [isExpanded, setIsExpanded] = useState(false);
@@ -21,6 +23,11 @@ const MessageCard = ({ msg }) => {
       if(msg.status === 'new') {
          dispatch(markMessageRead(msg.contact_id))
       }
+   }
+
+   const handleDelete = (event) => {
+      event.stopPropagation(); // Важно: чтобы карточка не открылась или закрылась
+      dispatch(deleteMessage(msg.contact_id))
    }
 
 
@@ -43,6 +50,18 @@ const MessageCard = ({ msg }) => {
             <span className={msg.status === 'new' ? styles.badgeNew : styles.badgeRead}>
                {msg.status === 'new' ? 'Новое' : 'Прочитано'}
             </span>
+            <Popconfirm
+               title='Удалить сообщение'
+               onConfirm={handleDelete}
+               okText='Да'
+               cancelText='Нет'
+               onCancel={(event) => event.stopPropagation()}
+            >
+               <DeleteOutlined 
+               className={styles.deleteIcon} 
+               onClick={(event) => event.stopPropagation()}
+               />
+            </Popconfirm>
          </div>
       </div>
    )

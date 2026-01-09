@@ -10,7 +10,7 @@ authAdminRouter.post('/login', loginAdmin);
 // Выход из админки
 authAdminRouter.get('/logout', logoutAdmin);
 
-// Проверка сессии
+// Проверка сессии (Только админ)
 authAdminRouter.get('/me', verifyToken, isAdmin, getMe);
 
 export default authAdminRouter;

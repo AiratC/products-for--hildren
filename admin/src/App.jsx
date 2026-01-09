@@ -20,7 +20,7 @@ function App() {
    const dispatch = useDispatch();
 
    useEffect(() => {
-      dispatch(checkAuth())
+      dispatch(checkAuth());
    }, [dispatch])
 
    if (isCheckingAuth || loading) {

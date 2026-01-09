@@ -3,7 +3,7 @@ import { getAllCatalog, getMenuStructure } from '../controllers/catalog.controll
 
 const catalogRouter = express.Router();
 
-// Структура меню для админки
+// Структура меню для админки (Только админ)
 catalogRouter.get('/menu-structure', getMenuStructure);
 
 // Получаем весь каталог

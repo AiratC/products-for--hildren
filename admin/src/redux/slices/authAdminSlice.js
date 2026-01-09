@@ -12,7 +12,7 @@ export const adminLogin = createAsyncThunk(
          return thunkAPI.rejectWithValue(error.response.data)
       }
    },
-)
+);
 
 export const checkAuth = createAsyncThunk(
    'admin/checkAuth',
@@ -24,9 +24,7 @@ export const checkAuth = createAsyncThunk(
          return thunkAPI.rejectWithValue(error.response.data)
       }
    }
-)
-
-
+);
 
 const initialState = {
    loading: false,

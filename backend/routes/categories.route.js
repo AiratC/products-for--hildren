@@ -4,7 +4,7 @@ import { createCategory, getAllCategories } from '../controllers/category.contro
 
 const categoryRouter = express.Router();
 
-// Создаем категорию
+// Создаем категорию (Только админ)
 categoryRouter.post('/create-category', verifyToken, isAdmin, createCategory);
 
 // Получаем все категории

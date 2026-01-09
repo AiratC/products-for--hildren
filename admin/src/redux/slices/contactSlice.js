@@ -26,9 +26,20 @@ export const markMessageRead = createAsyncThunk(
          return rejectWithValue(error.response.data)
       }
    }
+);
+
+// ! Удаление сообщения
+export const deleteMessage = createAsyncThunk(
+   'contact/fetchDeleteMessage',
+   async (contactId, { rejectWithValue }) => {
+      try {
+         const response = await fetchAxios.delete(`/api/contact/delete-message/${contactId}`);
+         return { contactId, ...response.data }; // Возвращаем id чтобы знать что удалять из стейта
+      } catch (error) {
+         return rejectWithValue(error.response.data)
+      }
+   }
 )
-
-
 
 const initialState = {
    messages: [],
@@ -83,6 +94,20 @@ const contactSlice = createSlice({
          message.success(action.payload.message || 'Прочитано')
       })
       .addCase(markMessageRead.rejected, (state, action) => {
+         state.loading = false;
+         message.error(action.payload?.message || 'Ошибка при обновлении')
+      })
+      // ! Удаляем сообщение
+      .addCase(deleteMessage.pending, (state) => {
+         state.loading = true;
+      })
+      .addCase(deleteMessage.fulfilled, (state, action) => {
+         state.loading = false;
+         // Удаляем сообщение из массива в стейте без перезагрузки страницы
+         state.messages = state.messages.filter((message) => message.contact_id !== action.payload.contactId)
+         message.success(action.payload.message || 'Сообщение удалено')
+      })
+      .addCase(deleteMessage.rejected, (state, action) => {
          state.loading = false;
          message.error(action.payload?.message || 'Ошибка при обновлении')
       })
