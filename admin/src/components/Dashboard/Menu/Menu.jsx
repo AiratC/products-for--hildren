@@ -10,6 +10,7 @@ import {
 import { MdCategory, MdMessage } from "react-icons/md";
 import { fetchAxios } from '../../../utils/fetchAxios';
 import { useNavigate } from 'react-router-dom';
+import { RiDiscountPercentLine } from "react-icons/ri";
 
 const STATIC_MENU_ITEMS = [
    { key: 'blog', label: 'Блог', icon: <MessageOutlined /> },
@@ -18,6 +19,7 @@ const STATIC_MENU_ITEMS = [
    { key: 'messages', label: 'Сообщения', icon: <MdMessage /> },
    { key: 'category', label: 'Категории', icon: <MdCategory /> },
    { key: 'admin-profile', label: 'Админка', icon: <UserOutlined /> },
+   { key: 'stocks', label: 'Акции', icon: <RiDiscountPercentLine /> },
 ]
 
 const Menu = () => {
@@ -68,7 +70,6 @@ const Menu = () => {
          const id = e.key.split('-')[1]
          navigate(`/dashboard/category-products-view/${id}`)
       } else {
-         console.log('Нажали на:', e.key);
          navigate(`/dashboard/${e.key}`)
       }
       

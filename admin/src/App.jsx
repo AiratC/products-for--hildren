@@ -13,6 +13,7 @@ import { useEffect } from "react"
 import { checkAuth } from "./redux/slices/authAdminSlice"
 import CategoryProductsView from "./pages/CategoryProductsView/CategoryProductsView"
 import MessagesPage from "./pages/MessagesPage/MessagesPage"
+import StockPage from "./pages/StockPage/StockPage"
 
 
 function App() {
@@ -39,6 +40,7 @@ function App() {
             <Route path="category" element={<CategoryPage />}></Route>
             <Route path="messages" element={<MessagesPage/>}></Route>
             <Route path="category-products-view/:id" element={<CategoryProductsView/>}></Route>
+            <Route path="stocks" element={<StockPage/>}></Route>
          </Route>
       </Routes>
    )
