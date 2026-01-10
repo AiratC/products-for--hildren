@@ -13,6 +13,32 @@ export const addStock = createAsyncThunk(
          return rejectWithValue(error.response.data)
       }
    }
+);
+
+// ! Удалени акции
+export const deleteStock = createAsyncThunk(
+   'stock/deleteStock',
+   async (stockId, {rejectWithValue}) => {
+      try {
+         const response = await fetchAxios.delete(`/api/stock//delete-stock/${stockId}`);
+         return response.data;
+      } catch (error) {
+         return rejectWithValue(error.response.data)
+      }
+   }
+)
+
+// ! Получение всех акций
+export const getAllStocks = createAsyncThunk(
+   'stock/getAllStock',
+   async (_, { rejectWithValue }) => {
+      try {
+         const response = await fetchAxios.get(`/api/stock/get-all-stocks`);
+         return response.data;
+      } catch (error) {
+         return rejectWithValue(error.response.data);
+      }
+   }
 )
 
 const initialState = {
