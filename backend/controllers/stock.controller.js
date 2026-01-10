@@ -97,4 +97,31 @@ export const deleteStock = async (req, res) => {
          success: false
       })
    }
+};
+
+// ! Получаем все акции
+export const getAllStocks = async (req, res) => {
+   try {
+      const result = await query(`SELECT * FROM Stock`);
+
+      if(result.rowCount === 0) {
+         return res.status(404).json({
+            message: 'Акций нет',
+            error: true,
+            success: false
+         })
+      }
+
+      return res.status(200).json({
+         success: true,
+         error: false,
+         stocks: result.rows 
+      })
+   } catch (error) {
+      return res.status(500).json({
+         message: 'Ошибка при получении акций на сервере',
+         error: true,
+         success: false
+      })
+   }
 }

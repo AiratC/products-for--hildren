@@ -1,0 +1,19 @@
+.descriptionText {
+   height: 65px;
+   overflow: hidden;
+   text-overflow: ellipsis;
+   display: -webkit-box;
+   line-clamp: 3;
+   -webkit-box-orient: vertical;
+   color: rgba(0, 0, 0, 0.45);
+}
+
+
+.cardTitle {
+   height: 22px;
+   overflow: hidden;
+   white-space: nowrap;
+   text-overflow: ellipsis;
+   margin-bottom: 8px;
+   font-weight: bold;
+}

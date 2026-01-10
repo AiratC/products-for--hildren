@@ -20,8 +20,8 @@ export const deleteStock = createAsyncThunk(
    'stock/deleteStock',
    async (stockId, {rejectWithValue}) => {
       try {
-         const response = await fetchAxios.delete(`/api/stock//delete-stock/${stockId}`);
-         return response.data;
+         const response = await fetchAxios.delete(`/api/stock/delete-stock/${stockId}`);
+         return {stockId, ...response.data};
       } catch (error) {
          return rejectWithValue(error.response.data)
       }
@@ -66,11 +66,37 @@ const stockSlice = createSlice({
       })
       .addCase(addStock.fulfilled, (state, action) => {
          state.loading = false;
+         state.stocks.unshift(action.payload.data);
          message.success(action.payload.message || 'Усаешное добавление акции')
       })
       .addCase(addStock.rejected, (state, action) => {
          state.loading = false;
          message.error(action.payload.error || 'Ошибка при создании акции')
+      })
+      // ! Получаем все акции
+      .addCase(getAllStocks.pending, (state) => {
+         state.loading = true;
+      })
+      .addCase(getAllStocks.fulfilled, (state, action) => {
+         state.loading = false;
+         state.stocks = action.payload.stocks;
+      })
+      .addCase(getAllStocks.rejected, (state, action) => {
+         state.loading = false;
+         message.error(action.payload.error || 'Ошибка при создании акции')
+      })
+      // ! Удаляем акцию
+      .addCase(deleteStock.pending, (state) => {
+         state.loading = true;
+      })
+      .addCase(deleteStock.fulfilled, (state, action) => {
+         state.loading = false;
+         state.stocks = state.stocks.filter(stock => stock.stock_id !== action.payload.stockId)
+         message.success(action.payload.message)
+      })
+      .addCase(deleteStock.rejected, (state, action) => {
+         state.loading = false;
+         message.error(action.payload.error || 'Ошибка при удалении акции')
       })
    }
 });
