@@ -3,6 +3,7 @@ import adminAuthReducer from './slices/authAdminSlice';
 import categoryReducer from './slices/categorySlice';
 import productReducer from './slices/productSlice';
 import contactReducer from './slices/contactSlice';
+import stockReducer from './slices/stockSlice'
 
 
 export const store = configureStore({
@@ -10,6 +11,7 @@ export const store = configureStore({
       authAdmin: adminAuthReducer,
       category: categoryReducer,
       product: productReducer,
-      contact: contactReducer
+      contact: contactReducer,
+      stock: stockReducer
    },
 })

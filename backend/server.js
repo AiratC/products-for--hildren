@@ -9,6 +9,7 @@ import catalogRouter from "./routes/catalog.route.js";
 import categoryRouter from "./routes/categories.route.js";
 import productRouter from "./routes/product.route.js";
 import contactRouter from "./routes/contact.route.js";
+import stockRouter from "./routes/stock.route.js";
 
 dotenv.config();
 const app = express();
@@ -31,7 +32,8 @@ app.use('/api/admin', authAdminRouter);
 app.use('/api/catalog', catalogRouter);
 app.use('/api/categories', categoryRouter);
 app.use('/api/products', productRouter);
-app.use('/api/contact', contactRouter)
+app.use('/api/contact', contactRouter);
+app.use('/api/stock', stockRouter);
 // app.use('/api/user', userRouter);
 
 

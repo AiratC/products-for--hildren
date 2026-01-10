@@ -23,6 +23,7 @@ const storage = new CloudinaryStorage({
       if (req.originalUrl.includes('products')) folderName = 'products';
       if (req.originalUrl.includes('users')) folderName = 'avatars';
       if (req.originalUrl.includes('blogs')) folderName = 'blogs';
+      if (req.originalUrl.includes('stock')) folderName = 'stock';
 
       return {
          folder: folderName,
