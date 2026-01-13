@@ -12,6 +12,7 @@ import contactRouter from "./routes/contact.route.js";
 import stockRouter from "./routes/stock.route.js";
 import blogRouter from "./routes/blog.route.js";
 import reviewsRouter from "./routes/reviews.route.js";
+import wholesaleCustomersRouter from "./routes/wholesaleCustomers.route.js";
 
 dotenv.config();
 const app = express();
@@ -38,6 +39,7 @@ app.use('/api/contact', contactRouter);
 app.use('/api/stock', stockRouter);
 app.use('/api/blogs', blogRouter);
 app.use('/api/reviews', reviewsRouter);
+app.use('/api/wholesale-customers', wholesaleCustomersRouter);
 // app.use('/api/user', userRouter);
 
 
