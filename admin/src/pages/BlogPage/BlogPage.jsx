@@ -26,8 +26,15 @@ const BlogPage = () => {
       window.scrollTo({ top: 0, behavior: 'smooth' })
    }
 
-   const handleDeleteBlog = (id) => {
-      dispatch(deleteBlog(id));
+   const handleDeleteBlog = async (id) => {
+      await dispatch(deleteBlog(id));
+
+      // Если это была последняя статья на странице и мы не на первой странице
+      if(blogs.length === 1 && currentPage > 1) {
+         setCurrentPage(currentPage - 1);
+      } else {
+         dispatch(getAllBlogs({ page: currentPage, limit: pageSize }))
+      }
    }
 
    const onFinish = (values) => {

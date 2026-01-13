@@ -1,5 +1,5 @@
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Divider, Form, Input, InputNumber, Select, Space, Upload } from 'antd'
+import { Button, Divider, Form, Input, InputNumber, Select, Space, Switch, Upload } from 'antd'
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { createProduct, updateProduct } from '../../redux/slices/productSlice';
@@ -40,7 +40,8 @@ const AddProductForm = ({ filter_config, onSuccess, categoryID, initialValues })
          form.setFieldsValue({
             ...initialValues,
             characteristics: characteristics,
-            product_images: formattedImages // Передаем и в форму для валидации
+            product_images: formattedImages, // Передаем и в форму для валидации
+            is_new: initialValues.is_new || false
          });
       }
    }, [initialValues, form]);
@@ -80,6 +81,18 @@ const AddProductForm = ({ filter_config, onSuccess, categoryID, initialValues })
          <Form form={form} layout='vertical' onFinish={onFinish}>
             <Form.Item label='Название товара' name='title' rules={[{ required: true }]}>
                <Input placeholder='Название товара...' />
+            </Form.Item>
+
+            {/* Добавляем Switch */}
+            <Form.Item
+               label='Отметить как новинку'
+               name={`is_new`}
+               valuePropName='checked' // Критически важно для Switch
+            >
+               <Switch
+                  checkedChildren='Да'
+                  unCheckedChildren='Нет'
+               />
             </Form.Item>
 
             <Form.Item label='Описание товара' name='description'>

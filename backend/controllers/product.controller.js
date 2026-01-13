@@ -5,7 +5,7 @@ import { v2 as cloudinary } from 'cloudinary';
 export const createProduct = async (req, res) => {
    try {
       // Данные из FormData (текстовые поля)
-      const { category_id, title, description, article, price, characteristics } =
+      const { category_id, title, description, article, price, characteristics, is_new } =
          req.body;
 
       // Если характеристики УЖЕ строка (из FormData), оставляем её.
@@ -22,8 +22,8 @@ export const createProduct = async (req, res) => {
       const result = await query(
          `
             INSERT INTO Products 
-            (category_id, title, description, article, price, characteristics, product_images)
-            VALUES ($1, $2, $3, $4, $5, $6, $7)
+            (category_id, title, description, article, price, characteristics, product_images, is_new)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
             RETURNING *
          `,
          [
@@ -34,6 +34,7 @@ export const createProduct = async (req, res) => {
             price,
             characteristicsForDb,
             imagesForDb,
+            is_new
          ]
       );
 
@@ -150,7 +151,7 @@ export const deleteProduct = async (req, res) => {
 export const updateProduct = async (req, res) => {
    try {
       const { id } = req.params;
-      const { title, description, article, price, characteristics, existing_images } = req.body;
+      const { title, description, article, price, characteristics, existing_images, is_new } = req.body;
 
       // 1. Получаем текущие фото из БД, чтобы понять, что было удалено
       const oldProduct = await query('SELECT product_images FROM Products WHERE product_id = $1', [id]);
@@ -191,10 +192,10 @@ export const updateProduct = async (req, res) => {
       const querySql = `
          UPDATE Products 
          SET title = $1, description = $2, article = $3, price = $4, 
-            characteristics = $5, product_images = $6
-         WHERE product_id = $7 RETURNING *`;
+            characteristics = $5, product_images = $6, is_new = $7
+         WHERE product_id = $8 RETURNING *`;
 
-      const values = [title, description, article, price, characteristics, JSON.stringify(finalImages), id];
+      const values = [title, description, article, price, characteristics, JSON.stringify(finalImages), is_new, id];
       const result = await query(querySql, values);
 
       return res.status(200).json({

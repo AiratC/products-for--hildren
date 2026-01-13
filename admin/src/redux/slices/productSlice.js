@@ -15,6 +15,7 @@ export const createProduct = createAsyncThunk(
          formData.append('description', productData.description);
          formData.append('price', productData.price);
          formData.append('article', productData.article);
+         formData.append('is_new', productData.is_new);
 
          // Превращаем объект характеристик в строку
          formData.append('characteristics', JSON.stringify(productData.characteristics));
@@ -75,7 +76,9 @@ export const updateProduct = createAsyncThunk(
          formData.append('price', productData.price);
          formData.append('article', productData.article);
          formData.append('category_id', productData.category_id);
+         formData.append('is_new', productData.is_new);
          formData.append('characteristics', JSON.stringify(productData.characteristics));
+         
 
          // Массив для хранения URL-ов старых картинок
          const existingImages = [];
