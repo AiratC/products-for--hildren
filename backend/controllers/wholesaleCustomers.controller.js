@@ -4,7 +4,7 @@ import { query } from "../config/db.js";
 export const addWholesaleRequest = async (req, res) => {
    const { name, phone, email, city, captcha, is_agree } = req.body;
 
-   if(!name || !phone || !email || !city || is_agree === undefined) {
+   if (!name || !phone || !email || !city || is_agree === undefined) {
       return res.status(400).json({
          message: 'Пожалуйста, заполните все обязательные поля',
          error: true,
@@ -12,7 +12,7 @@ export const addWholesaleRequest = async (req, res) => {
       })
    };
 
-   if(!is_agree) {
+   if (!is_agree) {
       return res.status(400).json({
          message: 'Необходимо согласие на обработку персональных данных',
          error: true,
@@ -20,23 +20,28 @@ export const addWholesaleRequest = async (req, res) => {
       })
    }
 
-   try {
-      // Проверка формата email
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if(!emailRegex.test(email)) {
-         return res.status(400).json({
-            message: 'Некорректный формат email',
-            error: true,
-            success: false
-         })
-      };
+   // Проверка формата email
+   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+   if (!emailRegex.test(email)) {
+      return res.status(400).json({
+         message: 'Некорректный формат email',
+         error: true,
+         success: false
+      })
+   };
 
-      // Логика проверки капчи
-      if(!captcha || captcha !== req.session?.captcha_code) {
-         // return res.status(400).json({
-         //    message: 'Неверная капча'
-         // })
-      }
+   // Логика проверки капчи - проверяем совпадает ли капча с той что в сессии
+   if (!req.session.captcha || captcha !== req.session.captcha) {
+      return res.status(400).json({
+         message: 'Неверная капча',
+         error: true,
+         success: false
+      })
+   }
+
+   try {
+      // Если всё верно то удаляем капчу из сессии
+      delete req.session.captcha;
 
       const querySql = `
          INSERT INTO Wholesale_Customers (name, phone, email, city, captcha, is_agree)
@@ -57,7 +62,7 @@ export const addWholesaleRequest = async (req, res) => {
    } catch (error) {
       return res.status(500).json({
          message: 'Ошибка при отправке заявки на сервере',
-         error: true, 
+         error: true,
          success: false
       })
    }

@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import session from 'express-session';
 import dotenv from 'dotenv';
 import pool from "./config/db.js";
 import authRouter from "./routes/auth.route.js";
@@ -13,6 +14,7 @@ import stockRouter from "./routes/stock.route.js";
 import blogRouter from "./routes/blog.route.js";
 import reviewsRouter from "./routes/reviews.route.js";
 import wholesaleCustomersRouter from "./routes/wholesaleCustomers.route.js";
+import captchaRouter from "./routes/captcha.route.js";
 
 dotenv.config();
 const app = express();
@@ -40,7 +42,20 @@ app.use('/api/stock', stockRouter);
 app.use('/api/blogs', blogRouter);
 app.use('/api/reviews', reviewsRouter);
 app.use('/api/wholesale-customers', wholesaleCustomersRouter);
+app.use('/api/captcha', captchaRouter);
 // app.use('/api/user', userRouter);
+
+
+app.use(session({
+   secret: process.env.SESSION_SECRET_KEY,
+   resave: false,
+   saveUninitialized: true,
+   cookie: { 
+      maxAge: 600000,
+      secure: process.env.NODE_ENV === 'production', // true только для HTTPS
+      sameSite: 'lax' 
+}
+}))
 
 
 // Запуск сервера с обработкой ошибок
