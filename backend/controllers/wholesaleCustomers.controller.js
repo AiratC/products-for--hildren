@@ -68,3 +68,45 @@ export const addWholesaleRequest = async (req, res) => {
    }
 }
 
+// ! Получение списка всех заявок от оптовиков
+export const getWholesaleRequests = async (req, res) => {
+   // Получаем номер страницы и лимит из параметров запроса (например, ?page=1&limit=10)
+   const page = parseInt(req.query.page) || 1;
+   const limit = parseInt(req.query.limit) || 10;
+   const offset = (page - 1) * limit;
+
+   try {
+      // Получаем общее кол-во записей
+      const countSql = `SELECT COUNT(*) FROM Wholesale_Customers`;
+      const totalResult = await query(countSql);
+      const totalItems = parseInt(totalResult[0].count);
+
+      // Получаем данные для текущей страницы
+      const selectSql = `
+         SELECT * FROM Wholesale_Customers
+         ORDER BY id DESC
+         LIMIT $1 OFFSET $2
+      `;
+
+      const result = await query(selectSql, [limit, offset]);
+
+      return res.status(200).json({
+         success: true,
+         data: result,
+         pagination: {
+            currentPage: page,
+            totalPages: Math.ceil(totalItems / limit),
+            totalItems
+         }
+      });
+
+
+   } catch (error) {
+      return res.status(500).json({
+         message: 'Ошибка при получении списка заявок оптовиков на сервере',
+         error: true,
+         success: false
+      })
+   }
+}
+
