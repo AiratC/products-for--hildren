@@ -139,7 +139,7 @@ CREATE TABLE Found_Cheaper (
    product_id INT REFERENCES Products(product_id) ON DELETE CASCADE NOT NULL,
    -- Ссылка на товар
    link TEXT,
-   phone VARCHAR(30) UNIQUE
+   phone VARCHAR(30)
 );
 
 
