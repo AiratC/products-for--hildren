@@ -1,0 +1,50 @@
+* {
+	padding: 0px;
+	margin: 0px;
+	border: none;
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+
+a, a:link, a:visited  {
+   text-decoration: none;
+}
+
+a:hover  {
+   text-decoration: none;
+}
+
+
+aside, nav, footer, header, section, main {
+	display: block;
+}
+
+
+ul, ul li {
+	list-style: none;
+}
+
+img {
+	vertical-align: top;
+}
+
+img, svg {
+	max-width: 100%;
+	height: auto;
+}
+
+.container {
+   max-width: 1487px;
+   margin: 0 auto;
+}
+
+
+
+
+
+
