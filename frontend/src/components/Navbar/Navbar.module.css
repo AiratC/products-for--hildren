@@ -1,0 +1,47 @@
+.mainNavContainer {
+   display: flex;
+   align-items: center;
+   gap: 7px;
+   justify-content: space-between;
+   padding: 17px 10px 15px;
+}
+
+.logo img {
+   width: 80px;
+}
+
+.catalogBtn {
+   display: flex;
+   align-items: center;
+   gap: 11px;
+   padding: 13px 16px;
+   background-color: #7FC9F0;
+   color: white;
+   font-size: 18px;
+   border-radius: 10px;
+}
+
+.userLoginSvgContainer, .cartLogoSvgContainer {
+   display: flex;
+   align-items: center;
+   gap: 12px;
+}
+
+/* Navbar secondaty */
+.secondaryNavContainer {
+   padding: 16px 10px 16px;
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+}
+
+.textContentLeft {
+   display: block;
+   max-width: 164px;
+}
+
+.navigationMenuBottom {
+   display: flex;
+   gap: 40px;
+   font-size: 19px;
+}
