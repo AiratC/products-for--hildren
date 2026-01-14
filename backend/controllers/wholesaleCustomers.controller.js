@@ -4,7 +4,11 @@ import { query } from "../config/db.js";
 export const addWholesaleRequest = async (req, res) => {
    const { name, phone, email, city, captcha, is_agree } = req.body;
 
-   if (!name || !phone || !email || !city || is_agree === undefined) {
+   // Пример базовой очистки строк перед сохранением
+   const cleanName = name.trim().replace(/[<>]/g, "");
+   const cleanCity = city.trim().replace(/[<>]/g, "");
+
+   if (!cleanName || !phone || !email || !cleanCity || is_agree === undefined) {
       return res.status(400).json({
          message: 'Пожалуйста, заполните все обязательные поля',
          error: true,
@@ -48,7 +52,7 @@ export const addWholesaleRequest = async (req, res) => {
          VALUES ($1, $2, $3, $4, $5, $6) RETURNING *
       `;
 
-      const values = [name, phone, email, city, captcha, is_agree];
+      const values = [cleanName, phone, email, cleanCity, captcha, is_agree];
 
       await query(querySql, values);
 
