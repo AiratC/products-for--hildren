@@ -48,6 +48,7 @@ img, svg {
 .container {
    max-width: 1487px;
    margin: 0 auto;
+	padding: 0px 10px;
 }
 
 

@@ -1,7 +1,6 @@
 .formSearch {
    position: relative;
    display: flex;
-   background-color: aquamarine;
    border-radius: 10px;
    width: 100%;
    max-width: 469px;
@@ -25,6 +24,25 @@
    transform: translateY(-50%);
    left: 18px;
    pointer-events: none;
+}
+
+.arrowWrapperSvg {
+   position: absolute;
+   top: 50%;
+   transform: translateY(-50%);
+   left: 18px;
+   pointer-events: auto;
+   z-index: 10;
+   cursor: pointer;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   width: 24px;
+   height: 24px;
+}
+
+.arrowWrapperSvg svg {
+   color: #4A6377;
 }
 
 .formSearch button {

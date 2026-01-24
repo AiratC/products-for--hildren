@@ -6,17 +6,18 @@ import userLoginSvg from './../../assets/svg/user-login.svg'
 import cartLogoSvg from './../../assets/svg/cart.svg'
 import locationLogo from './../../assets/svg/location.svg'
 import Search from '../Search/Search';
-
+import { Link } from 'react-router'
 
 
 const Navbar = () => {
+   
    return (
       <>
          <nav style={{ borderBottom: '2px solid rgb(224 221 221)' }}>
             <div className={`container ${styles.mainNavContainer}`}>
-               <div className={`${styles.logo}`}>
+               <Link to={`/`} className={`${styles.logo}`}>
                   <img src={logo} alt="logo" />
-               </div>
+               </Link>
                <button className={`${styles.catalogBtn}`}>
                   Каталог товаров
                   <img src={catalogBurgerMenu} alt="catalog-burger-menu" />
