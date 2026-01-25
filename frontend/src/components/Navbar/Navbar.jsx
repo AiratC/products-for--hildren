@@ -55,7 +55,7 @@ const Navbar = () => {
                   <li>Оплата и доставка</li>
                   <li>Контакты</li>
                </ul>
-               <div>
+               <div className={styles.cityContainer}>
                   <img src={locationLogo} alt="location-logo" />
                   <span>Город: Казань</span>
                </div>

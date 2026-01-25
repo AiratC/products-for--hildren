@@ -61,6 +61,12 @@
    font-size: 19px;
 }
 
+.cityContainer {
+   display: flex;
+   align-items: center;
+   gap: 12px;
+}
+
 @media (max-width: 768px) {
    .mainNavContainer {
       z-index: 0;
