@@ -1,0 +1,86 @@
+.hero {
+   padding: 60px 0;
+}
+
+.heroContainer {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+}
+
+.content {
+   flex: 0 1 650px;
+   z-index: 2;
+}
+
+.title {
+   font-family: 'Balsamiq Sans', cursive;
+   font-size: 80px;
+   line-height: 88px;
+   color: #4A6377;
+   margin-bottom: 24px;
+}
+
+.subTitle {
+   font-size: 18px;
+   line-height: 1.4;
+   color: #7A8A99;
+   margin-bottom: 40px;
+   max-width: 450px;
+}
+
+.btn {
+   background-color: #83CDEE;
+   color: white;
+   padding: 16px 48px;
+   border-radius: 12px;
+   font-weight: 700;
+   border: none;
+   cursor: pointer;
+   font-size: 18px;
+}
+
+/* Блок с картинкой и фигурой */
+.imageWrapper {
+   position: relative;
+   flex: 0 1 500px;
+}
+
+.image {
+   width: 100%;
+   position: relative;
+   z-index: 2;
+}
+
+/* --- АДАПТИВ (Mobile) --- */
+@media (max-width: 1024px) {
+   .heroContainer {
+      flex-direction: column;
+      /* Текст над картинкой */
+      text-align: center;
+   }
+
+   .content {
+      flex: 1;
+      margin-bottom: 40px;
+   }
+
+   .title {
+      font-size: 36px;
+      /* Уменьшаем заголовок для мобилки */
+      line-height: 40px;
+   }
+
+   .subTitle {
+      margin: 0 auto 30px;
+   }
+
+   .btn {
+      width: 100%;
+   }
+
+   .imageWrapper {
+      width: 100%;
+      max-width: 350px;
+   }
+}
