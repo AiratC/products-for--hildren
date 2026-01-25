@@ -1,0 +1,126 @@
+.catalogOverlay {
+   position: absolute;
+   top: 56%;
+   /* Сразу под хедером на десктопе */
+   left: 0;
+   width: 100%;
+   background: white;
+   z-index: 60;
+   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.overlay {
+   position: fixed;
+   top: 0;
+   left: 0;
+   width: 100vw;
+   height: 100vh;
+   background-color: rgba(0, 0, 0, 0.4);
+   z-index: 50;
+   cursor: pointer;
+   animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+   from {
+      opacity: 0;
+   }
+
+   to {
+      opacity: 1;
+   }
+}
+
+.catalogContent {
+   display: flex;
+   max-width: 100%;
+   height: 700px;
+}
+
+.categoriesList {
+   display: flex;
+   flex-direction: column;
+   /* justify-content: flex-end; */
+   flex: 1;
+   padding-top: 32px;
+   padding-left: 200px;
+   background-color: #4A6377;
+   /* Цвет из макета */
+   color: white;
+}
+
+.categoryItem {
+   padding: 15px 25px;
+   cursor: pointer;
+   width: 271px;
+   border-top-left-radius: 10px;
+   border-bottom-left-radius: 10px;
+   transition: background 0.2s;
+}
+
+.categoryItem:hover {
+   background-color: white;
+   color: #4A6377;
+}
+
+.closeBtn {
+   display: none;
+}
+
+.subCategories {
+   display: flex;
+   flex-direction: column;
+   flex: 5;
+   padding-top: 40px;
+   padding-left: 76px;
+}
+
+/* --- МОБИЛЬНАЯ ВЕРСИЯ --- */
+@media (max-width: 768px) {
+   .catalogOverlay {
+      position: fixed;
+      width: 276px;
+      top: 0;
+      height: 100%;
+      background-color: #4A6377;
+      /* На весь экран */
+   }
+
+   .catalogContent {
+      flex-direction: column;
+   }
+
+   .subCategories {
+      display: none;
+      /* Скрываем правую панель на мобилках */
+   }
+
+   .categoryItem {
+      font-size: 18px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+   }
+
+   .closeBtn {
+      display: block;
+      align-self: flex-end;
+      padding: 20px;
+      color: white;
+      font-size: 30px;
+      background-color: #4A6377;
+   }
+
+   .categoriesList {
+      padding-top: 10px;
+      padding-left: 33px;
+
+   }
+
+   .overlay {
+      height: 100%;
+      background-color: #a7aeb3;
+   }
+
+   .categoryItem {
+   width: 243px;
+}
+}

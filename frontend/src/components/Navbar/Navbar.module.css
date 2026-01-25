@@ -1,3 +1,16 @@
+.headerWrapper {
+   position: relative;
+   /* Чтобы каталог ориентировался на эту границу */
+}
+
+/* Стили для навигационных полосок */
+.mainNavContainer {
+   position: relative;
+   background-color: white;
+   z-index: 51;
+   width: 100%;
+}
+
 .mainNavContainer {
    display: flex;
    align-items: center;
@@ -19,9 +32,11 @@
    color: white;
    font-size: 18px;
    border-radius: 10px;
+   cursor: pointer;
 }
 
-.userLoginSvgContainer, .cartLogoSvgContainer {
+.userLoginSvgContainer,
+.cartLogoSvgContainer {
    display: flex;
    align-items: center;
    gap: 12px;
@@ -44,4 +59,10 @@
    display: flex;
    gap: 40px;
    font-size: 19px;
+}
+
+@media (max-width: 768px) {
+   .mainNavContainer {
+      z-index: 0;
+   }
 }

@@ -1,26 +1,33 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './Navbar.module.css';
 import logo from './../../assets/svg/logo.svg'
 import catalogBurgerMenu from './../../assets/svg/catalog-burger-menu.svg'
+import closeCatalogIcon from './../../assets/svg/closeCatalogIcon.svg'
 import userLoginSvg from './../../assets/svg/user-login.svg'
 import cartLogoSvg from './../../assets/svg/cart.svg'
 import locationLogo from './../../assets/svg/location.svg'
 import Search from '../Search/Search';
 import { Link } from 'react-router'
+import Catalog from '../Catalog/Catalog';
+
 
 
 const Navbar = () => {
-   
+   const [isCatalogOpen, setIsCatalogOpen] = useState(false);
+
    return (
-      <>
+      <header className={styles.headerWrapper}>
          <nav style={{ borderBottom: '2px solid rgb(224 221 221)' }}>
-            <div className={`container ${styles.mainNavContainer}`}>
+            <div className={`${styles.mainNavContainer}`}>
                <Link to={`/`} className={`${styles.logo}`}>
                   <img src={logo} alt="logo" />
                </Link>
-               <button className={`${styles.catalogBtn}`}>
+               <button
+                  className={`${styles.catalogBtn}`}
+                  onClick={() => setIsCatalogOpen(!isCatalogOpen)}
+               >
                   Каталог товаров
-                  <img src={catalogBurgerMenu} alt="catalog-burger-menu" />
+                  <img src={isCatalogOpen ? closeCatalogIcon : catalogBurgerMenu} alt="catalog-burger-menu" />
                </button>
                <Search />
                <div className={`${styles.userLoginSvgContainer}`}>
@@ -33,8 +40,9 @@ const Navbar = () => {
                </div>
             </div>
          </nav>
+
          <nav>
-            <div className={`container ${styles.secondaryNavContainer}`}>
+            <div className={`${styles.secondaryNavContainer}`}>
                <span className={`${styles.textContentLeft}`}>
                   Онлайн гипермаркет товаров для детей
                </span>
@@ -53,7 +61,11 @@ const Navbar = () => {
                </div>
             </div>
          </nav>
-      </>
+
+         {/* Рендер компонента каталог */}
+         {isCatalogOpen && <Catalog onClose={() => setIsCatalogOpen(false)}/>}
+
+      </header>
    )
 }
 
