@@ -1,5 +1,6 @@
 .headerWrapper {
    position: relative;
+   background-color: #FDF8F5;
    /* Чтобы каталог ориентировался на эту границу */
 }
 
@@ -9,6 +10,7 @@
    background-color: white;
    z-index: 51;
    width: 100%;
+   background-color: #FDF8F5;
 }
 
 .mainNavContainer {

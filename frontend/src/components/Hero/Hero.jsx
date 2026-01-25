@@ -4,9 +4,8 @@ import styles from './Hero.module.css'
 
 const Hero = () => {
    return (
-      <header>
-         <section className={styles.hero}>
-            <div className={styles.heroContainer}>
+         <section className={`${styles.hero}`}>
+            <div className={`container ${styles.heroContainer}`}>
                <div className={styles.content}>
                   <h1 className={styles.title}>
                      Все самое необходимое для вашего ребенка
@@ -22,7 +21,6 @@ const Hero = () => {
                </div>
             </div>
          </section>
-      </header>
    )
 }
 

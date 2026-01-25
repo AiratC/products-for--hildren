@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styles from './Catalog.module.css'
 import closeCatalogIcon from './../../assets/svg/closeCatalogIcon.svg'
 
@@ -9,6 +9,13 @@ const categories = [
 ]
 
 const Catalog = ({ onClose }) => {
+
+   useEffect(() => {
+      document.body.style.overflow = 'hidden';
+
+      return () => document.body.style.overflow = 'auto';
+   }, [])
+
    return (
       <>
          {/* Затемняющая подложка */}
@@ -17,7 +24,9 @@ const Catalog = ({ onClose }) => {
          <div className={styles.catalogOverlay}>
             <div className={styles.catalogContent}>
                {/* Кнопка закрытия для мобилок */}
-               <button className={styles.closeBtn} onClick={onClose}><img src={closeCatalogIcon} alt="close" /></button>
+               <button className={styles.closeBtn} onClick={onClose} aria-label='Закрыть каталог'>
+                  <img src={closeCatalogIcon} alt="close" />
+               </button>
 
                <div className={styles.categoriesList}>
                   {categories.map((category, index) => (
