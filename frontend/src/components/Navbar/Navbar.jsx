@@ -9,6 +9,7 @@ import locationLogo from './../../assets/svg/location.svg'
 import Search from '../Search/Search';
 import { Link } from 'react-router'
 import Catalog from '../Catalog/Catalog';
+import mobileBurgerMenuIcon from './../../assets/svg/mobile-burger-menu.svg'
 
 
 
@@ -19,6 +20,12 @@ const Navbar = () => {
       <header className={styles.headerWrapper}>
          <nav style={{ borderBottom: '2px solid rgb(224 221 221)' }}>
             <div className={`${styles.mainNavContainer}`}>
+               {/* Мобильное бургер меню */}
+               <div className={styles.mobileBurgerMenuContainer}>
+                  <button>
+                     <img src={mobileBurgerMenuIcon} alt="Мобильное бурген меню" />
+                  </button>
+               </div>
                <Link to={`/`} className={`${styles.logo}`}>
                   <img src={logo} alt="logo" />
                </Link>
@@ -29,32 +36,36 @@ const Navbar = () => {
                   Каталог товаров
                   <img src={isCatalogOpen ? closeCatalogIcon : catalogBurgerMenu} alt="catalog-burger-menu" />
                </button>
-               <Search />
+               <div className={styles.searchContainer}>
+                  <Search />
+               </div>
                <div className={`${styles.userLoginSvgContainer}`}>
                   <img src={userLoginSvg} alt="userLoginSvg" />
-                  Войти в личный кабинет
+                  <span>Войти в личный кабинет</span>
                </div>
                <div className={`${styles.cartLogoSvgContainer}`}>
                   <img src={cartLogoSvg} alt="cart-logo" />
-                  Корзина
+                  <span>Корзина</span>
                </div>
             </div>
          </nav>
 
-         <nav>
+         <nav className={styles.secondaryNavContainerWrapper}>
             <div className={`${styles.secondaryNavContainer}`}>
                <span className={`${styles.textContentLeft}`}>
                   Онлайн гипермаркет товаров для детей
                </span>
-               <ul className={`${styles.navigationMenuBottom}`}>
-                  <li>Акции</li>
-                  <li>О нас</li>
-                  <li>Блог</li>
-                  <li>Оптовым клиентам</li>
-                  <li>Возврат</li>
-                  <li>Оплата и доставка</li>
-                  <li>Контакты</li>
-               </ul>
+               <div className={styles.navigationMenuBottomContainer}>
+                  <ul className={`${styles.navigationMenuBottom}`}>
+                     <li>Акции</li>
+                     <li>О нас</li>
+                     <li>Блог</li>
+                     <li>Оптовым клиентам</li>
+                     <li>Возврат</li>
+                     <li>Оплата и доставка</li>
+                     <li>Контакты</li>
+                  </ul>
+               </div>
                <div className={styles.cityContainer}>
                   <img src={locationLogo} alt="location-logo" />
                   <span>Город: Казань</span>
@@ -62,8 +73,15 @@ const Navbar = () => {
             </div>
          </nav>
 
+         {/* Поисковик виден только на мобильных устройствах */}
+         <div className={styles.mobileSearchContainer}>
+            <div className="container">
+               <Search />
+            </div>
+         </div>
+
          {/* Рендер компонента каталог */}
-         {isCatalogOpen && <Catalog onClose={() => setIsCatalogOpen(false)}/>}
+         {isCatalogOpen && <Catalog onClose={() => setIsCatalogOpen(false)} />}
 
       </header>
    )

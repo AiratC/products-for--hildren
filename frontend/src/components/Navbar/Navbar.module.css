@@ -57,10 +57,15 @@
    max-width: 164px;
 }
 
+.navigationMenuBottomContainer {
+   overflow-x: auto;
+}
+
 .navigationMenuBottom {
    display: flex;
    gap: 40px;
    font-size: 19px;
+   min-width: 890px;
 }
 
 .cityContainer {
@@ -69,8 +74,68 @@
    gap: 12px;
 }
 
+.mobileBurgerMenuContainer {
+   display: none;
+}
+
+.mobileSearchContainer {
+   display: none;
+}
+
+@media (max-width: 1120px) {
+
+   .userLoginSvgContainer span,
+   .cartLogoSvgContainer span {
+      display: none;
+   }
+
+   .textContentLeft {
+      display: none;
+   }
+}
+
 @media (max-width: 768px) {
    .mainNavContainer {
-      z-index: 0;
+      z-index: 100;
+   }
+
+   .searchContainer {
+      display: none;
+   }
+
+   .catalogBtn {
+      display: none;
+   }
+
+   .userLoginSvgContainer {
+      display: none;
+   }
+
+   .mobileBurgerMenuContainer {
+      display: block;
+   }
+
+   .mobileBurgerMenuContainer img {
+      width: 33px;
+   }
+
+   .cartLogoSvgContainer img {
+      width: 33px;
+   }
+   
+   .mobileSearchContainer {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      margin-top: 10px;
+   }
+
+   .mobileSearchContainer .container {
+      width: 100%;
+      max-width: 540px;
+   }
+
+   .secondaryNavContainerWrapper {
+      display: none;
    }
 }
