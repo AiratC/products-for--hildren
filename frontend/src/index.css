@@ -52,6 +52,13 @@ img, svg {
 	padding: 0px 10px;
 }
 
+/* Preloader */
+.preloader {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+}
 
 
 

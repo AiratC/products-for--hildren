@@ -37,19 +37,18 @@
    height: 700px;
 }
 
-.categoriesList {
+.catalogList {
    display: flex;
    flex-direction: column;
-   /* justify-content: flex-end; */
-   flex: 1;
+   align-items: flex-end;
+   flex: 2;
    padding-top: 32px;
-   padding-left: 200px;
    background-color: #4A6377;
    /* Цвет из макета */
    color: white;
 }
 
-.categoryItem {
+.catalogItamContainer {
    padding: 15px 25px;
    cursor: pointer;
    width: 271px;
@@ -58,7 +57,7 @@
    transition: background 0.2s;
 }
 
-.categoryItem:hover {
+.catalogItamContainer:hover {
    background-color: white;
    color: #4A6377;
 }
@@ -70,9 +69,28 @@
 .subCategories {
    display: flex;
    flex-direction: column;
-   flex: 5;
+   flex: 4;
    padding-top: 40px;
    padding-left: 76px;
+}
+
+.subCategories ul {
+   display: flex;
+   flex-direction: column;
+   font-family: 'Montserrat', sans-serif;
+   font-size: 18px;
+   gap: 24px;
+   color: #446B80;
+}
+
+/* Скрываем на Desktop */
+.catalogMobile {
+   display: none;
+}
+
+/* Показываем catalogDesktop */
+.catalogDesktop {
+   display: block;
 }
 
 /* --- МОБИЛЬНАЯ ВЕРСИЯ --- */
@@ -102,7 +120,7 @@
       /* Скрываем правую панель на мобилках */
    }
 
-   .categoryItem {
+   .catalogItamContainer {
       font-size: 18px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
    }
@@ -116,13 +134,21 @@
       background-color: #4A6377;
    }
 
-   .categoriesList {
+   .catalogList {
       padding-top: 10px;
-      padding-left: 33px;
-
    }
 
-   .categoryItem {
-   width: 243px;
-}
+   .catalogItamContainer {
+      width: 243px;
+   }
+
+   /* Скрываем на мобильной версии */
+   .catalogDesktop {
+      display: none;
+   }
+
+   /* Показываем мобильную версию */
+   .catalogMobile {
+      display: flex;
+   }
 }

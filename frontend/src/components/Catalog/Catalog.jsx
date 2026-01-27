@@ -1,14 +1,29 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from './Catalog.module.css'
 import closeCatalogIcon from './../../assets/svg/closeCatalogIcon.svg'
-
-
-const categories = [
-   "Акции", "Детская мебель", "Коляски", "Автокресла",
-   "Одежда", "Кормление", "Гигиена и уход", "Умные игрушки"
-]
+import fetchAxios from '../../utils/fetchAxios';
+import Loader from '../Loader/Loader';
 
 const Catalog = ({ onClose }) => {
+   const [catalogs, setCatalogs] = useState([]);
+   const [categories, setCategories] = useState(null);
+   const [loadingCatalog, setLoadingCatalog] = useState(true);
+   const [loadingCategories, setLoadingCategories] = useState(true);
+
+   // Получаем все данные каталога
+   useEffect(() => {
+      const fetchGetAllCatalog = async () => {
+         try {
+            const response = await fetchAxios.get(`/api/catalog/get-all-catalog`);
+            setCatalogs(response.data.catalog)
+         } catch (error) {
+            console.log(error)
+         } finally {
+            setLoadingCatalog(false)
+         }
+      };
+      fetchGetAllCatalog()
+   }, [])
 
    useEffect(() => {
       document.body.style.overflow = 'hidden';
@@ -28,17 +43,42 @@ const Catalog = ({ onClose }) => {
                   <img src={closeCatalogIcon} alt="close" />
                </button>
 
-               <div className={styles.categoriesList}>
-                  {categories.map((category, index) => (
-                     <div key={index} className={styles.categoryItem}>
-                        {category}
-                     </div>
-                  ))}
+               {/* Каталог для десктопной версии */}
+               <div className={`${styles.catalogDesktop} ${styles.catalogList}`}>
+                  {
+                     loadingCatalog ? (
+                        <div className={`preloader`}>
+                           <Loader />
+                        </div>
+                     ) : (
+                        catalogs.map((catalogItem) => (
+                           <div key={catalogItem.catalog_id} className={styles.catalogItamContainer}>
+                              {catalogItem.name}
+                           </div>
+                        ))
+                     )
+                  }
+               </div>
+
+               {/* Каталог для мобильной версии */}
+               <div className={`${styles.catalogMobile} ${styles.catalogList}`}>
+                  {
+                     loadingCatalog ? (
+                        <div className={`preloader`}>
+                           <Loader />
+                        </div>
+                     ) : (
+                        catalogs.map((catalogItem) => (
+                           <div key={catalogItem.catalog_id} className={styles.catalogItamContainer}>
+                              {catalogItem.name}
+                           </div>
+                        ))
+                     )
+                  }
                </div>
 
                {/* Правая часть с подкатегориями только для десктопа */}
                <div className={styles.subCategories}>
-                  <h3>Детская мебель</h3>
                   <ul>
                      <li>Кроватки</li>
                      <li>Колыбели</li>
