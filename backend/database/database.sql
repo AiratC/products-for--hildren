@@ -47,6 +47,7 @@ CREATE TABLE Categories (
    category_id SERIAL PRIMARY KEY,
    catalog_id INT REFERENCES Catalog(catalog_id) ON DELETE CASCADE NOT NULL,
    name VARCHAR(400),
+   slug VARCHAR(150) UNIQUE,
    filter_config JSONB DEFAULT '[]'
 );
 
