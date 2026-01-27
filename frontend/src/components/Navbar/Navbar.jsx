@@ -10,19 +10,21 @@ import Search from '../Search/Search';
 import { Link } from 'react-router'
 import Catalog from '../Catalog/Catalog';
 import mobileBurgerMenuIcon from './../../assets/svg/mobile-burger-menu.svg'
+import MobileMenu from '../MobileMenu/MobileMenu';
 
 
 
 const Navbar = () => {
-   const [isCatalogOpen, setIsCatalogOpen] = useState(false);
+   const [isMenuOpen, setIsMenuOpen] = useState(false); // Для мобильного меню
+   const [isCatalogOpen, setIsCatalogOpen] = useState(false); // Для десктопного и моб. каталога
 
    return (
       <header className={styles.headerWrapper}>
          <nav style={{ borderBottom: '2px solid rgb(224 221 221)' }}>
             <div className={`${styles.mainNavContainer}`}>
-               {/* Мобильное бургер меню */}
+               {/* Клик по бургеру открывает общее мобильное меню */}
                <div className={styles.mobileBurgerMenuContainer}>
-                  <button>
+                  <button onClick={() => setIsMenuOpen(true)}>
                      <img src={mobileBurgerMenuIcon} alt="Мобильное бурген меню" />
                   </button>
                </div>
@@ -73,6 +75,15 @@ const Navbar = () => {
             </div>
          </nav>
 
+         {/* Мобильное меню (Выезжает сбоку) */}
+         <MobileMenu
+            setIsMenuOpen={() => setIsMenuOpen(false)}
+            setIsCatalogOpen={() => setIsCatalogOpen(true)}
+            isMenuOpen={isMenuOpen}
+         />
+
+
+
          {/* Поисковик виден только на мобильных устройствах */}
          <div className={styles.mobileSearchContainer}>
             <div className="container">
@@ -81,7 +92,12 @@ const Navbar = () => {
          </div>
 
          {/* Рендер компонента каталог */}
-         {isCatalogOpen && <Catalog onClose={() => setIsCatalogOpen(false)} />}
+         {isCatalogOpen && (
+            <Catalog
+               onClose={() => setIsCatalogOpen(false)}
+               isMobile={true}
+            />
+         )}
 
       </header>
    )

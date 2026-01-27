@@ -83,7 +83,14 @@
       top: 0;
       height: 100%;
       background-color: #4A6377;
+      z-index: 201;
       /* На весь экран */
+   }
+
+   .overlay {
+      height: 100%;
+      background-color: #a7aeb3;
+      z-index: 201;
    }
 
    .catalogContent {
@@ -113,11 +120,6 @@
       padding-top: 10px;
       padding-left: 33px;
 
-   }
-
-   .overlay {
-      height: 100%;
-      background-color: #a7aeb3;
    }
 
    .categoryItem {
