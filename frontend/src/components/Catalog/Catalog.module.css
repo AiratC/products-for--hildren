@@ -88,11 +88,6 @@
    display: none;
 }
 
-/* Показываем catalogDesktop */
-.catalogDesktop {
-   display: block;
-}
-
 /* --- МОБИЛЬНАЯ ВЕРСИЯ --- */
 @media (max-width: 768px) {
    .catalogOverlay {

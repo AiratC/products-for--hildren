@@ -3,6 +3,8 @@ import styles from './Catalog.module.css'
 import closeCatalogIcon from './../../assets/svg/closeCatalogIcon.svg'
 import fetchAxios from '../../utils/fetchAxios';
 import Loader from '../Loader/Loader';
+import { Link } from 'react-router';
+
 
 const Catalog = ({ onClose }) => {
    const [catalogs, setCatalogs] = useState([]);
