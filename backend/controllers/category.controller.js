@@ -3,11 +3,11 @@ import { query } from "../config/db.js";
 // ! Создаем категорию
 export const createCategory = async (req, res) => {
    try {
-      const { name, catalog_id, filter_config } = req.body;
+      const { name, catalog_id, filter_config, slug } = req.body;
 
-      if(!name || !catalog_id) {
+      if(!name || !catalog_id || !slug) {
          return res.status(400).json({
-            message: 'Название и ID каталога обязательны',
+            message: 'Название, ID каталога, slug обязательны',
             error: true,
             success: false
          })
@@ -15,8 +15,8 @@ export const createCategory = async (req, res) => {
 
       // JSONB в Postgres отлично принимает массивы напрямую из JS
       const result = await query(
-         `INSERT INTO Categories (catalog_id, name, filter_config) VALUES ($1, $2, $3) RETURNING *`,
-         [Number(catalog_id), name, JSON.stringify(filter_config || [])]
+         `INSERT INTO Categories (catalog_id, name, filter_config, slug) VALUES ($1, $2, $3, $4) RETURNING *`,
+         [Number(catalog_id), name, JSON.stringify(filter_config || []), slug]
       );
 
       return res.status(201).json({

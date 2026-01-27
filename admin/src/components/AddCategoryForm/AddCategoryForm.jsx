@@ -19,16 +19,14 @@ const AddCategoryForm = ({ catalogs, onSuccess }) => {
                : filter.options
          })) || []
       };
-      
-      console.log('Данные для отправки: ', formattedValues);
-      
+
       try {
          const result = await dispatch(createCategory(formattedValues)).unwrap();
-         if(result.success) {
+         if (result.success) {
             message.success(result.message);
             form.resetFields(); // Очищаем форму
-            
-            if(onSuccess) onSuccess();
+
+            if (onSuccess) onSuccess();
          };
 
       } catch (error) {
@@ -43,6 +41,21 @@ const AddCategoryForm = ({ catalogs, onSuccess }) => {
             <Card title='Основная информация'>
                <Form.Item name='name' label='Название категории' rules={[{ required: true }]} >
                   <Input placeholder='Например: Кроватки' />
+               </Form.Item>
+
+               {/* ПОЛЕ ДЛЯ SLUG */}
+               <Form.Item
+                  name='slug'
+                  label='URL адрес (slug)'
+                  rules={[
+                     { required: true, message: 'Введите slug' },
+                     {
+                        pattern: /^[a-z0-9-]+$/,
+                        message: 'Используйте только маленькие латинские буквы, цифры и дефис'
+                     }
+                  ]}
+               >
+                  <Input placeholder='например: krovatki' />
                </Form.Item>
 
                <Form.Item name={`catalog_id`} label='Раздел каталога' rules={[{ required: true }]}>
