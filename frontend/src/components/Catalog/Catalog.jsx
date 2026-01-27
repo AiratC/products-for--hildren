@@ -71,9 +71,9 @@ const Catalog = ({ onClose }) => {
                         </div>
                      ) : (
                         catalogs.map((catalogItem) => (
-                           <div key={catalogItem.catalog_id} className={styles.catalogItamContainer}>
+                           <Link to={`/${catalogItem.name}`} key={catalogItem.catalog_id} className={styles.catalogItamContainer}>
                               {catalogItem.name}
-                           </div>
+                           </Link>
                         ))
                      )
                   }

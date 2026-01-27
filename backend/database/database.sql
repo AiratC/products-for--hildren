@@ -32,7 +32,8 @@ CREATE TABLE Users (
 -- Таблица каталог
 CREATE TABLE Catalog (
    catalog_id SERIAL PRIMARY KEY,
-   name VARCHAR(150)
+   name VARCHAR(150),
+   slug VARCHAR(150) UNIQUE
 );
 
 -- Сразу добавляем в каталог данные
