@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router";
 import MainLayout from "./Layouts/MainLayout/MainLayout";
 import HomePage from "./pages/HomePage/HomePage";
 import SearchPage from "./pages/SearchPage/SearchPage";
+import FilterPage from "./pages/FilterPage/FilterPage";
 
 function App() {
 
@@ -12,6 +13,8 @@ function App() {
                <Route index element={<HomePage/>}></Route>
                {/* Search Page */}
                <Route path="/search" element={<SearchPage/>}></Route>
+               {/* Filter Page */}
+               <Route path="/categories/filter/:slug" element={<FilterPage/>}></Route>
             </Route>
          </Routes>
    )

@@ -115,7 +115,7 @@ const Catalog = ({ onClose }) => {
                            {
                               Array.isArray(categories) ? (
                                  categories.map((category) => (
-                                    <Link to={`/categories/filter/${category.slug}`} key={category.category_id}><li>{category.name}</li></Link>
+                                    <Link onClick={() => onClose()} to={`/categories/filter/${category.slug}`} key={category.category_id}><li>{category.name}</li></Link>
                                  ))
                               ) : (
                                  <span>{categories}</span>

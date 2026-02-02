@@ -1,0 +1,104 @@
+.card {
+   background: #fff;
+   border-radius: 12px;
+   padding: 16px;
+   display: flex;
+   flex-direction: column;
+   transition: box-shadow 0.3s;
+   position: relative;
+   text-align: center;
+   /* Добавляем постоянную мягкую тень */
+   box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.19);
+   cursor: pointer;
+}
+
+.card:hover {
+   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.imageWrapper {
+   position: relative;
+   margin-bottom: 12px;
+   height: 200px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+}
+
+.productImg {
+   max-width: 100%;
+   max-height: 100%;
+   object-fit: contain;
+}
+
+.badgeNew {
+   position: absolute;
+   top: 0;
+   left: 0;
+   background: #e1f5fe;
+   color: #03a9f4;
+   padding: 2px 8px;
+   border-radius: 4px;
+   font-size: 10px;
+   font-weight: bold;
+}
+
+.favoriteIcon {
+   position: absolute;
+   top: 0;
+   right: 0;
+   font-size: 20px;
+   color: #81d4fa;
+   cursor: pointer;
+}
+
+.title {
+   font-size: 14px;
+   color: #4a4a4a;
+   margin-bottom: 8px;
+   height: 40px;
+   /* Фиксируем высоту для ровной сетки */
+   overflow: hidden;
+}
+
+.priceSection {
+   margin-bottom: 16px;
+}
+
+.currentPrice {
+   font-size: 18px;
+   font-weight: bold;
+   color: #03a9f4;
+   margin-right: 8px;
+}
+
+.oldPrice {
+   font-size: 14px;
+   color: #bdbdbd;
+   text-decoration: line-through;
+}
+
+.buyBtn {
+   width: 146px;
+   background-color: #81d4fa !important;
+   border-color: #81d4fa !important;
+   border-radius: 8px !important;
+   height: 40px;
+   margin-bottom: 8px;
+}
+
+.oneClickBtn {
+   background: none;
+   border: none;
+   color: #81d4fa;
+   font-size: 12px;
+   cursor: pointer;
+   text-decoration: underline;
+}
+
+.info {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   justify-content: center;
+}

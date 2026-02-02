@@ -212,3 +212,75 @@ export const updateProduct = async (req, res) => {
       });
    }
 };
+
+// !!! Получаем товары с фильтрацией
+export const getProductsByFilters = async (req, res) => {
+   const { slug, page = 1, minPrice, maxPrice, ...filters } = req.query;
+
+   const limit = 4;
+   const offset = (page - 1) * limit;
+
+   try {
+      // 1. Сначала проверяем, есть ли такая категория и берём её конфиг фильтров
+      const categoryRes = await query(`SELECT category_id, filter_config FROM Categories WHERE slug = $1`, [slug]);
+
+      if(categoryRes.rows.length === 0) {
+         return res.status(404).json({
+            success: false,
+            message: 'Категория не найдена'
+         });
+      };
+
+      const { category_id, filter_config } = categoryRes.rows[0];
+
+      // 2. Формируем условия для товаров
+      let whereClauses = ['category_id = $1'];
+      let params = [category_id];
+
+      // Фильтр цены
+      if(minPrice) {
+         params.push(minPrice);
+         whereClauses.push(`price >= $${params.length}`);
+      };
+
+      if(maxPrice) {
+         params.push(maxPrice);
+         whereClauses.push(`price <= $${params.length}`);
+      };
+
+      // Динамические фильтры (характеристики);
+      Object.entries(filters).forEach(([key, value]) => {
+         if(value && value !== 'undefined') {
+            const valuesArray = value.split(',');
+            params.push(valuesArray);
+            whereClauses.push(`characteristics->>'${key}' = ANY($${params.length})`);
+         }
+      });
+
+      const whereSql = whereClauses.join(" AND ");
+
+      // Получаем товары и общее кол-во для пагинации
+      const products = await query(
+         `SELECT * FROM Products WHERE ${whereSql} ORDER BY created_at DESC LIMIT ${limit} OFFSET ${offset}`,
+         params
+      );
+      const countResult = await query(
+         `SELECT COUNT(*) FROM products WHERE ${whereSql}`,
+         params
+      );
+
+      return res.status(200).json({
+         success: true,
+         products: products.rows,
+         total: parseInt(countResult.rows[0].count),
+         pages: Math.ceil(countResult.rows[0].count / limit),
+         filterConfig: filter_config
+      })
+   } catch (error) {
+      console.log(error)
+      return res.status(500).json({
+         success: false,
+         message: 'Ошибка при получении товаров с фильтрацией'
+      })
+   }
+}

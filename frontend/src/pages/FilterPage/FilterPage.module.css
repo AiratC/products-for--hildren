@@ -1,0 +1,75 @@
+.filterPage {
+   display: grid;
+   grid-template-columns: 280px 1fr;
+   /* Сайдбар и контент */
+   gap: 30px;
+   margin-top: 16px;
+   align-items: start;
+}
+
+.productGrid {
+   display: grid;
+   /* Заменяем 1fr на auto или конкретный размер, например 280px */
+   grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); 
+   gap: 25px;
+   /* Центрируем сетку, если контентная часть шире 3-х карточек */
+   justify-content: center;
+   justify-items: center;
+   width: 100%;
+}
+
+/* Скролл для длинных списков (Бренд, Цвет) */
+.scrollableList {
+   max-height: 200px;
+   overflow-y: auto;
+   padding: 5px;
+   border: 1px solid #eee;
+}
+
+.mobileBtn {
+   display: none;
+}
+
+.containerNotImg {
+   text-align: center;
+}
+
+.preloader {
+   text-align: center;
+   margin-top: 30px;
+}
+
+@media (max-width: 1024px) {
+   .filterPage {
+      grid-template-columns: 240px 1fr;
+   }
+}
+
+
+@media (max-width: 768px) {
+   .filterPage {
+      grid-template-columns: 1fr;
+      /* Прячем сайдбар на мобилках */
+   }
+
+   .desktopSidebar {
+      display: none;
+   }
+
+   .productGrid {
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 19px;
+      justify-content: center;
+   }
+
+   .mobileBtn {
+      display: block;
+   }
+
+   .mobileFilterButton {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 20px;
+   }
+
+}
