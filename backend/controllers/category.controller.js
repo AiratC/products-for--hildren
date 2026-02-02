@@ -73,3 +73,36 @@ export const getAllCategories = async (req, res) => {
    }
 }
 
+// !!! Получаем все категории конкретного каталога по catalog_id
+export const getCategoriesByCatalogId = async (req, res) => {
+   const { catalogId } = req.body;
+
+   try {
+      const result = await query(
+         `SELECT * FROM Categories WHERE catalog_id = $1`,
+         [catalogId]
+      );
+
+      if(result.rows.length === 0) {
+         return res.status(200).json({
+            message: 'Нет категорий в данном каталоге',
+            error: true,
+            success: false
+         })
+      }
+
+      return res.status(200).json({
+         success: true,
+         error: false,
+         categories: result.rows
+      });
+
+   } catch (error) {
+      return res.status(500).json({
+         message: 'Ошибка при получении всех категорий по каталог id на сервере',
+         error: true,
+         success: false
+      })
+   }
+}
+

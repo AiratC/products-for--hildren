@@ -83,6 +83,10 @@
    color: #446B80;
 }
 
+.subCategories ul li {
+   color: #446B80;
+}
+
 /* Скрываем на Desktop */
 .catalogMobile {
    display: none;

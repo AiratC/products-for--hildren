@@ -8,7 +8,7 @@ import { Link } from 'react-router';
 
 const Catalog = ({ onClose }) => {
    const [catalogs, setCatalogs] = useState([]);
-   const [categories, setCategories] = useState(null);
+   const [categories, setCategories] = useState('Выберите категорию');
    const [loadingCatalog, setLoadingCatalog] = useState(true);
    const [loadingCategories, setLoadingCategories] = useState(true);
 
@@ -16,21 +16,45 @@ const Catalog = ({ onClose }) => {
    useEffect(() => {
       const fetchGetAllCatalog = async () => {
          try {
+            setLoadingCatalog(true)
             const response = await fetchAxios.get(`/api/catalog/get-all-catalog`);
             setCatalogs(response.data.catalog)
          } catch (error) {
             console.log(error)
          } finally {
             setLoadingCatalog(false)
+            setLoadingCategories(false)
          }
       };
       fetchGetAllCatalog()
    }, [])
 
+   const handleClickCatalogItem = async (catalogId) => {
+
+      try {
+         setLoadingCatalog(true)
+         setLoadingCategories(true)
+         const result = await fetchAxios.post(`/api/categories/get-categories-by-catalog-id`, { catalogId });
+         if (result.data.success) {
+            setCategories(result.data.categories)
+         } else {
+            setCategories(result.data.message)
+         }
+      } catch (error) {
+         console.log(error)
+      } finally {
+         setLoadingCatalog(false)
+         setLoadingCategories(false)
+      }
+   }
+
    useEffect(() => {
       document.body.style.overflow = 'hidden';
 
-      return () => document.body.style.overflow = 'auto';
+      return () => {
+         document.body.style.overflow = 'auto';
+         setCategories('Выберите категорию')
+      }
    }, [])
 
    return (
@@ -54,7 +78,7 @@ const Catalog = ({ onClose }) => {
                         </div>
                      ) : (
                         catalogs.map((catalogItem) => (
-                           <div key={catalogItem.catalog_id} className={styles.catalogItamContainer}>
+                           <div onClick={() => handleClickCatalogItem(catalogItem.catalog_id)} key={catalogItem.catalog_id} className={styles.catalogItamContainer}>
                               {catalogItem.name}
                            </div>
                         ))
@@ -81,11 +105,25 @@ const Catalog = ({ onClose }) => {
 
                {/* Правая часть с подкатегориями только для десктопа */}
                <div className={styles.subCategories}>
-                  <ul>
-                     <li>Кроватки</li>
-                     <li>Колыбели</li>
-                     <li>Люльки</li>
-                  </ul>
+                  {
+                     loadingCategories ? (
+                        <div className={`preloader`}>
+                           <Loader />
+                        </div>
+                     ) : (
+                        <ul>
+                           {
+                              Array.isArray(categories) ? (
+                                 categories.map((category) => (
+                                    <Link to={`/categories/filter/${category.slug}`} key={category.category_id}><li>{category.name}</li></Link>
+                                 ))
+                              ) : (
+                                 <span>{categories}</span>
+                              )
+                           }
+                        </ul>
+                     )
+                  }
                </div>
             </div>
          </div>
