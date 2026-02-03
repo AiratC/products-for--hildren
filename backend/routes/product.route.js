@@ -1,6 +1,13 @@
 import express from 'express';
 import { isAdmin, verifyToken } from '../middleware/authMiddleware.js';
-import { createProduct, deleteProduct, getProductsByCategory, getProductsByFilters, updateProduct } from '../controllers/product.controller.js';
+import { 
+   createProduct, 
+   deleteProduct, 
+   getProductsByCategory, 
+   getProductsByFilters, 
+   getTwoRandomProduct, 
+   updateProduct 
+} from '../controllers/product.controller.js';
 import upload from '../config/cloudinary.js';
 
 
@@ -20,5 +27,8 @@ productRouter.patch('/update-product/:id', verifyToken, isAdmin, upload.array('p
 
 // Получаем товары с фильтрацией
 productRouter.get('/get-products-by-filters', getProductsByFilters);
+
+// Получаем два рандомных товара
+productRouter.get('/get-two-random-products', getTwoRandomProduct);
 
 export default productRouter;

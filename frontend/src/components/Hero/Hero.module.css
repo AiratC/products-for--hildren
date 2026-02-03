@@ -85,3 +85,9 @@
       max-width: 350px;
    }
 }
+
+@media (max-width: 938px) {
+   .imageWrapper {
+      flex: 0 0 0;
+   }
+}

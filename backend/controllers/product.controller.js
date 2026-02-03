@@ -284,3 +284,33 @@ export const getProductsByFilters = async (req, res) => {
       })
    }
 }
+
+// !!! Получаем два рандомных товара
+export const getTwoRandomProduct = async (req, res) => {
+   try {
+      const result = await query(
+         `SELECT * FROM Products ORDER BY RANDOM() LIMIT 2`
+      );
+
+      // Проверка на случай если база пуста
+      if(result.rows.length === 0) {
+         return res.status(404).json({
+            success: false,
+            message: 'Товары не найдены'
+         })
+      }
+
+      return res.status(200).json({
+         success: true,
+         error: false,
+         products: result.rows
+      })
+
+   } catch (error) {
+      return res.status(500).json({
+         message: 'Ошибка на сервере при генерации двух разных товаров',
+         error: true,
+         success: false
+      })
+   }
+}

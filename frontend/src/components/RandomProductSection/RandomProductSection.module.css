@@ -1,0 +1,49 @@
+.randomSection {
+   padding-top: 100px;
+   background-color: #fafafa;
+   min-height: 400px;
+}
+
+.grid {
+   display: grid;
+   grid-template-columns: 1fr 1fr;
+   gap: 20px;
+}
+
+.mobileDots {
+   display: none;
+   justify-content: center;
+   gap: 10px;
+   margin-top: 20px;
+}
+
+.mobileDots span {
+   width: 14px;
+   height: 14px;
+   background: #ccc;
+   border-radius: 50%;
+}
+
+.mobileDots .activeDot {
+   background-color: #80cbed;
+}
+
+@media (max-width: 768px) {
+   .grid {
+      grid-template-columns: 1fr;
+      justify-items: center;
+   }
+
+   .cardWrapper {
+      width: 100%;
+      max-width: 350px;
+   }
+
+   .mobileDots {
+      display: flex;
+   }
+
+   .randomSection {
+      padding-top: 30px;
+   }
+}
