@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { useParams, useSearchParams } from 'react-router'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { useParams, useSearchParams } from 'react-router-dom'
 import styles from './FilterPage.module.css'
 import fetchAxios from '../../utils/fetchAxios';
 import { Pagination, Checkbox, Drawer, Button } from "antd";
@@ -19,18 +19,20 @@ const FilterPage = () => {
    const [loading, setLoading] = useState(true);
 
    // Формируем объект из параметров URL
-   const selectedFilters = {
-      minPrice: searchParams.get('minPrice') || null,
-      maxPrice: searchParams.get('maxPrice') || null,
-      // Для массивов (checkbox_group) извлекаем строку и превращаем в массив
-      brand: searchParams.get('brand')?.split(',') || [],
-      type: searchParams.get('type')?.split(',') || [],
-      color: searchParams.get('color')?.split(',') || [],
-      gender_of_child: searchParams.get('gender_of_child')?.split(',') || [],
-      // Для одиночных значений (radio/select)
-      delivery_times: searchParams.get('delivery_times') || 'Неважно',
-      material: searchParams.get('material') || undefined,
-   };
+   const selectedFilters = useMemo(() => {
+      return {
+         minPrice: searchParams.get('minPrice') || null,
+         maxPrice: searchParams.get('maxPrice') || null,
+         // Для массивов (checkbox_group) извлекаем строку и превращаем в массив
+         brand: searchParams.get('brand')?.split(',') || [],
+         type: searchParams.get('type')?.split(',') || [],
+         color: searchParams.get('color')?.split(',') || [],
+         gender_of_child: searchParams.get('gender_of_child')?.split(',') || [],
+         // Для одиночных значений (radio/select)
+         delivery_times: searchParams.get('delivery_times') || 'Неважно',
+         material: searchParams.get('material') || undefined,
+      };
+   }, [searchParams])
 
    useEffect(() => {
       const fetchGetProducts = async () => {
@@ -61,7 +63,7 @@ const FilterPage = () => {
       window.scrollTo({ top: 0, behavior: 'smooth' })
    }, [searchParams.get('page')])
 
-   const handleFilterChange = (name, value, checked) => {
+   const handleFilterChange = useCallback((name, value, checked) => {
       const current = new URLSearchParams(searchParams);
 
 
@@ -99,7 +101,7 @@ const FilterPage = () => {
       current.set('page', '1');
       setSearchParams(current)
 
-   }
+   }, [searchParams, setSearchParams]);
 
    return (
       <div className={`container`}>

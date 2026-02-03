@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styles from './Catalog.module.css'
 import closeCatalogIcon from './../../assets/svg/closeCatalogIcon.svg'
 import fetchAxios from '../../utils/fetchAxios';
 import Loader from '../Loader/Loader';
-import { Link } from 'react-router';
+import { Link, useLocation } from 'react-router-dom';
 
 
 const Catalog = ({ onClose }) => {
@@ -11,6 +11,16 @@ const Catalog = ({ onClose }) => {
    const [categories, setCategories] = useState('Выберите категорию');
    const [loadingCatalog, setLoadingCatalog] = useState(true);
    const [loadingCategories, setLoadingCategories] = useState(true);
+   const location = useLocation();
+   // Запоминаем путь, который был в момент открытия каталога
+   const openPathName = useRef(location.pathname);
+
+   // Как только URL изменился (начался переход), закрываем каталог
+   useEffect(() => {
+      if(openPathName.current !== location.pathname) {
+         onClose();
+      }
+   }, [location.pathname, onClose])
 
    // Получаем все данные каталога
    useEffect(() => {
@@ -115,7 +125,11 @@ const Catalog = ({ onClose }) => {
                            {
                               Array.isArray(categories) ? (
                                  categories.map((category) => (
-                                    <Link onClick={() => onClose()} to={`/categories/filter/${category.slug}`} key={category.category_id}><li>{category.name}</li></Link>
+                                    <Link
+                                       to={`/categories/filter/${category.slug}`}
+                                       key={category.category_id}>
+                                       <li>{category.name}</li>
+                                    </Link>
                                  ))
                               ) : (
                                  <span>{categories}</span>

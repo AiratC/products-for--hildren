@@ -7,7 +7,7 @@ import userLoginSvg from './../../assets/svg/user-login.svg'
 import cartLogoSvg from './../../assets/svg/cart.svg'
 import locationLogo from './../../assets/svg/location.svg'
 import Search from '../Search/Search';
-import { Link } from 'react-router'
+import { Link } from 'react-router-dom'
 import Catalog from '../Catalog/Catalog';
 import mobileBurgerMenuIcon from './../../assets/svg/mobile-burger-menu.svg'
 import MobileMenu from '../MobileMenu/MobileMenu';

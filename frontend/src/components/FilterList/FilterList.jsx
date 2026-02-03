@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Checkbox, Radio, Select, InputNumber } from 'antd';
 import styles from './FilterList.module.css';
 
 const { Option } = Select;
 
-const FilterList = ({ config = [], selectedFilters = {}, onFilterChange }) => {
+const FilterList = memo(({ config = [], selectedFilters = {}, onFilterChange }) => {
    return (
       <div className={styles.filterWrapper}>
          {/* Статический блок цены всегда сверху */}
@@ -81,6 +81,6 @@ const FilterList = ({ config = [], selectedFilters = {}, onFilterChange }) => {
          ))}
       </div>
    );
-};
+});
 
 export default FilterList;

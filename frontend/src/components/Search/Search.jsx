@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import searchSvg from './../../assets/svg/search.svg'
 import styles from './Search.module.css';
-import { Link, useLocation, useNavigate } from 'react-router';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { FaArrowLeft } from "react-icons/fa";
 
 const Search = () => {
