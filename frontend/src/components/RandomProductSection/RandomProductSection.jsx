@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styles from './RandomProductSection.module.css'
 import fetchAxios from '../../utils/fetchAxios';
 import Loader from '../Loader/Loader';
@@ -7,6 +7,9 @@ import ProductCard from '../ProductCard/ProductCard';
 const RandomProductSection = () => {
    const [products, setProducts] = useState([]);
    const [loading, setLoading] = useState(true);
+   const scrollRef = useRef(null);
+   const [activeIndex, setActiveIndex] = useState(0);
+
 
    useEffect(() => {
       const fetchRandomProducts = async () => {
@@ -26,7 +29,16 @@ const RandomProductSection = () => {
       fetchRandomProducts();
    }, []);
 
-   if(!loading && products.length === 0) return null;
+   // Следим за скроллом чтобы переключать точки
+   const handleScroll = () => {
+      if(scrollRef.current) {
+         const width = scrollRef.current.offsetWidth;
+         const index = Math.round(scrollRef.current.scrollLeft / width);
+         setActiveIndex(index);
+      }
+   }
+
+   if (!loading && products.length === 0) return null;
 
    return (
       <>
@@ -44,28 +56,38 @@ const RandomProductSection = () => {
                         <Loader />
                      </div>
                   ) : products.length > 0 ? (
-                     <>
-                        <div className={styles.grid}>
+                     <div className={styles.wrapper}>
+                        <div
+                           className={styles.scrollContainer}
+                           ref={scrollRef}
+                           onScroll={handleScroll}
+                        >
                            {
                               products.map((product) => (
-                                 <div key={product.product_id} className={styles.cardWrapper}>
-                                    <ProductCard data={product} />
+                                 <div key={product.product_id} className={styles.cardItem}>
+                                    <ProductCard data={product}/>
                                  </div>
                               ))
                            }
                         </div>
 
-                        {/* Мобильные точки (индикация, что товара два) */}
-                        <div className={styles.mobileDots}>
-                           <span className={styles.activeDot}></span>
-                           <span></span>
+                        {/* Точки: показываем только на мобилках */}
+                        <div className={styles.dots}>
+                           {
+                              products.map((_, index) => (
+                                 <span 
+                                    key={index}
+                                    className={`${styles.dot} ${activeIndex === index ? styles.active : ''}`}
+                                 />
+                              ))
+                           }
                         </div>
-                     </>
+                     </div>
                   ) : null
                }
 
             </div>
-         </section>
+         </section >
       </>
    )
 }

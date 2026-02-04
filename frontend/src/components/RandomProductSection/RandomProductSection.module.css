@@ -4,42 +4,63 @@
    min-height: 400px;
 }
 
-.grid {
-   display: grid;
-   grid-template-columns: 1fr 1fr;
+.scrollContainer {
+   display: flex;
    gap: 20px;
+   width: 100%;
+   overflow-x: auto;
+   scroll-snap-type: x mandatory;
+   scrollbar-width: none;
+   padding: 10px 0;
 }
 
-.mobileDots {
+.scrollContainer::-webkit-scrollbar {
+   display: none;
+}
+
+.cardItem {
+   flex: 0 0 calc(50% - 10px); /* На десктопе 2 в ряд */
+   scroll-snap-align: center;
+   display: flex;
+   justify-content: center;
+}
+
+.cardItem > div {
+   width: 100%;
+   max-width: 550px;
+}
+
+/* Точки */
+.dots {
    display: none;
    justify-content: center;
-   gap: 10px;
+   gap: 8px;
    margin-top: 20px;
 }
 
-.mobileDots span {
+.dot {
    width: 14px;
    height: 14px;
-   background: #ccc;
+   background-color: #ccc;
    border-radius: 50%;
+   transition: 0.3s;
 }
 
-.mobileDots .activeDot {
+.dot.active {
    background-color: #80cbed;
 }
 
 @media (max-width: 768px) {
-   .grid {
-      grid-template-columns: 1fr;
-      justify-items: center;
+
+   .cardItem {
+      flex: 0 0 100%;
    }
 
-   .cardWrapper {
-      width: 100%;
+   .cardItem > div {
       max-width: 350px;
    }
 
-   .mobileDots {
+   .dots {
       display: flex;
    }
 
