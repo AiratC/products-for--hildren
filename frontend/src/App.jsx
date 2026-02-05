@@ -3,8 +3,10 @@ import MainLayout from "./Layouts/MainLayout/MainLayout";
 import HomePage from "./pages/HomePage/HomePage";
 import SearchPage from "./pages/SearchPage/SearchPage";
 import FilterPage from "./pages/FilterPage/FilterPage";
+import useScrollRestoration from "./hooks/useScrollRestoration";
 
 function App() {
+   useScrollRestoration();
 
    return (
       <>
