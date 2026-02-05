@@ -7,15 +7,17 @@ import FilterPage from "./pages/FilterPage/FilterPage";
 function App() {
 
    return (
+      <>
          <Routes>
-            <Route element={<MainLayout/>}>
-               <Route index element={<HomePage/>}></Route>
+            <Route element={<MainLayout />}>
+               <Route index element={<HomePage />}></Route>
                {/* Search Page */}
-               <Route path="/search" element={<SearchPage/>}></Route>
+               <Route path="/search" element={<SearchPage />}></Route>
                {/* Filter Page */}
-               <Route path="/categories/filter/:slug" element={<FilterPage/>}></Route>
+               <Route path="/categories/filter/:slug" element={<FilterPage />}></Route>
             </Route>
          </Routes>
+      </>
    )
 }
 
