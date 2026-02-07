@@ -313,4 +313,42 @@ export const getTwoRandomProduct = async (req, res) => {
          success: false
       })
    }
+};
+
+// !!! Получаем все новинки
+export const getAllNewProducts = async (req, res) => {
+   try {
+      const IS_NEW = true;
+      // 1. Лучше перечислить поля: id, name, price, image и т.д.
+      const result = await query(`
+         SELECT * FROM Products WHERE is_new = $1
+         `, [IS_NEW]);
+      
+      const products = result.rows; // Извлекаем массив строк
+
+      // 2. Если новинок нет, возвращаем успех и пустой массив
+      // Это позволит фронтенду просто скрыть секцию через products.length === 0
+      if (products.length === 0) {
+         return res.status(200).json({
+            success: true, // Это успех, просто данных нет
+            products: [],
+            message: 'Нет новых товаров'
+         });
+      }
+
+      // 3. Возвращаем массив товаров
+      return res.status(200).json({
+         success: true,
+         error: false,
+         products: products // Теперь здесь массив
+      });
+
+   } catch (error) {
+      console.error('Ошибка бэкенда:', error); // Добавь логирование для отладки
+      return res.status(500).json({
+         message: 'Ошибка на сервере при получении новых товаров',
+         error: true,
+         success: false
+      });
+   }
 }

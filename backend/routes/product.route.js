@@ -3,6 +3,7 @@ import { isAdmin, verifyToken } from '../middleware/authMiddleware.js';
 import { 
    createProduct, 
    deleteProduct, 
+   getAllNewProducts, 
    getProductsByCategory, 
    getProductsByFilters, 
    getTwoRandomProduct, 
@@ -30,5 +31,8 @@ productRouter.get('/get-products-by-filters', getProductsByFilters);
 
 // Получаем два рандомных товара
 productRouter.get('/get-two-random-products', getTwoRandomProduct);
+
+// Получаем все новинки
+productRouter.get('/get-all-new-products', getAllNewProducts);
 
 export default productRouter;

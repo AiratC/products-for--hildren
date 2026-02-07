@@ -1,0 +1,133 @@
+.section {
+   /* Прячем горизонтальный скролл на уровне всей секции */
+   overflow: hidden;
+}
+
+.title {
+   text-align: center;
+   color: #4a6a7b;
+   margin-bottom: 40px;
+   font-size: 60px;
+}
+
+.carouselContainer {
+   position: relative;
+   width: 100%;
+   /* Убираем overflow: hidden отсюда, чтобы не конфликтовать с маржинами */
+}
+
+.track {
+   display: flex;
+   gap: 20px;
+   overflow-x: auto;
+   scroll-behavior: smooth;
+   scrollbar-width: none;
+
+   /* Вместо отрицательных маржинов просто даем запас под тени */
+   padding: 20px 0;
+   scroll-snap-type: x mandatory;
+}
+
+.track::-webkit-scrollbar {
+   display: none;
+}
+
+.static {
+   justify-content: safe center;
+}
+
+.cardItem {
+   flex: 0 0 calc(25% - 15px);
+   scroll-snap-align: start;
+   scroll-margin-left: 0;
+   /* Важно: тень должна быть внутри карточки, 
+     либо карточка должна иметь margin для тени */
+   padding: 5px;
+}
+
+/* Навигация */
+.navigation {
+   display: flex;
+   justify-content: center;
+   gap: 15px;
+   margin-top: 20px;
+}
+
+.arrow {
+   width: 44px;
+   height: 44px;
+   border-radius: 50%;
+   border: 1px solid #e0e0e0;
+   background-color: #fff;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   cursor: pointer;
+   color: #4a6a7b;
+   transition: all 0.2s
+}
+
+.arrow:hover {
+   background-color: #4a6a7b;
+   color: #fff;
+}
+
+/* --- АДАПТИВНОСТЬ --- */
+
+@media (max-width: 1200px) {
+   .cardItem {
+      flex: 0 0 calc(33.333% - 14px);
+   }
+
+   .section {
+      padding: 0 0;
+   }
+
+   .title {
+      margin-bottom: 10px;
+   }
+}
+
+@media (max-width: 768px) {
+   .cardItem {
+      flex: 0 0 calc(50% - 10px);
+   }
+
+   .title {
+      font-size: 35px;
+   }
+}
+
+@media (max-width: 480px) {
+   .section {
+      /* На мобилках секция должна игнорировать общие паддинги контейнера,
+       чтобы карусель была "от края до края" */
+      padding: 20px 0;
+   }
+
+   .carouselContainer {
+      /* Чтобы карусель не упиралась в края экрана, 
+       но и не создавала скролл страницы */
+      width: 100vw;
+      margin-left: calc(-50vw + 50%);
+   }
+
+   .track {
+      padding-left: 20px;
+      /* Отступ для первой карточки */
+      padding-right: 20px;
+      /* Отступ для последней */
+      gap: 15px;
+      justify-content: flex-start;
+   }
+
+   .cardItem {
+      flex: 0 0 85%;
+      scroll-snap-align: center;
+      /* Центрируем карточку при скролле на мобилке */
+   }
+
+   .navigation {
+      display: none;
+   }
+}
