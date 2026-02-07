@@ -1,0 +1,137 @@
+.footer {
+   background-color: #fff;
+   padding: 60px 10px 30px;
+   border-top: 1px solid #f0f0f0;
+   color: #4a6a7b;
+}
+
+.top {
+   display: flex;
+   justify-content: space-between;
+   gap: 40px;
+   margin-bottom: 60px;
+}
+
+.info {
+   flex: 0 1 250px;
+}
+
+.logo {
+   width: 80px;
+   margin-bottom: 15px;
+}
+
+.description {
+   font-size: 14px;
+   line-height: 1.4;
+}
+
+.navGroup {
+   display: flex;
+   gap: 60px;
+   flex: 1;
+}
+
+.list {
+   list-style: none;
+   padding: 0;
+   margin: 0;
+}
+
+.list li {
+   margin-bottom: 12px;
+}
+
+.list a {
+   text-decoration: none;
+   color: #4a6a7b;
+   font-size: 16px;
+   transition: color 0.2s;
+}
+
+.list a:hover {
+   color: #8ecaee;
+}
+
+.socialTitle {
+   font-size: 16px;
+   font-weight: 400;
+   margin-bottom: 20px;
+}
+
+.icons {
+   display: flex;
+   gap: 15px;
+}
+
+.icons img {
+   width: 32px;
+   height: 32px;
+   transition: opacity 0.2s;
+}
+
+.icons img:hover {
+   opacity: 0.7;
+}
+
+/* Нижняя панель */
+.bottom {
+   border-top: 1px solid #f0f0f0;
+   padding-top: 30px;
+   display: flex;
+   justify-content: space-between;
+   font-size: 14px;
+   color: #b0c4cc;
+}
+
+.policy {
+   text-decoration: none;
+   color: inherit;
+}
+
+/* --- АДАПТИВНОСТЬ --- */
+
+@media (max-width: 1024px) {
+   .top {
+      flex-wrap: wrap;
+   }
+
+   .navGroup {
+      gap: 30px;
+   }
+}
+
+@media (max-width: 768px) {
+   .top {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+   }
+
+   .navGroup {
+      flex-direction: column;
+      gap: 20px;
+      width: 100%;
+   }
+
+   .icons {
+      justify-content: center;
+   }
+
+   .bottom {
+      flex-direction: column;
+      gap: 15px;
+      text-align: center;
+   }
+}
+
+@media (max-width: 480px) {
+   .footer {
+      padding: 40px 0 20px;
+   }
+
+   .list a {
+      font-size: 18px;
+      /* Чуть крупнее для удобства клика на мобилке */
+   }
+}
