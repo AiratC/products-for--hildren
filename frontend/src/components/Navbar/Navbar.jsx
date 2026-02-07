@@ -11,12 +11,15 @@ import { Link } from 'react-router-dom'
 import Catalog from '../Catalog/Catalog';
 import mobileBurgerMenuIcon from './../../assets/svg/mobile-burger-menu.svg'
 import MobileMenu from '../MobileMenu/MobileMenu';
+import AuthPopup from '../AuthPopup/AuthPopup';
 
 
 
 const Navbar = () => {
    const [isMenuOpen, setIsMenuOpen] = useState(false); // Для мобильного меню
    const [isCatalogOpen, setIsCatalogOpen] = useState(false); // Для десктопного и моб. каталога
+   const [openAuthPopup, setIsOpenAuthPopup] = useState(false);
+   const user = false
 
    return (
       <header className={styles.headerWrapper}>
@@ -41,9 +44,24 @@ const Navbar = () => {
                <div className={styles.searchContainer}>
                   <Search />
                </div>
-               <div className={`${styles.userLoginSvgContainer}`}>
-                  <img src={userLoginSvg} alt="userLoginSvg" />
-                  <span>Войти в личный кабинет</span>
+               <div className={styles.containerLogin}>
+                  <div
+                     className={styles.userLoginSvgContainer}
+                     onClick={(e) => {
+                        e.stopPropagation(); // ВАЖНО: Клик не пойдет дальше к document
+                        setIsOpenAuthPopup(true);
+                     }}
+                  >
+                     <img src={userLoginSvg} alt="userLoginSvg" />
+                     <span>Войти в личный кабинет</span>
+                  </div>
+                  {/* Попап */}
+                  <AuthPopup
+                     isOpen={openAuthPopup}
+                     onClose={() => setIsOpenAuthPopup(false)}
+                     isAuth={true}
+                     user={user}
+                  />
                </div>
                <div className={`${styles.cartLogoSvgContainer}`}>
                   <img src={cartLogoSvg} alt="cart-logo" />

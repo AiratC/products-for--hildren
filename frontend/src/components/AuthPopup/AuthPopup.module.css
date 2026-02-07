@@ -1,0 +1,122 @@
+.wrapper {
+   position: absolute;
+   top: calc(100% + 15px);
+   right: -20px;
+   z-index: 1000;
+   width: 320px;
+   animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+   from {
+      opacity: 0;
+      transform: translateY(-10px);
+   }
+
+   to {
+      opacity: 1;
+      transform: translateY(0);
+   }
+}
+
+.arrow {
+   width: 0;
+   height: 0;
+   border-left: 10px solid transparent;
+   border-right: 10px solid transparent;
+   border-bottom: 10px solid #fff;
+   margin-left: auto;
+   margin-right: 45px;
+}
+
+.container {
+   background: #fff;
+   border-radius: 15px;
+   padding: 25px;
+   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+   position: relative;
+}
+
+.close {
+   position: absolute;
+   top: 10px;
+   right: 15px;
+   background: none;
+   border: none;
+   font-size: 34px;
+   color: #b0c4cc;
+   cursor: pointer;
+}
+
+/* Стили для профиля */
+.userHeader {
+   display: flex;
+   flex-direction: column;
+   gap: 15px;
+   margin-bottom: 20px;
+}
+
+.avatar {
+   width: 45px;
+   height: 45px;
+   background: #e8f2f7;
+   border-radius: 50%;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   color: #8ecaee;
+   font-weight: bold;
+}
+
+.name {
+   font-weight: 600;
+   color: #4a6a7b;
+   margin: 0;
+   font-size: 22px;
+}
+
+.email {
+   font-size: 18px;
+   color: #b0c4cc;
+   margin: 0;
+}
+
+.nav {
+   display: flex;
+   flex-direction: column;
+   gap: 25px;
+   border-top: 1px solid #f8f8f8;
+   padding-top: 15px;
+}
+
+.nav img {
+   width: 24px;
+}
+
+.link {
+   display: flex;
+   align-items: center;
+   gap: 16px;
+   text-decoration: none;
+   color: #4a6a7b;
+   font-size: 18px;
+}
+
+.exitBtn {
+   display: flex;
+   align-items: center;
+   gap: 16px;
+   background: none;
+   border: none;
+   text-align: left;
+   padding: 0;
+   color: #4a6a7b;
+   cursor: pointer;
+   font-size: 18px;
+}
+
+.userDataContainer {
+   display: flex;
+   gap: 16px;
+   align-items: center;
+}

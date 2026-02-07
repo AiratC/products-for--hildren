@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from './MobileMenu.module.css'
 import closeMobileMenu from './../../assets/svg/closeMobileMenu.svg'
 import userMobileLogo from './../../assets/svg/user-login.svg'
@@ -8,9 +8,11 @@ import favoritesMobileLogo from './../../assets/svg/favorites-mobile-logo.svg'
 import settingsMobileLogo from './../../assets/svg/settings-mobile-logo.svg'
 import logoutMobileLogo from './../../assets/svg/logout-mobile-logo.svg'
 import locationLogo from './../../assets/svg/location.svg'
+import LoginForm from '../LoginForm/LoginForm'
 
 const MobileMenu = ({ setIsMenuOpen, setIsCatalogOpen, isMenuOpen }) => {
-   const user = true;
+   const [openLoginForm, setOpenLoginForm] = useState(false)
+   const user = false;
 
    // Блокировка скролла должна срабатывать только когда меню реально открыто
    useEffect(() => {
@@ -37,10 +39,19 @@ const MobileMenu = ({ setIsMenuOpen, setIsCatalogOpen, isMenuOpen }) => {
             <div className={`${!user ? styles.marginTop : styles.marginTopUserHave} ${styles.userDataContainer}`}>
                {
                   !user ? (
-                     <div className={styles.loginMobileUser}>
-                        <img src={userMobileLogo} alt="лого пользователя" />
-                        <span>Войти в личный кабинет</span>
+                     <div>
+                        {
+                           !openLoginForm ? (
+                              <div onClick={() => setOpenLoginForm(true)} className={styles.loginMobileUser}>
+                                 <img src={userMobileLogo} alt="лого пользователя" />
+                                 <span>Войти в личный кабинет</span>
+                              </div>
+                           ) : (
+                              <LoginForm />
+                           )
+                        }
                      </div>
+
                   ) : (
                      <div className={styles.userMenu}>
                         <div className={styles.userData}>

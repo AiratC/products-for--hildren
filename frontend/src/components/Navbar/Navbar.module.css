@@ -82,6 +82,11 @@
    display: none;
 }
 
+.containerLogin {
+   position: relative;
+   cursor: pointer;
+}
+
 @media (max-width: 1120px) {
 
    .userLoginSvgContainer span,
@@ -107,7 +112,7 @@
       display: none;
    }
 
-   .userLoginSvgContainer {
+   .containerLogin {
       display: none;
    }
 
