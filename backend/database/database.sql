@@ -23,6 +23,7 @@ CREATE TABLE Users (
    delivery_address VARCHAR(350) DEFAULT NULL,
    phone VARCHAR(30) UNIQUE,
    avatar TEXT DEFAULT NULL,
+   is_agreed_terms BOOLEAN NOT NULL DEFAULT FALSE,
    reset_password_token VARCHAR(255),
    reset_password_expires TIMESTAMP WITHOUT TIME ZONE,
    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,

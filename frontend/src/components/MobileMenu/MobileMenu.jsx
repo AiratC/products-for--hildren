@@ -47,7 +47,9 @@ const MobileMenu = ({ setIsMenuOpen, setIsCatalogOpen, isMenuOpen }) => {
                                  <span>Войти в личный кабинет</span>
                               </div>
                            ) : (
-                              <LoginForm />
+                              <LoginForm 
+                                 onClose={() => setIsMenuOpen(false)}
+                              />
                            )
                         }
                      </div>

@@ -26,6 +26,7 @@
     "multer-storage-cloudinary": "^4.0.0",
     "node-pg-migrate": "^8.0.4",
     "nodemon": "^3.1.11",
-    "pg": "^8.16.3"
+    "pg": "^8.16.3",
+    "svg-captcha": "^1.4.0"
   }
 }

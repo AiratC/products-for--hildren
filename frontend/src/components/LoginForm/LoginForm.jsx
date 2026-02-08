@@ -1,15 +1,21 @@
 import React from 'react'
 import styles from './LoginForm.module.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 
-const LoginForm = () => {
+const LoginForm = ({ onClose }) => {
+   const navigate = useNavigate();
+
+   const handleClickRegister = () => {
+      navigate('/register');
+      onClose();
+   }
 
    return (
       <div className={styles.login}>
-         <Link to={`/register`}>
+         <div onClick={handleClickRegister}>
             <h3 className={styles.title}>Регистрация</h3>
-         </Link>
+         </div>
          <div className={styles.form}>
             <input type="email" placeholder="Электронный адрес" className={styles.input} />
             <input type="password" placeholder="Пароль" className={styles.input} />

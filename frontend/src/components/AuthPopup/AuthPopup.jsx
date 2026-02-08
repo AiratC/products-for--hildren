@@ -60,7 +60,9 @@ const AuthPopup = ({ isOpen, isAuth, user, onClose }) => {
                   </div>
                ) : (
                   /* Форма входа */
-                  <LoginForm/>
+                  <LoginForm
+                     onClose={onClose}
+                  />
                )
             }
          </div>

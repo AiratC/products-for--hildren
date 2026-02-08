@@ -32,6 +32,18 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
+app.use(session({
+   secret: process.env.SESSION_SECRET_KEY,
+   resave: false,
+   saveUninitialized: true,
+   cookie: { 
+      maxAge: 600000,
+      // secure: process.env.NODE_ENV === 'production', // true только для HTTPS
+      secure: false,
+      sameSite: 'lax'
+}
+}))
+
 app.use('/api/auth', authRouter);
 app.use('/api/admin', authAdminRouter);
 app.use('/api/catalog', catalogRouter);
@@ -44,18 +56,6 @@ app.use('/api/reviews', reviewsRouter);
 app.use('/api/wholesale-customers', wholesaleCustomersRouter);
 app.use('/api/captcha', captchaRouter);
 // app.use('/api/user', userRouter);
-
-
-app.use(session({
-   secret: process.env.SESSION_SECRET_KEY,
-   resave: false,
-   saveUninitialized: true,
-   cookie: { 
-      maxAge: 600000,
-      secure: process.env.NODE_ENV === 'production', // true только для HTTPS
-      sameSite: 'lax' 
-}
-}))
 
 
 // Запуск сервера с обработкой ошибок

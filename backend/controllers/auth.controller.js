@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 
 // ! Регистрация пользователя
 export const registerUser = async (req, res) => {
-   const { name, email, password, repeatPassword } = req.body;
+   const { name, email, password, repeatPassword, agree, captcha } = req.body;
 
    try {
       if (!name || !email || !password || !repeatPassword) {
@@ -35,6 +35,15 @@ export const registerUser = async (req, res) => {
          });
       }
 
+      // Проверка каптчи
+      if (req.session.captcha !== captcha.toLowerCase()) {
+         return res.status(400).json({
+            message: 'Неверная капча',
+            success: false,
+            error: true
+         })
+      }
+
       // Проверяем что в БД нет пользователя с email
       const findUser = await query(`SELECT * FROM Users WHERE email = $1`, [email]);
 
@@ -55,9 +64,10 @@ export const registerUser = async (req, res) => {
 
       // Добавляем пользователя в БД
       let sqlAddUser = `
-   INSERT INTO Users (role_id, name, email, password_hash) VALUES ($1, $2, $3, $4) RETURNING *
-   `;
-      const addUser = await query(sqlAddUser, [roleId, name, email, hashPassword]);
+      INSERT INTO Users (role_id, name, email, password_hash, is_agreed_terms) 
+      VALUES ($1, $2, $3, $4, $5) RETURNING *
+      `;
+      const addUser = await query(sqlAddUser, [roleId, name, email, hashPassword, agree]);
       const { password_hash, ...data } = addUser.rows[0];
 
       return res.status(201).json({

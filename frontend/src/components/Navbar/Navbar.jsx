@@ -59,7 +59,7 @@ const Navbar = () => {
                   <AuthPopup
                      isOpen={openAuthPopup}
                      onClose={() => setIsOpenAuthPopup(false)}
-                     isAuth={true}
+                     isAuth={false}
                      user={user}
                   />
                </div>
