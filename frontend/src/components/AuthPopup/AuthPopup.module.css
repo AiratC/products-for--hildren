@@ -120,3 +120,8 @@
    gap: 16px;
    align-items: center;
 }
+
+.logoutLoader span {
+   width: 27px;
+   height: 27px;
+}

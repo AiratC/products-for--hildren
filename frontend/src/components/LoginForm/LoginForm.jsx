@@ -1,6 +1,10 @@
-import React, { useState } from 'react'
+import { useCallback, useState } from 'react'
 import styles from './LoginForm.module.css';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { clearState, userLogin } from '../../redux/slices/authUserSlice';
+import Loader from '../Loader/Loader';
+import toast from 'react-hot-toast';
 
 
 const LoginForm = ({ onClose }) => {
@@ -8,35 +12,65 @@ const LoginForm = ({ onClose }) => {
       email: '',
       password: ''
    });
+   const { loading } = useSelector((state) => state.authUser);
+   const dispatch = useDispatch();
 
    const navigate = useNavigate();
 
-   const handleClickRegister = () => {
+   const handleClickRegister = useCallback(() => {
       navigate('/register');
       onClose();
-   }
+   }, [onClose, navigate])
 
-   const handleChange = (event) => {
+   const handleChange = useCallback((event) => {
       const { name, value } = event.target;
       setFormData(prevData => ({
          ...prevData,
          [name]: value
       }))
-   };
+   }, []);
+
+   // Вход
+   const handleLogin = useCallback(async (e) => {
+      e.preventDefault();
+
+      try {
+         // unwrap() позволяет поймать ошибку из Thunk в блоке catch
+         const result = await dispatch(userLogin(formData)).unwrap();
+         console.log(result)
+         onClose();
+         toast.success(result.message);
+         dispatch(clearState());
+      } catch (error) {
+         toast.error(error.message || 'Ошибка при входе!');
+         dispatch(clearState());
+      }
+   }, [dispatch, formData, onClose])
+
 
    return (
       <div className={styles.login}>
          <div onClick={handleClickRegister}>
             <h3 className={styles.title}>Регистрация</h3>
          </div>
-         <div className={styles.form}>
+         <form onSubmit={handleLogin} className={styles.form}>
             <input onChange={handleChange} value={formData.email} name='email' type="email" placeholder="Электронный адрес" className={styles.input} />
             <input onChange={handleChange} value={formData.password} name='password' type="password" placeholder="Пароль" className={styles.input} />
             <div className={styles.footer}>
-               <button className={styles.loginBtn}>Войти</button>
-               <button className={styles.forgotBtn}>Забыли пароль?</button>
+               {
+                  loading ? (
+                     <div className={`${styles.loginLoader}`}>
+                        <Loader />
+                     </div>
+                  ) : (
+                     <button type='submit' className={styles.loginBtn}>
+                        Войти
+                     </button>
+                  )
+               }
+               <button type='button' className={styles.forgotBtn}>Забыли пароль?</button>
             </div>
-         </div>
+         </form>
       </div>
    )
 }

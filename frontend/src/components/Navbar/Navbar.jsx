@@ -12,6 +12,7 @@ import Catalog from '../Catalog/Catalog';
 import mobileBurgerMenuIcon from './../../assets/svg/mobile-burger-menu.svg'
 import MobileMenu from '../MobileMenu/MobileMenu';
 import AuthPopup from '../AuthPopup/AuthPopup';
+import { useSelector } from 'react-redux';
 
 
 
@@ -19,7 +20,7 @@ const Navbar = () => {
    const [isMenuOpen, setIsMenuOpen] = useState(false); // Для мобильного меню
    const [isCatalogOpen, setIsCatalogOpen] = useState(false); // Для десктопного и моб. каталога
    const [openAuthPopup, setIsOpenAuthPopup] = useState(false);
-   const user = false
+   const { user } = useSelector((state) => state.authUser);
 
    return (
       <header className={styles.headerWrapper}>
@@ -53,13 +54,13 @@ const Navbar = () => {
                      }}
                   >
                      <img src={userLoginSvg} alt="userLoginSvg" />
-                     <span>Войти в личный кабинет</span>
+                     <span>{!user ? 'Войти в личный кабинет' : 'Личный кабинет'}</span>
                   </div>
                   {/* Попап */}
                   <AuthPopup
                      isOpen={openAuthPopup}
                      onClose={() => setIsOpenAuthPopup(false)}
-                     isAuth={false}
+                     isAuth={!user ? false : true}
                      user={user}
                   />
                </div>

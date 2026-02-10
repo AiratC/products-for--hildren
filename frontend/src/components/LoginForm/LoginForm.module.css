@@ -38,3 +38,8 @@
    font-size: 13px;
    cursor: pointer;
 }
+
+.loginLoader span {
+   width: 34px;
+   height: 34px;
+}

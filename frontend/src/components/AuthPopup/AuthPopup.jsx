@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import styles from './AuthPopup.module.css';
 
 import myOrdersLogo from './../../assets/svg/order-mobile-logo.svg'
@@ -8,10 +8,27 @@ import logoutLogo from './../../assets/svg/logout-mobile-logo.svg'
 import { Link } from 'react-router';
 import LoginForm from '../LoginForm/LoginForm';
 import useCloseModal from '../../hooks/useCloseModal';
+import { useDispatch, useSelector } from 'react-redux';
+import { userLogout } from '../../redux/slices/authUserSlice';
+import Loader from '../Loader/Loader';
+import toast from 'react-hot-toast';
 
 
 const AuthPopup = ({ isOpen, isAuth, user, onClose }) => {
    const containerRef = useCloseModal(onClose);
+   const dispatch = useDispatch()
+   const { loading } = useSelector((state) => state.authUser)
+
+   const handleLogout = useCallback(async () => {
+      try {
+         const result = await dispatch(userLogout()).unwrap();
+         console.log(result)
+         onClose();
+         toast.success(result.message || 'Успешный выход!')
+      } catch (error) {
+         toast.error(error.message || 'Ошибка при выходе!')
+      }
+   }, [dispatch, onClose])
 
    if (!isOpen) return null;
 
@@ -51,10 +68,18 @@ const AuthPopup = ({ isOpen, isAuth, user, onClose }) => {
                               <img src={settingsLogo} alt="Настройки личных данных" />
                               <span>Настройки личных данных</span>
                            </Link>
-                           <button className={styles.exitBtn}>
-                              <img src={logoutLogo} alt="выйти" />
-                              <span>Выйти</span>
-                           </button>
+                           {
+                              loading ? (
+                                 <div className={`${styles.logoutLoader}`}>
+                                    <Loader />
+                                 </div>
+                              ) : (
+                                 <button onClick={handleLogout} className={styles.exitBtn}>
+                                    <img src={logoutLogo} alt="выйти" />
+                                    <span>Выйти</span>
+                                 </button>
+                              )
+                           }
                         </nav>
                      </div>
                   </div>
