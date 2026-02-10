@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react'
 import styles from './LoginForm.module.css';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { clearState, userLogin } from '../../redux/slices/authUserSlice';
+import { userLogin } from '../../redux/slices/authUserSlice';
 import Loader from '../Loader/Loader';
 import toast from 'react-hot-toast';
 
@@ -37,13 +37,10 @@ const LoginForm = ({ onClose }) => {
       try {
          // unwrap() позволяет поймать ошибку из Thunk в блоке catch
          const result = await dispatch(userLogin(formData)).unwrap();
-         console.log(result)
          onClose();
          toast.success(result.message);
-         dispatch(clearState());
       } catch (error) {
          toast.error(error.message || 'Ошибка при входе!');
-         dispatch(clearState());
       }
    }, [dispatch, formData, onClose])
 
