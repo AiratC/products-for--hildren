@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import styles from './MobileMenu.module.css'
 import closeMobileMenu from './../../assets/svg/closeMobileMenu.svg'
 import userMobileLogo from './../../assets/svg/user-login.svg'
@@ -9,10 +9,15 @@ import settingsMobileLogo from './../../assets/svg/settings-mobile-logo.svg'
 import logoutMobileLogo from './../../assets/svg/logout-mobile-logo.svg'
 import locationLogo from './../../assets/svg/location.svg'
 import LoginForm from '../LoginForm/LoginForm'
+import { useDispatch, useSelector } from 'react-redux'
+import { userLogout } from '../../redux/slices/authUserSlice'
+import toast from 'react-hot-toast'
+import Loader from '../Loader/Loader'
 
 const MobileMenu = ({ setIsMenuOpen, setIsCatalogOpen, isMenuOpen }) => {
    const [openLoginForm, setOpenLoginForm] = useState(false)
-   const user = false;
+   const { user, loading } = useSelector((state) => state.authUser);
+   const dispatch = useDispatch();
 
    // Блокировка скролла должна срабатывать только когда меню реально открыто
    useEffect(() => {
@@ -25,6 +30,16 @@ const MobileMenu = ({ setIsMenuOpen, setIsCatalogOpen, isMenuOpen }) => {
 
       return () => document.body.style.overflow = 'auto'
    }, [isMenuOpen])
+
+   const handleLogout = useCallback(async () => {
+      try {
+         const result = await dispatch(userLogout()).unwrap();
+         setIsMenuOpen();
+         toast.success(result.message || 'Успешный выход!')
+      } catch (error) {
+         toast.error(error.message || 'Ошибка при выходе!')
+      }
+   }, [dispatch, setIsMenuOpen])
 
    return (
       <div className={`${styles.mobileMenuSide} ${isMenuOpen ? styles.active : ''}`}>
@@ -47,7 +62,7 @@ const MobileMenu = ({ setIsMenuOpen, setIsCatalogOpen, isMenuOpen }) => {
                                  <span>Войти в личный кабинет</span>
                               </div>
                            ) : (
-                              <LoginForm 
+                              <LoginForm
                                  onClose={() => setIsMenuOpen(false)}
                               />
                            )
@@ -58,8 +73,8 @@ const MobileMenu = ({ setIsMenuOpen, setIsCatalogOpen, isMenuOpen }) => {
                      <div className={styles.userMenu}>
                         <div className={styles.userData}>
                            <img src={userMobileMenu} alt="user" />
-                           <div className={styles.userName}>Анна</div>
-                           <div className={styles.userEmail}>annaannnnanana@gmail.com</div>
+                           <div className={styles.userName}>{user?.name || 'Имя'}</div>
+                           <div className={styles.userEmail}>{user?.email || 'email@gmail.com'}</div>
                            <div className={styles.menuData}>
                               <div>
                                  <img src={orderMobileLogo} alt="Мои заказы лого" />
@@ -73,10 +88,18 @@ const MobileMenu = ({ setIsMenuOpen, setIsCatalogOpen, isMenuOpen }) => {
                                  <img src={settingsMobileLogo} alt="Личные данные лого" />
                                  <span>Личные данные</span>
                               </div>
-                              <div>
-                                 <img src={logoutMobileLogo} alt="Выйти лого" />
-                                 <span>Выйти</span>
-                              </div>
+                              {
+                                 loading ? (
+                                    <div className={`${styles.logoutMobileLoader}`}>
+                                       <Loader />
+                                    </div>
+                                 ) : (
+                                    <div onClick={handleLogout} className={styles.exitBtn}>
+                                       <img src={logoutMobileLogo} alt="выйти" />
+                                       <span>Выйти</span>
+                                    </div>
+                                 )
+                              }
                            </div>
                         </div>
                      </div>

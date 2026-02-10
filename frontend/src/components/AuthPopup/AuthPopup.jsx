@@ -22,7 +22,6 @@ const AuthPopup = ({ isOpen, isAuth, user, onClose }) => {
    const handleLogout = useCallback(async () => {
       try {
          const result = await dispatch(userLogout()).unwrap();
-         console.log(result)
          onClose();
          toast.success(result.message || 'Успешный выход!')
       } catch (error) {

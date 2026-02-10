@@ -20,7 +20,7 @@ const RandomProductSection = () => {
                setProducts(response.data.products)
             }
          } catch (error) {
-            console.error('Ошибка при загрузке случайныз товаров: ', error);
+            console.error('Ошибка при загрузке случайных товаров: ', error);
          } finally {
             setLoading(false)
          }

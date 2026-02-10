@@ -137,3 +137,7 @@
    color: #7FC9F0;
 }
 
+.logoutMobileLoader span {
+   width: 23px;
+   height: 23px;
+}

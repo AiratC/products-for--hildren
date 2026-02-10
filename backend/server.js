@@ -15,6 +15,7 @@ import blogRouter from "./routes/blog.route.js";
 import reviewsRouter from "./routes/reviews.route.js";
 import wholesaleCustomersRouter from "./routes/wholesaleCustomers.route.js";
 import captchaRouter from "./routes/captcha.route.js";
+import userRouter from "./routes/user.route.js";
 
 dotenv.config();
 const app = express();
@@ -55,7 +56,7 @@ app.use('/api/blogs', blogRouter);
 app.use('/api/reviews', reviewsRouter);
 app.use('/api/wholesale-customers', wholesaleCustomersRouter);
 app.use('/api/captcha', captchaRouter);
-// app.use('/api/user', userRouter);
+app.use('/api/user', userRouter);
 
 
 // Запуск сервера с обработкой ошибок

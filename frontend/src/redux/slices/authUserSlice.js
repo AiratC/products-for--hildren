@@ -28,17 +28,17 @@ export const userLogout = createAsyncThunk(
    },
 );
 
-// export const checkAuth = createAsyncThunk(
-//    'admin/checkAuth',
-//    async (_, thunkAPI) => {
-//       try {
-//          const response = await fetchAxios.get('/api/admin/me');
-//          return response.data;
-//       } catch (error) {
-//          return thunkAPI.rejectWithValue(error.response.data)
-//       }
-//    }
-// );
+export const checkAuth = createAsyncThunk(
+   'user/checkAuth',
+   async (_, thunkAPI) => {
+      try {
+         const response = await fetchAxios.get('/api/user/me');
+         return response.data;
+      } catch (error) {
+         return thunkAPI.rejectWithValue(error.response.data)
+      }
+   }
+);
 
 const initialState = {
    loading: false,
@@ -80,9 +80,23 @@ export const authUserSlice = createSlice({
          .addCase(userLogout.fulfilled, (state, action) => {
             state.loading = false;
             state.user = action.payload.user;
+            state.isCheckingAuth = false;
          })
          .addCase(userLogout.rejected, (state) => {
             state.loading = false;
+            state.isCheckingAuth = false;
+         })
+         // Проверка сессии пользователя
+         .addCase(checkAuth.pending, (state) => {
+            state.isCheckingAuth = true;
+         })
+         .addCase(checkAuth.fulfilled, (state, action) => {
+            state.user = action.payload.user;
+            state.isCheckingAuth = false;
+         })
+         .addCase(checkAuth.rejected, (state) => {
+            state.user = undefined;
+            state.isCheckingAuth = false;
          })
    }
 })

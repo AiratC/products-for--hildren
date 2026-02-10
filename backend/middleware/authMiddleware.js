@@ -45,3 +45,29 @@ export const isAdmin = (req, res, next) => {
       });
    }
 };
+
+// Проверяем что пользователь есть после перезагрузки страницы
+export const protect = async (req, res, next) => {
+   // Достаем токен из куки
+   const token = req.cookies.token;
+
+   if(!token) {
+      return res.status(200).json({
+         message: 'Не авторизован'
+      });
+   }
+
+   try {
+      const decoded = await jwt.verify(token, process.env.JWT_SECRET);
+
+      req.userId = decoded.userId;
+
+      next()
+   } catch (error) {
+      return res.status(401).json({
+         message: 'Токен недействителен',
+         success: false,
+         error: true
+      })
+   }
+}
