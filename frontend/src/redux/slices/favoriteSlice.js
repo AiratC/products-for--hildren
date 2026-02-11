@@ -4,7 +4,6 @@ import fetchAxios from './../../utils/fetchAxios';
 export const toggleFavoriteAction = createAsyncThunk(
    'favorite/toggle',
    async (value, thunkAPI) => {
-      console.log(value)
       try {
          const response = await fetchAxios.post('/api/favorites/toggle', value);
          return response.data; // Возвращает { isFavorite, productId }
