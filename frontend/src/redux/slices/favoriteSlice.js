@@ -26,9 +26,25 @@ export const fetchFavorites = createAsyncThunk(
    }
 );
 
+export const fetchFullFavorites = createAsyncThunk(
+   'favorites/fetchFullFavorites',
+   async (_, thunkAPI) => {
+      try {
+         const response = await fetchAxios.get('/api/favorites/get-full-favorites');
+         return response.data
+      } catch (error) {
+         return thunkAPI.rejectWithValue(error.response.data);
+      }
+   }
+);
+
+
+
 const initialState = {
    items: [],
-   loading: null
+   loading: null,
+   isFetching: null,
+   fullItems: []
 };
 
 const favoriteSlice = createSlice({
@@ -51,6 +67,7 @@ const favoriteSlice = createSlice({
                state.items.push(productId);
             } else {
                state.items = state.items.filter(id => id !== productId);
+               state.fullItems = state.fullItems.filter(product => product.product_id !== productId)
             }
          })
          .addCase(toggleFavoriteAction.rejected, (state) => {
@@ -58,14 +75,25 @@ const favoriteSlice = createSlice({
          })
          // При перезагрузки страницы
          .addCase(fetchFavorites.pending, (state) => {
-            state.loading = false;
+            state.isFetching = true;
          })
          .addCase(fetchFavorites.fulfilled, (state, action) => {
-            state.loading = false;
+            state.isFetching = false;
             state.items = action.payload;
          })
          .addCase(fetchFavorites.rejected, (state) => {
-            state.loading = false;
+            state.isFetching = false;
+         })
+         // Получаем все избранные товары
+         .addCase(fetchFullFavorites.pending, (state) => {
+            state.isFetching = true;
+         })
+         .addCase(fetchFullFavorites.fulfilled, (state, action) => {
+            state.isFetching = false;
+            state.fullItems = action.payload.products;
+         })
+         .addCase(fetchFullFavorites.rejected, (state) => {
+            state.isFetching = false;
          })
    }
 })

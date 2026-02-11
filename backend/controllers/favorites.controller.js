@@ -96,3 +96,33 @@ export const getAllFavorites = async (req, res) => {
    }
 }
 
+// получаем избранные товары
+export const getFullFavorite = async (req, res) => {
+   const userId = req.userId;
+
+   try {
+      const result = await query(
+         `
+         SELECT p.* FROM Products p
+         JOIN Favorites_Items fi ON p.product_id = fi.product_id
+         JOIN Favorites f ON fi.favorites_id = f.favorites_id
+         WHERE f.user_id = $1
+         `,
+         [userId]
+      );
+
+      return res.status(200).json({
+         success: true,
+         error: false,
+         products: result.rows
+      })
+   } catch (error) {
+      console.log(error)
+      return res.status(500).json({
+         message: 'Ошибка при получении избранного на сервере',
+         success: false,
+         error: true
+      })
+   }
+}
+

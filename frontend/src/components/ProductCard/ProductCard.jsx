@@ -37,7 +37,7 @@ const ProductCard = ({ data }) => {
 
       try {
          const result = await dispatch(toggleFavoriteAction({ productId: product_id })).unwrap()
-         toast.success(result.message)
+         toast.success(result.message);
       } catch (error) {
          toast.error(error.message)
       }
