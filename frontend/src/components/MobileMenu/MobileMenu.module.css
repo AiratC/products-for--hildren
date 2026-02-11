@@ -118,6 +118,14 @@
    margin-top: 16px;
 }
 
+.menuData a {
+   display: flex;
+   align-items: center;
+   gap: 8px;
+   font-size: 16px;
+   margin-top: 8px;
+}
+
 .menuData div {
    display: flex;
    align-items: center;

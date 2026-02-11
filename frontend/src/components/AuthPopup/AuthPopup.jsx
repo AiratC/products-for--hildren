@@ -27,7 +27,11 @@ const AuthPopup = ({ isOpen, isAuth, user, onClose }) => {
       } catch (error) {
          toast.error(error.message || 'Ошибка при выходе!')
       }
-   }, [dispatch, onClose])
+   }, [dispatch, onClose]);
+
+   const handleClickMenuItem = () => {
+      onClose()
+   }
 
    if (!isOpen) return null;
 
@@ -55,15 +59,15 @@ const AuthPopup = ({ isOpen, isAuth, user, onClose }) => {
                         </div>
 
                         <nav className={styles.nav}>
-                           <Link to="/orders" className={styles.link}>
+                           <Link onClick={handleClickMenuItem} to="/orders" className={styles.link}>
                               <img src={myOrdersLogo} alt="Мои заказы" />
                               <span>Мои заказы</span>
                            </Link>
-                           <Link to="/favorites" className={styles.link}>
+                           <Link onClick={handleClickMenuItem} to="/favorites" className={styles.link}>
                               <img src={myFavoritesLogo} alt="Мое избранное" />
                               <span>Мое избранное</span>
                            </Link>
-                           <Link to="/settings" className={styles.link}>
+                           <Link onClick={handleClickMenuItem} to="/settings" className={styles.link}>
                               <img src={settingsLogo} alt="Настройки личных данных" />
                               <span>Настройки личных данных</span>
                            </Link>

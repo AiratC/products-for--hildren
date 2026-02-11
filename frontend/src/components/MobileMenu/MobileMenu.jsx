@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { userLogout } from '../../redux/slices/authUserSlice'
 import toast from 'react-hot-toast'
 import Loader from '../Loader/Loader'
+import { Link } from 'react-router-dom'
 
 const MobileMenu = ({ setIsMenuOpen, setIsCatalogOpen, isMenuOpen }) => {
    const [openLoginForm, setOpenLoginForm] = useState(false)
@@ -39,7 +40,11 @@ const MobileMenu = ({ setIsMenuOpen, setIsCatalogOpen, isMenuOpen }) => {
       } catch (error) {
          toast.error(error.message || 'Ошибка при выходе!')
       }
-   }, [dispatch, setIsMenuOpen])
+   }, [dispatch, setIsMenuOpen]);
+
+   const handleClickMenuItem = () => {
+      setIsMenuOpen()
+   }
 
    return (
       <div className={`${styles.mobileMenuSide} ${isMenuOpen ? styles.active : ''}`}>
@@ -76,18 +81,18 @@ const MobileMenu = ({ setIsMenuOpen, setIsCatalogOpen, isMenuOpen }) => {
                            <div className={styles.userName}>{user?.name || 'Имя'}</div>
                            <div className={styles.userEmail}>{user?.email || 'email@gmail.com'}</div>
                            <div className={styles.menuData}>
-                              <div>
+                              <Link>
                                  <img src={orderMobileLogo} alt="Мои заказы лого" />
                                  <span>Мои заказы</span>
-                              </div>
-                              <div>
+                              </Link>
+                              <Link onClick={handleClickMenuItem} to={'/favorites'}>
                                  <img src={favoritesMobileLogo} alt="Мое избранное лого" />
                                  <span>Мое избранное</span>
-                              </div>
-                              <div>
+                              </Link>
+                              <Link>
                                  <img src={settingsMobileLogo} alt="Личные данные лого" />
                                  <span>Личные данные</span>
-                              </div>
+                              </Link>
                               {
                                  loading ? (
                                     <div className={`${styles.logoutMobileLoader}`}>

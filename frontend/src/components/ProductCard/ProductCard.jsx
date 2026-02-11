@@ -1,7 +1,12 @@
 import React from 'react';
 import { Button } from 'antd';
-import { HeartOutlined } from '@ant-design/icons';
 import styles from './ProductCard.module.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { toggleFavoriteAction } from '../../redux/slices/favoriteSlice';
+import toast from 'react-hot-toast';
+import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai'; // Популярная библиотека иконок
+import Loader from '../Loader/Loader';
+import { useCallback } from 'react';
 
 const ProductCard = ({ data }) => {
    const {
@@ -10,23 +15,64 @@ const ProductCard = ({ data }) => {
       old_price,
       product_images,
       is_new,
-      characteristics
+      characteristics,
+      product_id
    } = data;
+
+   const dispatch = useDispatch();
+   const { loading, items } = useSelector((state) => state.favorites)
+
+   // Проверяем загрузку именно ДЛЯ ЭТОЙ карточки
+   const isThisProductLoading = loading === product_id;
 
    // Берем первое изображение из массива JSONB или ставим заглушку
    const mainImage = product_images?.[0] || '/placeholder.png';
    const country = characteristics?.country || 'Польша'; // Пример из макета
 
+   // Проверяем, в избранном ли товар
+   const isFavorite = items.includes(product_id);
+
+   const handleFavorite = useCallback(async (event) => {
+      event.preventDefault();
+
+      try {
+         const result = await dispatch(toggleFavoriteAction({ productId: product_id })).unwrap()
+         toast.success(result.message)
+      } catch (error) {
+         toast.error(error.message)
+      }
+   }, [dispatch, product_id]) 
+
    return (
       <div className={styles.card}>
          <div className={styles.imageWrapper}>
             {is_new && <span className={styles.badgeNew}>NEW</span>}
-            <HeartOutlined className={styles.favoriteIcon} />
+            {
+               isThisProductLoading ? (
+                  <div className={styles.favoriteLoader}>
+                     <Loader />
+                  </div>
+               ) : (
+                  <div
+                     onClick={handleFavorite}
+                     className={`${styles.favoriteIcon} favorite-btn ${isFavorite ? 'active' : ''}`}
+                  >
+                     {
+                        isFavorite ? (
+                           <AiFillHeart size={25} color='#5bc0de' />
+                        ) : (
+                           <AiOutlineHeart size={25} />
+                        )
+                     }
+                  </div>
+               )
+            }
+
             <img src={mainImage} alt={title} className={styles.productImg} />
          </div>
 
          <div className={styles.info}>
-            <h3 className={styles.title}>{title.slice(0, 20)}..., {country}</h3>
+            <h3 className={styles.title}>{title.length > 20 ? `${title.slice(0, 20)}...` : title}, {country}</h3>
 
             <div className={styles.priceSection}>
                <span className={styles.currentPrice}>

@@ -10,6 +10,8 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { checkAuth } from "./redux/slices/authUserSlice";
 import Loader from "./components/Loader/Loader";
+import FavoritesPage from "./pages/FavoritesPage/FavoritesPage";
+import { fetchFavorites } from "./redux/slices/favoriteSlice";
 
 function App() {
    useScrollRestoration();
@@ -19,6 +21,7 @@ function App() {
 
    useEffect(() => {
       dispatch(checkAuth());
+      dispatch(fetchFavorites())
    }, [dispatch]);
 
    return (
@@ -59,6 +62,8 @@ function App() {
                <Route path="/categories/filter/:slug" element={<FilterPage />}></Route>
                {/* Register Page */}
                <Route path="/register" element={<Register />}></Route>
+               {/* Favorites Page */}
+               <Route path="/favorites" element={<FavoritesPage/>}></Route>
             </Route>
          </Routes>
       </>

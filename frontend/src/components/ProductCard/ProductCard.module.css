@@ -102,3 +102,14 @@
    align-items: center;
    justify-content: center;
 }
+
+.favoriteLoader {
+   position: absolute;
+   top: 0;
+   right: 0;
+}
+
+.favoriteLoader span {
+   width: 19px;
+   height: 19px;
+}
