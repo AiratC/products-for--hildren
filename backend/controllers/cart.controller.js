@@ -73,10 +73,17 @@ export const getFetchCartItems = async (req, res) => {
    try {
       const result = await query(
          `
-         SELECT ci.product_id, ci.quantity 
-         FROM Cart c
-         INNER JOIN Cart_items ci ON c.cart_id = ci.cart_id
-         WHERE c.user_id = $1
+            SELECT 
+               ci.product_id, 
+               ci.quantity,
+               p.title,
+               p.price,
+               p.product_images,
+               p.characteristics
+            FROM Cart c
+            JOIN Cart_items ci ON c.cart_id = ci.cart_id
+            JOIN Products p ON ci.product_id = p.product_id
+            WHERE c.user_id = $1
          `,
          [userId]
       );
