@@ -10,6 +10,7 @@
    /* Добавляем постоянную мягкую тень */
    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.19);
    cursor: pointer;
+   height: 414px;
 }
 
 .card:hover {
@@ -112,4 +113,43 @@
 .favoriteLoader span {
    width: 19px;
    height: 19px;
+}
+
+.quantityControls {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   background: #f0f7fb;
+   border-radius: 8px;
+   padding: 4px;
+   height: 40px;
+   gap: 10px;
+}
+
+.quantityControls button {
+   border: none;
+   background: white;
+   width: 30px;
+   height: 30px;
+   border-radius: 6px;
+   cursor: pointer;
+   font-weight: bold;
+   color: #5bc0de;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.count {
+   font-weight: 600;
+}
+
+.cartLoader span {
+   width: 20px;
+   height: 20px;
+}
+
+.cartLoader span::before {
+   border: 3px solid #17a1f7;
 }

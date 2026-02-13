@@ -12,6 +12,7 @@ import { checkAuth } from "./redux/slices/authUserSlice";
 import Loader from "./components/Loader/Loader";
 import FavoritesPage from "./pages/FavoritesPage/FavoritesPage";
 import { fetchFavorites } from "./redux/slices/favoriteSlice";
+import { fetchCart } from "./redux/slices/cartSlice";
 
 function App() {
    useScrollRestoration();
@@ -22,6 +23,7 @@ function App() {
    useEffect(() => {
       dispatch(checkAuth());
       dispatch(fetchFavorites())
+      dispatch(fetchCart())
    }, [dispatch]);
 
    return (

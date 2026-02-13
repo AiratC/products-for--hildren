@@ -7,6 +7,7 @@ import toast from 'react-hot-toast';
 import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai'; // Популярная библиотека иконок
 import Loader from '../Loader/Loader';
 import { useCallback } from 'react';
+import { updateCartAction } from '../../redux/slices/cartSlice';
 
 const ProductCard = ({ data }) => {
    const {
@@ -20,10 +21,14 @@ const ProductCard = ({ data }) => {
    } = data;
 
    const dispatch = useDispatch();
-   const { loading, items } = useSelector((state) => state.favorites)
+   const { loading, items } = useSelector((state) => state.favorites);
+   const { loadingId, cartItems } = useSelector((state) => state.cart);
 
    // Проверяем загрузку именно ДЛЯ ЭТОЙ карточки
    const isThisProductLoading = loading === product_id;
+
+   // Проверяем загрузку именно для этой карточки - добавление, прибавление, уменьшение товара в корзине
+   const isThisProductCartLoading = loadingId === product_id;
 
    // Берем первое изображение из массива JSONB или ставим заглушку
    const mainImage = product_images?.[0] || '/placeholder.png';
@@ -31,6 +36,9 @@ const ProductCard = ({ data }) => {
 
    // Проверяем, в избранном ли товар
    const isFavorite = items.includes(product_id);
+
+   // Ищем есть ли этот товар в корзине
+   const inCart = cartItems.find(item => item.product_id === product_id);
 
    const handleFavorite = useCallback(async (event) => {
       event.preventDefault();
@@ -41,7 +49,33 @@ const ProductCard = ({ data }) => {
       } catch (error) {
          toast.error(error.message)
       }
-   }, [dispatch, product_id]) 
+   }, [dispatch, product_id])
+
+   const handleClickCart = useCallback(async (productId, action) => {
+      const data = { productId: productId, action: action }
+      try {
+         switch (action) {
+            case 'add': {
+               const response = await dispatch(updateCartAction(data)).unwrap();
+               toast.success(response.message)
+               break;
+            };
+            case 'decrement': {
+               const response = await dispatch(updateCartAction(data)).unwrap();
+               toast.success(response.message)
+               break;
+            };
+            case 'increment': {
+               const response = await dispatch(updateCartAction(data)).unwrap();
+               toast.success(response.message)
+               break;
+            }
+         }
+      } catch (error) {
+         toast.error(error.message)
+      }
+
+   }, [dispatch]) 
 
    return (
       <div className={styles.card}>
@@ -85,9 +119,45 @@ const ProductCard = ({ data }) => {
                )}
             </div>
 
-            <Button type="primary" className={styles.buyBtn}>
-               В корзину
-            </Button>
+            <div className={styles.actions}>
+               {
+                  !inCart ? (
+                     <div>
+                        {
+                           isThisProductCartLoading ? (
+                              <div className={styles.cartLoader}>
+                                 <Loader />
+                              </div>
+                           ) : (
+                              <Button
+                                 type="primary"
+                                 className={styles.buyBtn}
+                                 onClick={() => handleClickCart(product_id, 'add')}
+                              >
+                                 В корзину
+                              </Button>
+                           )
+                        }
+                     </div>
+                  ) : (
+                     <div>
+                        {
+                           isThisProductCartLoading ? (
+                              <div className={styles.cartLoader}>
+                                 <Loader />
+                              </div>
+                           ) : (
+                              <div className={styles.quantityControls}>
+                                 <button onClick={() => handleClickCart(product_id, 'decrement')}>-</button>
+                                 <span className={styles.count}>{inCart.quantity}</span>
+                                 <button onClick={() => handleClickCart(product_id, 'increment')}>+</button>
+                              </div>
+                           )
+                        }
+                     </div>
+                  )
+               }
+            </div>
 
             <button className={styles.oneClickBtn}>
                Купить в один клик
