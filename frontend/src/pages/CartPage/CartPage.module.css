@@ -64,6 +64,10 @@
    max-width: 100%;
 }
 
+.promoInput:focus {
+   outline: none;
+}
+
 .promoBtn {
    background: #5bc0de;
    border: none;
