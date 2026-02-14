@@ -13,6 +13,7 @@ import Loader from "./components/Loader/Loader";
 import FavoritesPage from "./pages/FavoritesPage/FavoritesPage";
 import { fetchFavorites } from "./redux/slices/favoriteSlice";
 import { fetchCart } from "./redux/slices/cartSlice";
+import CartPage from "./pages/CartPage/CartPage";
 
 function App() {
    useScrollRestoration();
@@ -66,6 +67,8 @@ function App() {
                <Route path="/register" element={<Register />}></Route>
                {/* Favorites Page */}
                <Route path="/favorites" element={<FavoritesPage/>}></Route>
+               {/* Cart Page */}
+               <Route path="/cart" element={<CartPage/>}></Route>
             </Route>
          </Routes>
       </>

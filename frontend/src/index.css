@@ -3,65 +3,75 @@
 
 /* Применяем ко всему проекту */
 body {
-  font-family: 'Balsamiq Sans', cursive;
+   font-family: 'Balsamiq Sans', cursive;
 }
 
 * {
-	padding: 0px;
-	margin: 0px;
-	border: none;
+   padding: 0px;
+   margin: 0px;
+   border: none;
 }
 
 *,
 *::before,
 *::after {
-	box-sizing: border-box;
+   box-sizing: border-box;
 }
 
 
-a, a:link, a:visited  {
+a,
+a:link,
+a:visited {
    text-decoration: none;
 }
 
-a:hover  {
+a:hover {
    text-decoration: none;
 }
 
 
-aside, nav, footer, header, section, main {
-	display: block;
+aside,
+nav,
+footer,
+header,
+section,
+main {
+   display: block;
 }
 
 
-ul, ul li {
-	list-style: none;
+ul,
+ul li {
+   list-style: none;
 }
 
 img {
-	vertical-align: top;
+   vertical-align: top;
 }
 
-img, svg {
-	max-width: 100%;
-	height: auto;
+img,
+svg {
+   max-width: 100%;
+   height: auto;
 }
 
 .container {
    max-width: 1487px;
    margin: 0 auto;
-	padding: 0px 10px;
+   padding: 0px 10px;
 }
 
 /* Preloader */
 .preloader {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 100%;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   min-height: 50vh;
+   width: 100%;
 }
 
 a {
-	color: black;
+   color: black;
 }
 
 
@@ -88,10 +98,6 @@ a {
    height: 20px;
 }
 
-.smallLoaderContainer span::before  {
+.smallLoaderContainer span::before {
    border: 4px solid #17a1f7;
 }
-
-
-
-

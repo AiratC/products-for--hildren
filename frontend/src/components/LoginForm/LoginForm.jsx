@@ -39,10 +39,11 @@ const LoginForm = ({ onClose }) => {
          const result = await dispatch(userLogin(formData)).unwrap();
          onClose();
          toast.success(result.message);
+         navigate('/')
       } catch (error) {
          toast.error(error.message || 'Ошибка при входе!');
       }
-   }, [dispatch, formData, onClose])
+   }, [dispatch, formData, onClose, navigate])
 
 
    return (

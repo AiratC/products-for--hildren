@@ -5,7 +5,7 @@ import myOrdersLogo from './../../assets/svg/order-mobile-logo.svg'
 import myFavoritesLogo from './../../assets/svg/favorites-mobile-logo.svg'
 import settingsLogo from './../../assets/svg/settings-mobile-logo.svg'
 import logoutLogo from './../../assets/svg/logout-mobile-logo.svg'
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import LoginForm from '../LoginForm/LoginForm';
 import useCloseModal from '../../hooks/useCloseModal';
 import { useDispatch, useSelector } from 'react-redux';
@@ -17,17 +17,19 @@ import toast from 'react-hot-toast';
 const AuthPopup = ({ isOpen, isAuth, user, onClose }) => {
    const containerRef = useCloseModal(onClose);
    const dispatch = useDispatch()
-   const { loading } = useSelector((state) => state.authUser)
+   const { loading } = useSelector((state) => state.authUser);
+   const navigate = useNavigate();
 
    const handleLogout = useCallback(async () => {
       try {
          const result = await dispatch(userLogout()).unwrap();
          onClose();
-         toast.success(result.message || 'Успешный выход!')
+         toast.success(result.message || 'Успешный выход!');
+         navigate('/')
       } catch (error) {
          toast.error(error.message || 'Ошибка при выходе!')
       }
-   }, [dispatch, onClose]);
+   }, [dispatch, onClose, navigate]);
 
    const handleClickMenuItem = () => {
       onClose()

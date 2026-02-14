@@ -24,6 +24,7 @@ export const updateCartItem = async (req, res) => {
          let newQty = item.rows[0].quantity;
          if(action === 'increment' || action === 'add') newQty++;
          if(action === 'decrement') newQty--;
+         if(action === 'delete') newQty = 0;
 
          if(newQty <= 0) {
             await query(`DELETE FROM Cart_items WHERE cart_id = $1 AND product_id = $2`, [cartId, productId]);

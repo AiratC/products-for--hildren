@@ -3,10 +3,11 @@ import styles from './FavoritesPage.module.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { useEffect } from 'react';
-import { fetchFullFavorites } from '../../redux/slices/favoriteSlice';
+import { fetchFavorites, fetchFullFavorites } from '../../redux/slices/favoriteSlice';
 import Loader from '../../components/Loader/Loader';
 import ProductCard from '../../components/ProductCard/ProductCard';
 import { Button, Empty } from 'antd';
+import { fetchCart } from '../../redux/slices/cartSlice';
 
 const FavoritesPage = () => {
    const dispatch = useDispatch();
@@ -14,7 +15,9 @@ const FavoritesPage = () => {
    const { fullItems, isFetching } = useSelector((state) => state.favorites);
 
    useEffect(() => {
-      dispatch(fetchFullFavorites())
+      dispatch(fetchFullFavorites());
+      dispatch(fetchFavorites());
+      dispatch(fetchCart());
    }, [dispatch]);
 
    if (isFetching) {
@@ -30,7 +33,7 @@ const FavoritesPage = () => {
          <div className={`container`}>
             <h1 className={styles.pageTitle}>Мое избранное</h1>
 
-            {fullItems.length > 0 ? (
+            {fullItems?.length > 0 ? (
                <div className={styles.grid}>
                   {fullItems.map(product => (
                      <ProductCard key={product.product_id} data={product} />

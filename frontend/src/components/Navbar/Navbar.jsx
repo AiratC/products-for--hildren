@@ -64,10 +64,12 @@ const Navbar = () => {
                      user={user}
                   />
                </div>
-               <div className={`${styles.cartLogoSvgContainer}`}>
-                  <img src={cartLogoSvg} alt="cart-logo" />
-                  <span>Корзина</span>
-               </div>
+               <Link to={`/cart`}>
+                  <div className={`${styles.cartLogoSvgContainer}`}>
+                     <img src={cartLogoSvg} alt="cart-logo" />
+                     <span>Корзина</span>
+                  </div>
+               </Link>
             </div>
          </nav>
 
