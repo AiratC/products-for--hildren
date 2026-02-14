@@ -5,6 +5,7 @@
    gap: 30px;
    margin-top: 16px;
    align-items: start;
+   min-height: 100vh;
 }
 
 .productGrid {
