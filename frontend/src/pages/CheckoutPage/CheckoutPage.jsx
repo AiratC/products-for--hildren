@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import styles from './CheckoutPage.module.css'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchCart } from '../../redux/slices/cartSlice';
+import OrderSummary from '../../components/OrderSummary/OrderSummary';
 
 const CheckoutPage = () => {
    const { cartItems } = useSelector((state) => state.cart);
@@ -15,12 +16,16 @@ const CheckoutPage = () => {
    const dispatch = useDispatch();
 
    useEffect(() => {
-      dispatch(fetchCart())
+      dispatch(fetchCart());
    }, [dispatch]);
 
    const totalPrice = useMemo(() => {
       return cartItems.reduce((sum, item) => sum + (Number(item.price) * Number(item.quantity)), 0)
    }, [cartItems]);
+
+   const totalCount = useMemo(() => {
+      return cartItems.reduce((count, item) => count + Number(item.quantity), 0)
+   }, [cartItems])
 
    const handleChange = useCallback((e) => {
       setFormData(prevData => ({ ...prevData, [e.target.name]: e.target.value }));
@@ -114,25 +119,7 @@ const CheckoutPage = () => {
 
                {/* Правая секция */}
                {/* Сайдбар с итогами */}
-               <aside className={styles.sidebar}>
-                  <div className={styles.summary}>
-                     <h3>Ваш заказ</h3>
-                     <div className={styles.summaryRow}>
-                        <span>Товары ({cartItems.length})</span>
-                        <span>{totalPrice.toLocaleString()} ₽</span>
-                     </div>
-                     <div className={styles.summaryRow}>
-                        <span>Доставка</span>
-                        <span className={styles.free}>Бесплатно</span>
-                     </div>
-                     <div className={styles.divider}></div>
-                     <div className={styles.totalRow}>
-                        <span>Итого</span>
-                        <span>{totalPrice.toLocaleString()} ₽</span>
-                     </div>
-                     <button type="submit" className={styles.orderBtn}>Подтвердить заказ</button>
-                  </div>
-               </aside>
+               <OrderSummary totalPrice={totalPrice} totalCount={totalCount}/>
             </div>
          </div>
       </div>

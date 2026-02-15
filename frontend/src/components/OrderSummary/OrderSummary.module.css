@@ -1,0 +1,82 @@
+
+.summaryCard {
+   flex: 1;
+   background: #fff;
+   padding: 24px;
+   border-radius: 12px;
+   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+   height: fit-content;
+   position: sticky;
+   top: 20px;
+}
+
+.summaryRow {
+   display: flex;
+   justify-content: space-between;
+   margin-bottom: 12px;
+   color: #666;
+}
+
+.totalRow {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   font-size: 20px;
+   font-weight: 700;
+   margin: 20px 0;
+}
+
+.totalPrice {
+   color: #5bc0de;
+}
+
+.promoSection {
+   display: flex;
+   margin-bottom: 20px;
+}
+
+.promoInput {
+   flex: 1;
+   border: 1px solid #ddd;
+   border-bottom-left-radius: 6px;
+   border-top-left-radius: 6px;
+   padding: 10px;
+   width: 100%;
+   max-width: 100%;
+}
+
+.promoInput:focus {
+   outline: none;
+}
+
+.promoBtn {
+   background: #5bc0de;
+   border: none;
+   border-bottom-right-radius: 6px;
+   border-top-right-radius: 6px;
+   padding: 5px 10px;
+   cursor: pointer;
+   color: white;
+}
+
+.checkoutBtn {
+   height: 50px !important;
+   font-weight: 600 !important;
+   background: #5bc0de !important;
+}
+
+.terms {
+   font-size: 12px;
+   color: #999;
+   margin-top: 15px;
+   text-align: center;
+}
+
+/* Адаптив */
+@media(max-width: 768px) {
+
+   .summaryCard {
+      order: 2;
+      width: 100%;
+   }
+}
