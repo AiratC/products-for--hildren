@@ -3,11 +3,20 @@ import styles from './CheckoutPage.module.css'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchCart } from '../../redux/slices/cartSlice';
 import OrderSummary from '../../components/OrderSummary/OrderSummary';
+import { Link } from 'react-router';
+
+const companies = [
+   { id: 'sdek', name: 'СДЭК' },
+   { id: 'lines', name: 'Деловые линии' },
+   { id: 'pek', name: 'ПЭК' }
+];
 
 const CheckoutPage = () => {
    const { cartItems } = useSelector((state) => state.cart);
+   const { user } = useSelector((state) => state.authUser);
    // Режимы 'tk' (Транспортная компания), 'post' (Почта), 'self' (Самовывоз)
    const [deliveryMethod, setDeliveryMethod] = useState('tk');
+   const [paymentMethod, setPaymentMethod] = useState('card'); // 'card', 'cash_courier', 'paypal', 'cash_on_delivery'
    const [formData, setFormData] = useState({
       fullName: '', phone: '', email: '',
       city: '', street: '', house: '', apartment: '', postIndex: '',
@@ -18,6 +27,11 @@ const CheckoutPage = () => {
    useEffect(() => {
       dispatch(fetchCart());
    }, [dispatch]);
+
+   // Всегда поднимаем страницу вверх
+   useEffect(() => {
+      window.scrollTo(0, 0)
+   }, [])
 
    const totalPrice = useMemo(() => {
       return cartItems.reduce((sum, item) => sum + (Number(item.price) * Number(item.quantity)), 0)
@@ -37,7 +51,7 @@ const CheckoutPage = () => {
       // Формируем объект строго по твоим таблицам SQL
       const payload = {
          delivery_method: deliveryMethod,
-         payment_method: 'card',
+         payment_method: paymentMethod,
          contact_info: {
             fullName: formData.fullName,
             phone: formData.phone,
@@ -68,58 +82,415 @@ const CheckoutPage = () => {
          cartItems, deliveryMethod, formData.apartment, formData.city,
          formData.comment, formData.email, formData.fullName, formData.house,
          formData.phone, formData.postIndex, formData.street, formData.transportCompany,
-         totalPrice
+         totalPrice, paymentMethod
       ]
    );
 
    return (
-      <div className={styles.wrapper}>
+      <div className={`${styles.wrapper}`}>
          <div>
             <h1 className={styles.title}>Оформление заказа</h1>
-            <div>
+            <div className={styles.sectionCheckoutContainer}>
                {/* Левая секция */}
                <div className={styles.content}>
                   {/* Состав заказа */}
-                  <div>
+                  <div className={styles.orderCompositionContainer}>
                      <h2>Состав заказа</h2>
+                     {
+                        cartItems?.map((item) => (
+                           <div className={styles.orderCompositionCard} key={item.product_id}>
+                              <img src={item.product_images[0]} alt={item.title} />
+                              <div>
+                                 <h4>{item.title}</h4>
+                                 <span>{item.quantity} шт.</span>
+                              </div>
+                           </div>
+                        ))
+                     }
                   </div>
 
-                  <div>
+                  <div className={styles.recipientCityContainer}>
                      <h2>Город получателя</h2>
+                     <div>
+                        <div className={styles.cityContainer}>
+                           <h6>Населенный пункт</h6>
+                           {
+                              user?.delivery_address ? (
+                                 <span className={styles.city}>{user?.delivery_address}</span>
+                              ) : (
+                                 <Link to={`/personal-data`}>
+                                    <span className={styles.indicate}>Указать</span>
+                                 </Link>
+                              )
+                           }
+                        </div>
+                     </div>
                   </div>
 
                   {/* Способ получения */}
-                  <div className={styles.card}>
-                     <h2 className={styles.cardTitle}>Способ получения</h2>
+                  <div className={styles.methodObtainingContainer}>
+                     <h2 className={styles.methodObtainingTitle}>Способ получения</h2>
 
-                     <div className={styles.deliveryTabs}>
+                     <div className={styles.deliveryTabsContainer}>
+                        <div
+                           onClick={() => setDeliveryMethod('tk')}
+                           className={`${styles.deliveryTabsCard} ${deliveryMethod === 'tk' ? styles.active : ''}`}>
+                           <h6>Транспортной компанией</h6>
+                           <p>СДЕК, Деловые линии, ПЭК</p>
+                           <span>Цена зависит от выбора ТК</span>
+                        </div>
 
+                        <div
+                           onClick={() => setDeliveryMethod('post')}
+                           className={`${styles.deliveryTabsCard} ${deliveryMethod === 'post' ? styles.active : ''}`}>
+                           <h6>Почтой</h6>
+                           <p>В ближайшее отделение почты России</p>
+                           <span>Бесплатно</span>
+                        </div>
+
+                        <div
+                           onClick={() => setDeliveryMethod('self')}
+                           className={`${styles.deliveryTabsCard} ${deliveryMethod === 'self' ? styles.active : ''}`}>
+                           <h6>Самовывоз</h6>
+                           <p>В пункте выдачи</p>
+                           <span>Бесплатно</span>
+                        </div>
                      </div>
 
                      <div className={styles.dynamicArea}>
                         {deliveryMethod === 'tk' && (
-                           'text'
+                           <form>
+                              <div className={styles.tkSelection}>
+                                 <h3 className={styles.tkTitle}>Выбор транспортной компании</h3>
+                                 <div className={styles.chipGroup}>
+                                    {companies.map((co) => (
+                                       <div
+                                          key={co.id}
+                                          className={`${styles.chip} ${formData.transportCompany === co.name ? styles.active : ''}`}
+                                          onClick={() => setFormData(prevData => ({ ...prevData, transportCompany: co.name }))}
+                                       >
+                                          {co.name}
+                                       </div>
+                                    ))}
+                                 </div>
+                              </div>
+
+                              {/* Сетка всех полей ввода */}
+                              <div>
+                                 <h3 className={styles.recipientAddressTitle}>Адрес получателя</h3>
+                                 <div className={styles.formGrid}>
+                                    <div className={styles.inputGroup}>
+                                       <label>Город доставки</label>
+                                       <input type="text" placeholder="Город" />
+                                    </div>
+
+                                    <div className={`${styles.inputGroup}`}>
+                                       <label>Улица</label>
+                                       <input type="text" placeholder="ул. Ленина" />
+                                    </div>
+
+                                    <div className={styles.inputGroup}>
+                                       <label>Дом</label>
+                                       <input type="text" placeholder="Номер дома" />
+                                    </div>
+
+                                    <div className={styles.inputGroup}>
+                                       <label>Квартира / Офис</label>
+                                       <input type="text" placeholder="Номер квартиры" />
+                                    </div>
+
+                                    <div className={styles.inputGroup}>
+                                       <label>Почтовый индекс</label>
+                                       <input type="text" placeholder="Почтовый индекс" />
+                                    </div>
+
+
+                                    <div className={styles.inputGroup}>
+                                       <label>Телефон</label>
+                                       <input type="tel" placeholder="Телефон*" />
+                                    </div>
+
+                                    <div className={`${styles.inputGroup} ${styles.fullWidth}`}>
+                                       <label>ФИО</label>
+                                       <input type="text" placeholder="Фамилия и имя по паспорту*" />
+                                    </div>
+
+                                    <div className={`${styles.inputGroup} ${styles.fullWidth}`}>
+                                       <label>Email</label>
+                                       <input type="email" placeholder="Электронная почта" />
+                                    </div>
+                                 </div>
+                              </div>
+
+                              {/* Секция Способ оплаты */}
+                              <div className={styles.section}>
+                                 <h3 className={styles.sectionTitle}>Способ оплаты</h3>
+                                 <div className={styles.paymentList}>
+                                    {[
+                                       { id: 'online', label: 'Картой онлайн' },
+                                       { id: 'paypal', label: 'Онлайн-платежем PayPal' }
+                                    ].map((item) => (
+                                       <label key={item.id} className={styles.paymentItem}>
+                                          <input
+                                             type="radio"
+                                             name="payment"
+                                             value={item.id}
+                                             checked={paymentMethod === item.id}
+                                             onChange={(e) => setPaymentMethod(e.target.value)}
+                                             className={styles.hiddenRadio}
+                                          />
+                                          <span className={styles.customRadio}>
+                                             {paymentMethod === item.id && <span className={styles.radioInner} />}
+                                          </span>
+                                          <span className={styles.paymentLabel}>{item.label}</span>
+                                       </label>
+                                    ))}
+                                 </div>
+                              </div>
+
+                              {/* Секция Дополнительно */}
+                              <div className={styles.section}>
+                                 <h3 className={styles.sectionTitle}>Дополнительно</h3>
+                                 <div className={styles.commentWrapper}>
+                                    <textarea
+                                       placeholder="Комментарий к заказу"
+                                       className={styles.textarea}
+                                    />
+                                 </div>
+
+                                 <label className={styles.checkboxWrapper}>
+                                    <input type="checkbox" className={styles.hiddenCheckbox} />
+                                    <span className={styles.customCheckbox} />
+                                    <span className={styles.checkboxLabel}>Сообщать мне об акциях и скидках</span>
+                                 </label>
+
+                                 <button className={styles.submitButton}>
+                                    Перейти к оплате
+                                 </button>
+
+                                 <p className={styles.policyText}>
+                                    Нажимая кнопку «Перейти к оплате», Вы соглашаетесь с <a>пользовательским соглашением</a> и <a>условиями доставки</a>
+                                 </p>
+                              </div>
+
+                           </form>
                         )}
 
                         {deliveryMethod === 'post' && (
-                           'text'
+                           <form>
+                              {/* Сетка всех полей ввода */}
+                              <div>
+                                 <h3 className={styles.recipientAddressTitle}>Адрес получателя</h3>
+                                 <div className={styles.formGrid}>
+                                    <div className={styles.inputGroup}>
+                                       <label>Город доставки</label>
+                                       <input type="text" placeholder="Город" />
+                                    </div>
+
+                                    <div className={`${styles.inputGroup}`}>
+                                       <label>Улица</label>
+                                       <input type="text" placeholder="ул. Ленина" />
+                                    </div>
+
+                                    <div className={styles.inputGroup}>
+                                       <label>Дом</label>
+                                       <input type="text" placeholder="Номер дома" />
+                                    </div>
+
+                                    <div className={styles.inputGroup}>
+                                       <label>Квартира / Офис</label>
+                                       <input type="text" placeholder="Номер квартиры" />
+                                    </div>
+
+                                    <div className={styles.inputGroup}>
+                                       <label>Почтовый индекс</label>
+                                       <input type="text" placeholder="Почтовый индекс" />
+                                    </div>
+
+
+                                    <div className={styles.inputGroup}>
+                                       <label>Телефон</label>
+                                       <input type="tel" placeholder="Телефон*" />
+                                    </div>
+
+                                    <div className={`${styles.inputGroup} ${styles.fullWidth}`}>
+                                       <label>ФИО</label>
+                                       <input type="text" placeholder="Фамилия и имя по паспорту*" />
+                                    </div>
+
+                                    <div className={`${styles.inputGroup} ${styles.fullWidth}`}>
+                                       <label>Email</label>
+                                       <input type="email" placeholder="Электронная почта" />
+                                    </div>
+                                 </div>
+                              </div>
+
+                              {/* Секция Способ оплаты */}
+                              <div className={styles.section}>
+                                 <h3 className={styles.sectionTitle}>Способ оплаты</h3>
+                                 <div className={styles.paymentList}>
+                                    {[
+                                       { id: 'online', label: 'Картой онлайн' },
+                                       { id: 'courier', label: 'Наличными курьеру' },
+                                       { id: 'paypal', label: 'Онлайн-платежем PayPal' }
+                                    ].map((item) => (
+                                       <label key={item.id} className={styles.paymentItem}>
+                                          <input
+                                             type="radio"
+                                             name="payment"
+                                             value={item.id}
+                                             checked={paymentMethod === item.id}
+                                             onChange={(e) => setPaymentMethod(e.target.value)}
+                                             className={styles.hiddenRadio}
+                                          />
+                                          <span className={styles.customRadio}>
+                                             {paymentMethod === item.id && <span className={styles.radioInner} />}
+                                          </span>
+                                          <span className={styles.paymentLabel}>{item.label}</span>
+                                       </label>
+                                    ))}
+                                 </div>
+                              </div>
+
+                              {/* Секция Дополнительно */}
+                              <div className={styles.section}>
+                                 <h3 className={styles.sectionTitle}>Дополнительно</h3>
+                                 <div className={styles.commentWrapper}>
+                                    <textarea
+                                       placeholder="Комментарий к заказу"
+                                       className={styles.textarea}
+                                    />
+                                 </div>
+
+                                 <label className={styles.checkboxWrapper}>
+                                    <input type="checkbox" className={styles.hiddenCheckbox} />
+                                    <span className={styles.customCheckbox} />
+                                    <span className={styles.checkboxLabel}>Сообщать мне об акциях и скидках</span>
+                                 </label>
+
+                                 <button className={styles.submitButton}>
+                                    Перейти к оплате
+                                 </button>
+
+                                 <p className={styles.policyText}>
+                                    Нажимая кнопку «Перейти к оплате», Вы соглашаетесь с <a>пользовательским соглашением</a> и <a>условиями доставки</a>
+                                 </p>
+                              </div>
+
+                           </form>
                         )}
 
                         {deliveryMethod === 'self' && (
-                           'text'
+                           <form>
+                              {/* Сетка всех полей ввода */}
+                              <div>
+                                 <h3 className={styles.recipientAddressTitle}>Адрес получателя</h3>
+                                 <div className={styles.formGrid}>
+                                    <div className={styles.inputGroup}>
+                                       <label>Город доставки</label>
+                                       <input type="text" placeholder="Город" />
+                                    </div>
+
+                                    <div className={`${styles.inputGroup}`}>
+                                       <label>Улица</label>
+                                       <input type="text" placeholder="ул. Ленина" />
+                                    </div>
+
+                                    <div className={styles.inputGroup}>
+                                       <label>Дом</label>
+                                       <input type="text" placeholder="Номер дома" />
+                                    </div>
+
+                                    <div className={styles.inputGroup}>
+                                       <label>Квартира / Офис</label>
+                                       <input type="text" placeholder="Номер квартиры" />
+                                    </div>
+
+                                    <div className={styles.inputGroup}>
+                                       <label>Почтовый индекс</label>
+                                       <input type="text" placeholder="Почтовый индекс" />
+                                    </div>
+
+
+                                    <div className={styles.inputGroup}>
+                                       <label>Телефон</label>
+                                       <input type="tel" placeholder="Телефон*" />
+                                    </div>
+
+                                    <div className={`${styles.inputGroup} ${styles.fullWidth}`}>
+                                       <label>ФИО</label>
+                                       <input type="text" placeholder="Фамилия и имя по паспорту*" />
+                                    </div>
+
+                                    <div className={`${styles.inputGroup} ${styles.fullWidth}`}>
+                                       <label>Email</label>
+                                       <input type="email" placeholder="Электронная почта" />
+                                    </div>
+                                 </div>
+                              </div>
+
+                              {/* Секция Способ оплаты */}
+                              <div className={styles.section}>
+                                 <h3 className={styles.sectionTitle}>Способ оплаты</h3>
+                                 <div className={styles.paymentList}>
+                                    {[
+                                       { id: 'online', label: 'Картой онлайн' },
+                                       { id: 'courier', label: 'Наличными курьеру' },
+                                       { id: 'on_delivery', label: 'Наличными при получении' },
+                                       { id: 'paypal', label: 'Онлайн-платежем PayPal' }
+                                    ].map((item) => (
+                                       <label key={item.id} className={styles.paymentItem}>
+                                          <input
+                                             type="radio"
+                                             name="payment"
+                                             value={item.id}
+                                             checked={paymentMethod === item.id}
+                                             onChange={(e) => setPaymentMethod(e.target.value)}
+                                             className={styles.hiddenRadio}
+                                          />
+                                          <span className={styles.customRadio}>
+                                             {paymentMethod === item.id && <span className={styles.radioInner} />}
+                                          </span>
+                                          <span className={styles.paymentLabel}>{item.label}</span>
+                                       </label>
+                                    ))}
+                                 </div>
+                              </div>
+
+                              {/* Секция Дополнительно */}
+                              <div className={styles.section}>
+                                 <h3 className={styles.sectionTitle}>Дополнительно</h3>
+                                 <div className={styles.commentWrapper}>
+                                    <textarea
+                                       placeholder="Комментарий к заказу"
+                                       className={styles.textarea}
+                                    />
+                                 </div>
+
+                                 <label className={styles.checkboxWrapper}>
+                                    <input type="checkbox" className={styles.hiddenCheckbox} />
+                                    <span className={styles.customCheckbox} />
+                                    <span className={styles.checkboxLabel}>Сообщать мне об акциях и скидках</span>
+                                 </label>
+
+                                 <button className={styles.submitButton}>
+                                    Подтвердить заказ
+                                 </button>
+
+                                 <p className={styles.policyText}>
+                                    Нажимая кнопку «Перейти к оплате», Вы соглашаетесь с <a>пользовательским соглашением</a> и <a>условиями доставки</a>
+                                 </p>
+                              </div>
+
+                           </form>
                         )}
                      </div>
-                  </div>
-
-                  <div className={styles.card}>
-                     <h2 className={styles.cardTitle}>Дополнительно</h2>
-                     <textarea name="comment" placeholder="Напишите пожелания к заказу..." rows="3" onChange={handleChange}></textarea>
                   </div>
                </div>
 
                {/* Правая секция */}
                {/* Сайдбар с итогами */}
-               <OrderSummary totalPrice={totalPrice} totalCount={totalCount}/>
+               <OrderSummary totalPrice={totalPrice} totalCount={totalCount} />
             </div>
          </div>
       </div>

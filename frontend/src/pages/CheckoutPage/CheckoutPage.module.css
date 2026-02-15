@@ -1,0 +1,360 @@
+.wrapper {
+   margin-top: 32px;
+   padding: 0 10px;
+}
+
+.title {
+   color: #446B80;
+   font-size: 48px;
+}
+
+.sectionCheckoutContainer {
+   display: flex;
+   gap: 15px;
+   margin-top: 80px;
+}
+
+.content {
+   flex: 3;
+}
+
+.orderCompositionContainer h2 {
+   color: #446B80;
+   font-weight: bold;
+   font-size: 24px;
+}
+
+.orderCompositionCard {
+   display: flex;
+   gap: 24px;
+   margin-top: 32px;
+}
+
+.orderCompositionCard img {
+   width: 70px;
+}
+
+.orderCompositionCard h4 {
+   line-height: 24px;
+   max-width: 599px;
+   font-size: 18px;
+   color: #446B80;
+}
+
+.orderCompositionCard span {
+   display: block;
+   margin-top: 16px;
+   font-size: 18px;
+   color: #446B80;
+}
+
+.recipientCityContainer {
+   margin-top: 64px;
+}
+
+.recipientCityContainer h2 {
+   font-weight: bold;
+   color: #446B80;
+   font-size: 24px;
+}
+
+.cityContainer {
+   max-width: 469px;
+   border: 1px solid #223540;
+   border-radius: 12px;
+   padding: 8px 24px;
+   margin-top: 32px;
+}
+
+.cityContainer h6 {
+   font-size: 16px;
+   color: #446B80;
+   line-height: 32px;
+}
+
+.city {
+   margin-top: 8px;
+   font-size: 18px;
+   color: #446B80;
+   line-height: 28px;
+}
+
+.indicate {
+   font-size: 20px;
+   font-weight: bold;
+   cursor: pointer;
+   color: #446B80;
+}
+
+.methodObtainingContainer {
+   margin-top: 64px;
+}
+
+.methodObtainingTitle {
+   font-size: 24px;
+   font-weight: 600;
+   color: #446B80;
+}
+
+.deliveryTabsContainer {
+   display: grid;
+   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+   gap: 24px;
+   margin-top: 32px;
+   margin-bottom: 64px;
+}
+
+.deliveryTabsCard {
+   display: flex;
+   flex-direction: column;
+   justify-content: space-between;
+   height: 198px;
+   padding: 24px 36px;
+   border-radius: 10px;
+   font-size: 18px;
+   max-width: 346px;
+   border: 1px solid gray;
+   cursor: pointer;
+}
+
+.deliveryTabsCard h6 {
+   font-size: 18px;
+   color: #446B80;
+}
+
+.deliveryTabsCard span {
+   color: #7FC9F0;
+}
+
+.active {
+   outline: 2px solid #7FC9F0;
+}
+
+/* Блок (Выбор транспортной компании) */
+.tkSelection {
+   margin-bottom: 25px;
+   margin-top: 48px;
+}
+
+.tkTitle {
+   font-size: 24px;
+   font-weight: 600;
+   color: #4a5568;
+   /* Цвет заголовка со скрина */
+   margin-bottom: 15px;
+}
+
+.chipGroup {
+   display: flex;
+   flex-wrap: wrap;
+   gap: 12px;
+}
+
+.chip {
+   padding: 10px 20px;
+   border: 1px solid #e2e8f0;
+   /* Светлая рамка */
+   border-radius: 12px;
+   font-size: 14px;
+   color: #718096;
+   cursor: pointer;
+   background: #fff;
+   transition: all 0.2s ease;
+   user-select: none;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+}
+
+
+/* Адрес получателя */
+/* Сетка полей */
+.formGrid {
+   display: grid;
+   grid-template-columns: 1fr 1fr;
+   gap: 20px;
+   margin-top: 40px;
+   width: 100%;
+   max-width: 716px;
+}
+
+.recipientAddressTitle {
+   font-size: 24px;
+   font-weight: 600;
+   color: #4a5568;
+}
+
+.fullWidth {
+   grid-column: span 2;
+}
+
+.inputGroup {
+   display: flex;
+   flex-direction: column;
+   gap: 8px;
+}
+
+.inputGroup label {
+   font-size: 13px;
+   font-weight: 500;
+   color: #90a4ae;
+   padding-left: 4px;
+}
+
+.inputGroup input {
+   padding: 14px 16px;
+   border: 1.5px solid #eceff1;
+   border-radius: 12px;
+   font-size: 15px;
+   background: #fcfdfe;
+   outline: none;
+   transition: all 0.2s;
+}
+
+.inputGroup input:focus {
+   border-color: #263238;
+   background: #fff;
+}
+
+/* Способ оплаты */
+.section {
+   margin-bottom: 40px;
+   margin-top: 64px;
+   font-family: 'Inter', sans-serif;
+}
+
+.sectionTitle {
+   font-size: 20px;
+   font-weight: 700;
+   color: #44566c;
+   margin-bottom: 24px;
+}
+
+/* Стили Оплаты */
+.paymentList {
+   display: flex;
+   flex-direction: column;
+   gap: 16px;
+}
+
+.paymentItem {
+   display: flex;
+   align-items: center;
+   cursor: pointer;
+   width: fit-content;
+}
+
+.customRadio {
+   width: 24px;
+   height: 24px;
+   border: 1px solid #b0bec5;
+   border-radius: 50%;
+   margin-right: 12px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   transition: 0.2s;
+}
+
+.radioInner {
+   width: 14px;
+   height: 14px;
+   background-color: #7bc9ed;
+   /* Цвет со скрина */
+   border-radius: 50%;
+}
+
+.paymentLabel {
+   font-size: 15px;
+   color: #64748b;
+}
+
+/* Стили Дополнительно */
+.textarea {
+   width: 100%;
+   min-height: 100px;
+   padding: 16px;
+   border: 1px solid #e2e8f0;
+   border-radius: 12px;
+   resize: none;
+   font-size: 15px;
+   outline: none;
+   margin-bottom: 24px;
+}
+
+.checkboxWrapper {
+   display: flex;
+   align-items: center;
+   cursor: pointer;
+   margin-bottom: 32px;
+}
+
+.customCheckbox {
+   width: 20px;
+   height: 20px;
+   border: 2px solid #b0bec5;
+   border-radius: 4px;
+   margin-right: 12px;
+}
+
+.checkboxLabel {
+   font-size: 14px;
+   color: #64748b;
+}
+
+.submitButton {
+   width: 100%;
+   background-color: #87d0f0;
+   /* Голубой цвет со скрина */
+   color: white;
+   border: none;
+   padding: 16px;
+   border-radius: 12px;
+   font-size: 16px;
+   font-weight: 500;
+   cursor: pointer;
+   transition: 0.3s;
+}
+
+.submitButton:hover {
+   background-color: #72c1e6;
+}
+
+.policyText {
+   margin-top: 16px;
+   font-size: 12px;
+   color: #94a3b8;
+   line-height: 1.5;
+}
+
+.policyText a {
+   color: #87d0f0;
+   text-decoration: none;
+}
+
+/* Скрываем стандартные инпуты */
+.hiddenRadio,
+.hiddenCheckbox {
+   display: none;
+}
+
+
+/* Адаптивность */
+@media (max-width: 600px) {
+   .formGrid {
+      grid-template-columns: 1fr;
+   }
+
+   .fullWidth {
+      grid-column: span 1;
+   }
+}
+
+/* Адаптивность для мобилок */
+@media (max-width: 480px) {
+   .chip {
+      flex: 1 1 calc(50% - 12px);
+      /* По 2 в ряд на узких экранах */
+      text-align: center;
+   }
+}
