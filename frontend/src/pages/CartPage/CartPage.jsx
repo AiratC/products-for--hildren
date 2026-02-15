@@ -93,13 +93,17 @@ const CartPage = () => {
                   </div>
                </div>
 
-               <Button type="primary" size="large" block className={styles.checkoutBtn}>
-                  Перейти к оформлению
-               </Button>
+               <div>
+                  <Link to={`/checkout`}>
+                     <Button type="primary" size="large" block className={styles.checkoutBtn}>
+                        Перейти к оформлению
+                     </Button>
+                  </Link>
 
-               <p className={styles.terms}>
-                  Нажимая кнопку, вы соглашаетесь с правилами возврата и условиями продажи
-               </p>
+                  <p className={styles.terms}>
+                     Нажимая кнопку, вы соглашаетесь с правилами возврата и условиями продажи
+                  </p>
+               </div>
             </aside>
          </div>
       </div>
