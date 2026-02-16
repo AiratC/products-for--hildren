@@ -3,7 +3,9 @@ import styles from './CheckoutPage.module.css'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchCart } from '../../redux/slices/cartSlice';
 import OrderSummary from '../../components/OrderSummary/OrderSummary';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
+import { createOrder } from '../../redux/slices/orderSlice';
+import toast from 'react-hot-toast';
 
 const companies = [
    { id: 'sdek', name: 'СДЭК' },
@@ -14,6 +16,7 @@ const companies = [
 const CheckoutPage = () => {
    const { cartItems } = useSelector((state) => state.cart);
    const { user } = useSelector((state) => state.authUser);
+   const { loading } = useSelector((state) => state.order);
    // Режимы 'tk' (Транспортная компания), 'post' (Почта), 'self' (Самовывоз)
    const [deliveryMethod, setDeliveryMethod] = useState('tk');
    const [paymentMethod, setPaymentMethod] = useState('card'); // 'card', 'cash_courier', 'paypal', 'cash_on_delivery'
@@ -23,6 +26,7 @@ const CheckoutPage = () => {
       transportCompany: 'СДЭК', comment: ''
    });
    const dispatch = useDispatch();
+   const navigate = useNavigate();
 
    useEffect(() => {
       dispatch(fetchCart());
@@ -45,7 +49,7 @@ const CheckoutPage = () => {
       setFormData(prevData => ({ ...prevData, [e.target.name]: e.target.value }));
    }, []);
 
-   const handleSubmit = useCallback((e) => {
+   const handleSubmit = useCallback(async (e) => {
       e.preventDefault();
 
       // Формируем объект строго по твоим таблицам SQL
@@ -76,9 +80,14 @@ const CheckoutPage = () => {
          }))
       };
 
-      console.log("Отправка в БД:", payload);
+      try {
+         const result = await dispatch(createOrder(payload)).unwrap();
+         toast.success(result.message || 'Заказ успешно создан!')
+      } catch (error) {
+         toast.error(error.message || 'Ошибка при создании заказа!')
+      }
    },
-      [cartItems, deliveryMethod, formData, totalPrice, paymentMethod]
+      [dispatch, cartItems, deliveryMethod, formData, totalPrice, paymentMethod]
    );
 
    return (
