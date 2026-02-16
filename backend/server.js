@@ -18,6 +18,7 @@ import captchaRouter from "./routes/captcha.route.js";
 import userRouter from "./routes/user.route.js";
 import favoriteRouter from "./routes/favorites.route.js";
 import cartRouter from "./routes/cart.route.js";
+import orderRouter from "./routes/order.route.js";
 
 dotenv.config();
 const app = express();
@@ -61,6 +62,7 @@ app.use('/api/captcha', captchaRouter);
 app.use('/api/user', userRouter);
 app.use('/api/favorites', favoriteRouter);
 app.use('/api/cart', cartRouter);
+app.use('/api/orders', orderRouter);
 
 
 // Запуск сервера с обработкой ошибок

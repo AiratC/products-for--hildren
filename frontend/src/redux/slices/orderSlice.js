@@ -9,12 +9,12 @@ export const createOrder = createAsyncThunk(
    async (orderData, { dispatch, rejectWithValue }) => {
       console.log(orderData)
       try {
-         // const response = await fetchAxios.post(`/api/orders/create-order`, orderData);
+         const response = await fetchAxios.post(`/api/orders/create-order`, orderData);
 
-         // if(response.status === 201 || response.status === 200) {
-         //    dispatch(clearCart());
-         //    return response.data;
-         // }
+         if(response.status === 201 || response.status === 200) {
+            dispatch(clearCart());
+            return response.data;
+         }
       } catch (error) {
          return rejectWithValue(error.response.data);
       }
