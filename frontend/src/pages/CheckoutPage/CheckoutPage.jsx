@@ -78,12 +78,7 @@ const CheckoutPage = () => {
 
       console.log("Отправка в БД:", payload);
    },
-      [
-         cartItems, deliveryMethod, formData.apartment, formData.city,
-         formData.comment, formData.email, formData.fullName, formData.house,
-         formData.phone, formData.postIndex, formData.street, formData.transportCompany,
-         totalPrice, paymentMethod
-      ]
+      [cartItems, deliveryMethod, formData, totalPrice, paymentMethod]
    );
 
    return (
@@ -93,6 +88,7 @@ const CheckoutPage = () => {
             <div className={styles.sectionCheckoutContainer}>
                {/* Левая секция */}
                <div className={styles.content}>
+
                   {/* Состав заказа */}
                   <div className={styles.orderCompositionContainer}>
                      <h2>Состав заказа</h2>
@@ -159,7 +155,7 @@ const CheckoutPage = () => {
 
                      <div className={styles.dynamicArea}>
                         {deliveryMethod === 'tk' && (
-                           <form>
+                           <form onSubmit={handleSubmit}>
                               <div className={styles.tkSelection}>
                                  <h3 className={styles.tkTitle}>Выбор транспортной компании</h3>
                                  <div className={styles.chipGroup}>
@@ -181,43 +177,37 @@ const CheckoutPage = () => {
                                  <div className={styles.formGrid}>
                                     <div className={styles.inputGroup}>
                                        <label>Город доставки</label>
-                                       <input type="text" placeholder="Город" />
+                                       <input onChange={handleChange} value={formData.city} name='city' type="text" placeholder="Город" />
                                     </div>
 
                                     <div className={`${styles.inputGroup}`}>
                                        <label>Улица</label>
-                                       <input type="text" placeholder="ул. Ленина" />
+                                       <input onChange={handleChange} value={formData.street} name='street' type="text" placeholder="ул. Ленина" />
                                     </div>
 
                                     <div className={styles.inputGroup}>
                                        <label>Дом</label>
-                                       <input type="text" placeholder="Номер дома" />
+                                       <input onChange={handleChange} value={formData.house} name='house' type="text" placeholder="Номер дома" />
                                     </div>
 
                                     <div className={styles.inputGroup}>
                                        <label>Квартира / Офис</label>
-                                       <input type="text" placeholder="Номер квартиры" />
+                                       <input onChange={handleChange} value={formData.apartment} name='apartment' type="text" placeholder="Номер квартиры" />
                                     </div>
-
-                                    <div className={styles.inputGroup}>
-                                       <label>Почтовый индекс</label>
-                                       <input type="text" placeholder="Почтовый индекс" />
-                                    </div>
-
 
                                     <div className={styles.inputGroup}>
                                        <label>Телефон</label>
-                                       <input type="tel" placeholder="Телефон*" />
+                                       <input onChange={handleChange} value={formData.phone} name='phone' type="tel" placeholder="Телефон*" />
                                     </div>
 
                                     <div className={`${styles.inputGroup} ${styles.fullWidth}`}>
                                        <label>ФИО</label>
-                                       <input type="text" placeholder="Фамилия и имя по паспорту*" />
+                                       <input onChange={handleChange} value={formData.fullName} name='fullName' type="text" placeholder="Фамилия и имя по паспорту*" />
                                     </div>
 
                                     <div className={`${styles.inputGroup} ${styles.fullWidth}`}>
                                        <label>Email</label>
-                                       <input type="email" placeholder="Электронная почта" />
+                                       <input onChange={handleChange} value={formData.email} name='email' type="email" placeholder="Электронная почта" />
                                     </div>
                                  </div>
                               </div>
@@ -253,6 +243,9 @@ const CheckoutPage = () => {
                                  <h3 className={styles.sectionTitle}>Дополнительно</h3>
                                  <div className={styles.commentWrapper}>
                                     <textarea
+                                       onChange={handleChange} 
+                                       value={formData.comment} 
+                                       name='comment'
                                        placeholder="Комментарий к заказу"
                                        className={styles.textarea}
                                     />
@@ -277,50 +270,50 @@ const CheckoutPage = () => {
                         )}
 
                         {deliveryMethod === 'post' && (
-                           <form>
+                           <form onSubmit={handleSubmit}>
                               {/* Сетка всех полей ввода */}
                               <div>
                                  <h3 className={styles.recipientAddressTitle}>Адрес получателя</h3>
                                  <div className={styles.formGrid}>
                                     <div className={styles.inputGroup}>
                                        <label>Город доставки</label>
-                                       <input type="text" placeholder="Город" />
+                                       <input onChange={handleChange} value={formData.city} name='city' type="text" placeholder="Город" />
                                     </div>
 
                                     <div className={`${styles.inputGroup}`}>
                                        <label>Улица</label>
-                                       <input type="text" placeholder="ул. Ленина" />
+                                       <input onChange={handleChange} value={formData.street} name='street' type="text" placeholder="ул. Ленина" />
                                     </div>
 
                                     <div className={styles.inputGroup}>
                                        <label>Дом</label>
-                                       <input type="text" placeholder="Номер дома" />
+                                       <input onChange={handleChange} value={formData.house} name='house' type="text" placeholder="Номер дома" />
                                     </div>
 
                                     <div className={styles.inputGroup}>
                                        <label>Квартира / Офис</label>
-                                       <input type="text" placeholder="Номер квартиры" />
+                                       <input onChange={handleChange} value={formData.apartment} name='apartment' type="text" placeholder="Номер квартиры" />
                                     </div>
 
                                     <div className={styles.inputGroup}>
                                        <label>Почтовый индекс</label>
-                                       <input type="text" placeholder="Почтовый индекс" />
+                                       <input onChange={handleChange} value={formData.postIndex} name='postIndex' type="text" placeholder="Почтовый индекс" />
                                     </div>
 
 
                                     <div className={styles.inputGroup}>
                                        <label>Телефон</label>
-                                       <input type="tel" placeholder="Телефон*" />
+                                       <input onChange={handleChange} value={formData.phone} name='phone' type="tel" placeholder="Телефон*" />
                                     </div>
 
                                     <div className={`${styles.inputGroup} ${styles.fullWidth}`}>
                                        <label>ФИО</label>
-                                       <input type="text" placeholder="Фамилия и имя по паспорту*" />
+                                       <input onChange={handleChange} value={formData.fullName} name='fullName' type="text" placeholder="Фамилия и имя по паспорту*" />
                                     </div>
 
                                     <div className={`${styles.inputGroup} ${styles.fullWidth}`}>
                                        <label>Email</label>
-                                       <input type="email" placeholder="Электронная почта" />
+                                       <input onChange={handleChange} value={formData.email} name='email' type="email" placeholder="Электронная почта" />
                                     </div>
                                  </div>
                               </div>
@@ -357,6 +350,9 @@ const CheckoutPage = () => {
                                  <h3 className={styles.sectionTitle}>Дополнительно</h3>
                                  <div className={styles.commentWrapper}>
                                     <textarea
+                                       onChange={handleChange} 
+                                       value={formData.comment} 
+                                       name='comment'
                                        placeholder="Комментарий к заказу"
                                        className={styles.textarea}
                                     />
@@ -381,51 +377,26 @@ const CheckoutPage = () => {
                         )}
 
                         {deliveryMethod === 'self' && (
-                           <form>
+                           <form onSubmit={handleSubmit}>
                               {/* Сетка всех полей ввода */}
                               <div>
                                  <h3 className={styles.recipientAddressTitle}>Адрес получателя</h3>
                                  <div className={styles.formGrid}>
-                                    <div className={styles.inputGroup}>
-                                       <label>Город доставки</label>
-                                       <input type="text" placeholder="Город" />
+                                    <div className={`${styles.inputGroup} ${styles.fullWidth}`}>
+                                       <label>ФИО</label>
+                                       <input onChange={handleChange} value={formData.fullName} name='fullName' type="text" placeholder="Фамилия и имя по паспорту*" />
                                     </div>
 
                                     <div className={`${styles.inputGroup}`}>
-                                       <label>Улица</label>
-                                       <input type="text" placeholder="ул. Ленина" />
+                                       <label>Email</label>
+                                       <input onChange={handleChange} value={formData.email} name='email' type="email" placeholder="Электронная почта" />
                                     </div>
-
-                                    <div className={styles.inputGroup}>
-                                       <label>Дом</label>
-                                       <input type="text" placeholder="Номер дома" />
-                                    </div>
-
-                                    <div className={styles.inputGroup}>
-                                       <label>Квартира / Офис</label>
-                                       <input type="text" placeholder="Номер квартиры" />
-                                    </div>
-
-                                    <div className={styles.inputGroup}>
-                                       <label>Почтовый индекс</label>
-                                       <input type="text" placeholder="Почтовый индекс" />
-                                    </div>
-
 
                                     <div className={styles.inputGroup}>
                                        <label>Телефон</label>
-                                       <input type="tel" placeholder="Телефон*" />
+                                       <input onChange={handleChange} value={formData.phone} name='phone' type="tel" placeholder="Телефон*" />
                                     </div>
 
-                                    <div className={`${styles.inputGroup} ${styles.fullWidth}`}>
-                                       <label>ФИО</label>
-                                       <input type="text" placeholder="Фамилия и имя по паспорту*" />
-                                    </div>
-
-                                    <div className={`${styles.inputGroup} ${styles.fullWidth}`}>
-                                       <label>Email</label>
-                                       <input type="email" placeholder="Электронная почта" />
-                                    </div>
                                  </div>
                               </div>
 
@@ -462,6 +433,9 @@ const CheckoutPage = () => {
                                  <h3 className={styles.sectionTitle}>Дополнительно</h3>
                                  <div className={styles.commentWrapper}>
                                     <textarea
+                                       onChange={handleChange} 
+                                       value={formData.comment} 
+                                       name='comment'
                                        placeholder="Комментарий к заказу"
                                        className={styles.textarea}
                                     />
