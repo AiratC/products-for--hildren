@@ -4,120 +4,119 @@ import { useNavigate } from 'react-router';
 
 const OrdersPage = () => {
    // Если данных пока нет, можно использовать моковые данные для теста
-   // const mockOrders = [
-   //    {
-   //       id: "5454647",
-   //       status: "Получен",
-   //       date: "21.05.2020",
-   //       payment_method: "Картой онлайн",
-   //       total_amount: 152000,
-   //       delivery_method: "Транспортной компанией",
-   //       address: "Москва, ул. Московская 25-45",
-   //       recipient: "Анна Москова, +7 919 919 99 99",
-   //       delivery_date: "с 25 мая",
-   //       items: [
-   //          {
-   //             id: 1,
-   //             title: "Коляска CYBEX PRIAM LUX JEREMY SCOTT SPECIAL EDITION 2 В 1 на раме TREKKING",
-   //             image: "https://ir.ozone.ru/s3/multimedia-1-s/wc1000/8039793088.jpg", // Замени на реальный URL
-   //             quantity: 1
-   //          },
-   //          {
-   //             id: 2,
-   //             title: "Коляска CYBEX PRIAM LUX JEREMY SCOTT SPECIAL EDITION 2 В 1 на раме TREKKING",
-   //             image: "https://ir.ozone.ru/s3/multimedia-1-s/wc1000/8039793088.jpg", // Замени на реальный URL
-   //             quantity: 1
-   //          },
-   //          {
-   //             id: 3,
-   //             title: "Коляска CYBEX PRIAM LUX JEREMY SCOTT SPECIAL EDITION 2 В 1 на раме TREKKING",
-   //             image: "https://ir.ozone.ru/s3/multimedia-1-s/wc1000/8039793088.jpg", // Замени на реальный URL
-   //             quantity: 1
-   //          }
-   //       ]
-   //    },
-   //    {
-   //       id: "5454647",
-   //       status: "Получен",
-   //       date: "21.05.2020",
-   //       payment_method: "Картой онлайн",
-   //       total_amount: 152000,
-   //       delivery_method: "Транспортной компанией",
-   //       address: "Москва, ул. Московская 25-45",
-   //       recipient: "Анна Москова, +7 919 919 99 99",
-   //       delivery_date: "с 25 мая",
-   //       items: [
-   //          {
-   //             id: 1,
-   //             title: "Коляска CYBEX PRIAM LUX JEREMY SCOTT SPECIAL EDITION 2 В 1 на раме TREKKING",
-   //             image: "https://ir.ozone.ru/s3/multimedia-1-s/wc1000/8039793088.jpg", // Замени на реальный URL
-   //             quantity: 1
-   //          },
-   //          {
-   //             id: 2,
-   //             title: "Коляска CYBEX PRIAM LUX JEREMY SCOTT SPECIAL EDITION 2 В 1 на раме TREKKING",
-   //             image: "https://ir.ozone.ru/s3/multimedia-1-s/wc1000/8039793088.jpg", // Замени на реальный URL
-   //             quantity: 2
-   //          }
-   //       ]
-   //    },
-   //    {
-   //       id: "5454647",
-   //       status: "Получен",
-   //       date: "21.05.2020",
-   //       payment_method: "Картой онлайн",
-   //       total_amount: 152000,
-   //       delivery_method: "Транспортной компанией",
-   //       address: "Москва, ул. Московская 25-45",
-   //       recipient: "Анна Москова, +7 919 919 99 99",
-   //       delivery_date: "с 25 мая",
-   //       items: [
-   //          {
-   //             id: 1,
-   //             title: "Коляска CYBEX PRIAM LUX JEREMY SCOTT SPECIAL EDITION 2 В 1 на раме TREKKING",
-   //             image: "https://ir.ozone.ru/s3/multimedia-1-s/wc1000/8039793088.jpg", // Замени на реальный URL
-   //             quantity: 1
-   //          }
-   //       ]
-   //    },
-   //    {
-   //       id: "5454647",
-   //       status: "Получен",
-   //       date: "21.05.2020",
-   //       payment_method: "Картой онлайн",
-   //       total_amount: 152000,
-   //       delivery_method: "Транспортной компанией",
-   //       address: "Москва, ул. Московская 25-45",
-   //       recipient: "Анна Москова, +7 919 919 99 99",
-   //       delivery_date: "с 25 мая",
-   //       items: [
-   //          {
-   //             id: 1,
-   //             title: "Коляска CYBEX PRIAM LUX JEREMY SCOTT SPECIAL EDITION 2 В 1 на раме TREKKING",
-   //             image: "https://ir.ozone.ru/s3/multimedia-1-s/wc1000/8039793088.jpg", // Замени на реальный URL
-   //             quantity: 1
-   //          },
-   //          {
-   //             id: 2,
-   //             title: "Коляска CYBEX PRIAM LUX JEREMY SCOTT SPECIAL EDITION 2 В 1 на раме TREKKING",
-   //             image: "https://ir.ozone.ru/s3/multimedia-1-s/wc1000/8039793088.jpg", // Замени на реальный URL
-   //             quantity: 1
-   //          },
-   //          {
-   //             id: 3,
-   //             title: "Коляска CYBEX PRIAM LUX JEREMY SCOTT SPECIAL EDITION 2 В 1 на раме TREKKING",
-   //             image: "https://ir.ozone.ru/s3/multimedia-1-s/wc1000/8039793088.jpg", // Замени на реальный URL
-   //             quantity: 1
-   //          }
-   //       ]
-   //    }
-   // ];
-   const mockOrders = [];
+   const mockOrders = [
+      {
+         id: "5454647",
+         status: "Получен",
+         date: "21.05.2020",
+         payment_method: "Картой онлайн",
+         total_amount: 152000,
+         delivery_method: "Транспортной компанией",
+         address: "Москва, ул. Московская 25-45",
+         recipient: "Анна Москова, +7 919 919 99 99",
+         delivery_date: "с 25 мая",
+         items: [
+            {
+               id: 1,
+               title: "Коляска CYBEX PRIAM LUX JEREMY SCOTT SPECIAL EDITION 2 В 1 на раме TREKKING",
+               image: "https://ir.ozone.ru/s3/multimedia-1-s/wc1000/8039793088.jpg", // Замени на реальный URL
+               quantity: 1
+            },
+            {
+               id: 2,
+               title: "Коляска CYBEX PRIAM LUX JEREMY SCOTT SPECIAL EDITION 2 В 1 на раме TREKKING",
+               image: "https://ir.ozone.ru/s3/multimedia-1-s/wc1000/8039793088.jpg", // Замени на реальный URL
+               quantity: 1
+            },
+            {
+               id: 3,
+               title: "Коляска CYBEX PRIAM LUX JEREMY SCOTT SPECIAL EDITION 2 В 1 на раме TREKKING",
+               image: "https://ir.ozone.ru/s3/multimedia-1-s/wc1000/8039793088.jpg", // Замени на реальный URL
+               quantity: 1
+            }
+         ]
+      },
+      {
+         id: "5454647",
+         status: "Получен",
+         date: "21.05.2020",
+         payment_method: "Картой онлайн",
+         total_amount: 152000,
+         delivery_method: "Транспортной компанией",
+         address: "Москва, ул. Московская 25-45",
+         recipient: "Анна Москова, +7 919 919 99 99",
+         delivery_date: "с 25 мая",
+         items: [
+            {
+               id: 1,
+               title: "Коляска CYBEX PRIAM LUX JEREMY SCOTT SPECIAL EDITION 2 В 1 на раме TREKKING",
+               image: "https://ir.ozone.ru/s3/multimedia-1-s/wc1000/8039793088.jpg", // Замени на реальный URL
+               quantity: 1
+            },
+            {
+               id: 2,
+               title: "Коляска CYBEX PRIAM LUX JEREMY SCOTT SPECIAL EDITION 2 В 1 на раме TREKKING",
+               image: "https://ir.ozone.ru/s3/multimedia-1-s/wc1000/8039793088.jpg", // Замени на реальный URL
+               quantity: 2
+            }
+         ]
+      },
+      {
+         id: "5454647",
+         status: "Получен",
+         date: "21.05.2020",
+         payment_method: "Картой онлайн",
+         total_amount: 152000,
+         delivery_method: "Транспортной компанией",
+         address: "Москва, ул. Московская 25-45",
+         recipient: "Анна Москова, +7 919 919 99 99",
+         delivery_date: "с 25 мая",
+         items: [
+            {
+               id: 1,
+               title: "Коляска CYBEX PRIAM LUX JEREMY SCOTT SPECIAL EDITION 2 В 1 на раме TREKKING",
+               image: "https://ir.ozone.ru/s3/multimedia-1-s/wc1000/8039793088.jpg", // Замени на реальный URL
+               quantity: 1
+            }
+         ]
+      },
+      {
+         id: "5454647",
+         status: "Получен",
+         date: "21.05.2020",
+         payment_method: "Картой онлайн",
+         total_amount: 152000,
+         delivery_method: "Транспортной компанией",
+         address: "Москва, ул. Московская 25-45",
+         recipient: "Анна Москова, +7 919 919 99 99",
+         delivery_date: "с 25 мая",
+         items: [
+            {
+               id: 1,
+               title: "Коляска CYBEX PRIAM LUX JEREMY SCOTT SPECIAL EDITION 2 В 1 на раме TREKKING",
+               image: "https://ir.ozone.ru/s3/multimedia-1-s/wc1000/8039793088.jpg", // Замени на реальный URL
+               quantity: 1
+            },
+            {
+               id: 2,
+               title: "Коляска CYBEX PRIAM LUX JEREMY SCOTT SPECIAL EDITION 2 В 1 на раме TREKKING",
+               image: "https://ir.ozone.ru/s3/multimedia-1-s/wc1000/8039793088.jpg", // Замени на реальный URL
+               quantity: 1
+            },
+            {
+               id: 3,
+               title: "Коляска CYBEX PRIAM LUX JEREMY SCOTT SPECIAL EDITION 2 В 1 на раме TREKKING",
+               image: "https://ir.ozone.ru/s3/multimedia-1-s/wc1000/8039793088.jpg", // Замени на реальный URL
+               quantity: 1
+            }
+         ]
+      }
+   ];
+   // const mockOrders = [];
    const navigate = useNavigate();
 
-   const currentOrders = useMemo(() => {
-      return mockOrders || [];
-   }, [mockOrders]) 
+   const currentOrders = mockOrders || [];
+
 
    const getStatusColor = useCallback((status) => {
       switch (status) {
