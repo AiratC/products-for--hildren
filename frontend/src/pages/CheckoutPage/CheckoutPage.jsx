@@ -82,12 +82,14 @@ const CheckoutPage = () => {
 
       try {
          const result = await dispatch(createOrder(payload)).unwrap();
-         toast.success(result.message || 'Заказ успешно создан!')
+         toast.success(result.message || 'Заказ успешно создан!');
+         navigate('/orders')
+
       } catch (error) {
          toast.error(error.message || 'Ошибка при создании заказа!')
       }
    },
-      [dispatch, cartItems, deliveryMethod, formData, totalPrice, paymentMethod]
+      [dispatch, cartItems, deliveryMethod, formData, totalPrice, paymentMethod, navigate]
    );
 
    return (

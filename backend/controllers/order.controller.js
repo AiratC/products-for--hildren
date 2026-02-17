@@ -11,6 +11,12 @@ export const createOrder = async (req, res) => {
    const { fullName, phone, email } = contact_info;
    const { city, street, house, apartment, postIndex } = recipient_address
 
+   if (payment_method === 'paypal' || payment_method === 'card') {
+      return res.status(400).json({
+         message: 'Оплата онлайн временно не работает'
+      });
+   };
+
    // ------------------------------------------------------------------------------------
 
    // Проверка ввода данных

@@ -7,7 +7,6 @@ import { clearCart } from "./cartSlice";
 export const createOrder = createAsyncThunk(
    'orders/createOrder',
    async (orderData, { dispatch, rejectWithValue }) => {
-      console.log(orderData)
       try {
          const response = await fetchAxios.post(`/api/orders/create-order`, orderData);
 
