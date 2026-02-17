@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback } from 'react';
 import styles from './OrdersPage.module.css';
 import { useNavigate } from 'react-router';
 
