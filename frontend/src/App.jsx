@@ -16,6 +16,7 @@ import { fetchCart } from "./redux/slices/cartSlice";
 import CartPage from "./pages/CartPage/CartPage";
 import CheckoutPage from "./pages/CheckoutPage/CheckoutPage";
 import PageNotFound from "./pages/PageNotFound/PageNotFound";
+import OrdersPage from "./pages/OrdersPage/OrdersPage";
 
 function App() {
    useScrollRestoration();
@@ -75,6 +76,8 @@ function App() {
                <Route path="/checkout" element={<CheckoutPage/>}></Route>
                {/* Page Not Found */}
                <Route path="*" element={<PageNotFound/>}></Route>
+               {/* Order Page */}
+               <Route path="/orders" element={<OrdersPage/>}></Route>
             </Route>
          </Routes>
       </>
