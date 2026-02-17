@@ -19,7 +19,7 @@ const CheckoutPage = () => {
    const { loading } = useSelector((state) => state.order);
    // Режимы 'tk' (Транспортная компания), 'post' (Почта), 'self' (Самовывоз)
    const [deliveryMethod, setDeliveryMethod] = useState('tk');
-   const [paymentMethod, setPaymentMethod] = useState('card'); // 'card', 'cash_courier', 'paypal', 'cash_on_delivery'
+   const [paymentMethod, setPaymentMethod] = useState(''); // 'card', 'cash_courier', 'paypal', 'cash_on_delivery'
    const [formData, setFormData] = useState({
       fullName: '', phone: '', email: '',
       city: '', street: '', house: '', apartment: '', postIndex: '',
@@ -67,7 +67,7 @@ const CheckoutPage = () => {
             house: formData.house,
             apartment: formData.apartment,
             // Индекс только для почты
-            ...(deliveryMethod === 'post' && { postIndex: formData.postIndex })
+            ...(deliveryMethod === 'post' ? { postIndex: formData.postIndex } : { postIndex: null })
          },
          choosing_transport_company: deliveryMethod === 'tk' ? formData.transportCompany : null,
          total_amount: totalPrice,
@@ -226,7 +226,7 @@ const CheckoutPage = () => {
                                  <h3 className={styles.sectionTitle}>Способ оплаты</h3>
                                  <div className={styles.paymentList}>
                                     {[
-                                       { id: 'online', label: 'Картой онлайн' },
+                                       { id: 'card', label: 'Картой онлайн' },
                                        { id: 'paypal', label: 'Онлайн-платежем PayPal' }
                                     ].map((item) => (
                                        <label key={item.id} className={styles.paymentItem}>
@@ -332,8 +332,8 @@ const CheckoutPage = () => {
                                  <h3 className={styles.sectionTitle}>Способ оплаты</h3>
                                  <div className={styles.paymentList}>
                                     {[
-                                       { id: 'online', label: 'Картой онлайн' },
-                                       { id: 'courier', label: 'Наличными курьеру' },
+                                       { id: 'card', label: 'Картой онлайн' },
+                                       { id: 'cash_courier', label: 'Наличными курьеру' },
                                        { id: 'paypal', label: 'Онлайн-платежем PayPal' }
                                     ].map((item) => (
                                        <label key={item.id} className={styles.paymentItem}>
@@ -414,9 +414,9 @@ const CheckoutPage = () => {
                                  <h3 className={styles.sectionTitle}>Способ оплаты</h3>
                                  <div className={styles.paymentList}>
                                     {[
-                                       { id: 'online', label: 'Картой онлайн' },
-                                       { id: 'courier', label: 'Наличными курьеру' },
-                                       { id: 'on_delivery', label: 'Наличными при получении' },
+                                       { id: 'card', label: 'Картой онлайн' },
+                                       { id: 'cash_courier', label: 'Наличными курьеру' },
+                                       { id: 'cash_on_delivery', label: 'Наличными при получении' },
                                        { id: 'paypal', label: 'Онлайн-платежем PayPal' }
                                     ].map((item) => (
                                        <label key={item.id} className={styles.paymentItem}>
