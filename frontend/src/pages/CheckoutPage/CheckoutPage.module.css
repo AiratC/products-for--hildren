@@ -338,6 +338,13 @@
    display: none;
 }
 
+.orderLoader {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   min-width: 10vh;
+}
+
 @media (max-width: 768px) {
    .sectionCheckoutContainer {
       flex-direction: column;

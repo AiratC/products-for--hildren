@@ -6,6 +6,7 @@ import OrderSummary from '../../components/OrderSummary/OrderSummary';
 import { Link, useNavigate } from 'react-router';
 import { createOrder } from '../../redux/slices/orderSlice';
 import toast from 'react-hot-toast';
+import Loader from '../../components/Loader/Loader';
 
 const companies = [
    { id: 'sdek', name: 'СДЭК' },
@@ -254,8 +255,8 @@ const CheckoutPage = () => {
                                  <h3 className={styles.sectionTitle}>Дополнительно</h3>
                                  <div className={styles.commentWrapper}>
                                     <textarea
-                                       onChange={handleChange} 
-                                       value={formData.comment} 
+                                       onChange={handleChange}
+                                       value={formData.comment}
                                        name='comment'
                                        placeholder="Комментарий к заказу"
                                        className={styles.textarea}
@@ -361,8 +362,8 @@ const CheckoutPage = () => {
                                  <h3 className={styles.sectionTitle}>Дополнительно</h3>
                                  <div className={styles.commentWrapper}>
                                     <textarea
-                                       onChange={handleChange} 
-                                       value={formData.comment} 
+                                       onChange={handleChange}
+                                       value={formData.comment}
                                        name='comment'
                                        placeholder="Комментарий к заказу"
                                        className={styles.textarea}
@@ -444,8 +445,8 @@ const CheckoutPage = () => {
                                  <h3 className={styles.sectionTitle}>Дополнительно</h3>
                                  <div className={styles.commentWrapper}>
                                     <textarea
-                                       onChange={handleChange} 
-                                       value={formData.comment} 
+                                       onChange={handleChange}
+                                       value={formData.comment}
                                        name='comment'
                                        placeholder="Комментарий к заказу"
                                        className={styles.textarea}
@@ -458,9 +459,18 @@ const CheckoutPage = () => {
                                     <span className={styles.checkboxLabel}>Сообщать мне об акциях и скидках</span>
                                  </label>
 
-                                 <button className={styles.submitButton}>
-                                    Подтвердить заказ
-                                 </button>
+                                 {
+                                    loading ? (
+                                       <div className={styles.orderLoader}>
+                                          <Loader />
+                                       </div>
+                                    ) : (
+                                       <button className={styles.submitButton}>
+                                          Подтвердить заказ
+                                       </button>
+                                    )
+                                 }
+
 
                                  <p className={styles.policyText}>
                                     Нажимая кнопку «Перейти к оплате», Вы соглашаетесь с <a>пользовательским соглашением</a> и <a>условиями доставки</a>
