@@ -7,7 +7,6 @@ import Loader from '../../components/Loader/Loader';
 
 const OrdersPage = () => {
 
-   // const mockOrders = [];
    const navigate = useNavigate();
    const dispatch = useDispatch();
    const { order, loading } = useSelector(state => state.order);
