@@ -12,6 +12,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { userLogout } from '../../redux/slices/authUserSlice';
 import Loader from '../Loader/Loader';
 import toast from 'react-hot-toast';
+import { clearCart } from '../../redux/slices/cartSlice';
+import { clearFavorites } from '../../redux/slices/favoriteSlice';
 
 
 const AuthPopup = ({ isOpen, isAuth, user, onClose }) => {
@@ -25,7 +27,9 @@ const AuthPopup = ({ isOpen, isAuth, user, onClose }) => {
          const result = await dispatch(userLogout()).unwrap();
          onClose();
          toast.success(result.message || 'Успешный выход!');
-         navigate('/')
+         dispatch(clearCart());
+         dispatch(clearFavorites());
+         navigate('/');
       } catch (error) {
          toast.error(error.message || 'Ошибка при выходе!')
       }
