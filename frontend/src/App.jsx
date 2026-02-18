@@ -46,7 +46,7 @@ function App() {
             </div>
          )}
          <Toaster
-            position="top-right"
+            position="top-center"
             toastOptions={{
                duration: 3000,
                removeDelay: 1000,
