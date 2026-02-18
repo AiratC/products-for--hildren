@@ -18,12 +18,25 @@ export const createOrder = createAsyncThunk(
          return rejectWithValue(error.response.data);
       }
    }
+);
+
+// Получаем все заказы пользователя
+export const getOrders = createAsyncThunk(
+   'orders/getOrders',
+   async (_, thunkAPI) => {
+      try {
+         const response = await fetchAxios.get('/api/orders/get-orders');
+         return response.data;
+      } catch (error) {
+         return thunkAPI.rejectWithValue(error.response.data)
+      }
+   }
 )
 
 
 const initialState = {
-   loading: false,
-   order: null,
+   loading: true,
+   order: [],
    error: null
 };
 
@@ -45,6 +58,18 @@ const orderSlice = createSlice({
             state.order = action.payload;
          })
          .addCase(createOrder.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+         })
+         // Получаем все заказы пользователя
+         .addCase(getOrders.pending, (state) => {
+            state.loading = true;
+         })
+         .addCase(getOrders.fulfilled, (state, action) => {
+            state.loading = false;
+            state.order = action.payload;
+         })
+         .addCase(getOrders.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload;
          })

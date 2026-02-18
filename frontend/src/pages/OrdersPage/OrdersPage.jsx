@@ -1,121 +1,30 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import styles from './OrdersPage.module.css';
 import { useNavigate } from 'react-router';
+import { useDispatch, useSelector } from 'react-redux';
+import { getOrders } from '../../redux/slices/orderSlice';
+import Loader from '../../components/Loader/Loader';
 
 const OrdersPage = () => {
-   // Если данных пока нет, можно использовать моковые данные для теста
-   const mockOrders = [
-      {
-         id: "5454647",
-         status: "Получен",
-         date: "21.05.2020",
-         payment_method: "Картой онлайн",
-         total_amount: 152000,
-         delivery_method: "Транспортной компанией",
-         address: "Москва, ул. Московская 25-45",
-         recipient: "Анна Москова, +7 919 919 99 99",
-         delivery_date: "с 25 мая",
-         items: [
-            {
-               id: 1,
-               title: "Коляска CYBEX PRIAM LUX JEREMY SCOTT SPECIAL EDITION 2 В 1 на раме TREKKING",
-               image: "https://ir.ozone.ru/s3/multimedia-1-s/wc1000/8039793088.jpg", // Замени на реальный URL
-               quantity: 1
-            },
-            {
-               id: 2,
-               title: "Коляска CYBEX PRIAM LUX JEREMY SCOTT SPECIAL EDITION 2 В 1 на раме TREKKING",
-               image: "https://ir.ozone.ru/s3/multimedia-1-s/wc1000/8039793088.jpg", // Замени на реальный URL
-               quantity: 1
-            },
-            {
-               id: 3,
-               title: "Коляска CYBEX PRIAM LUX JEREMY SCOTT SPECIAL EDITION 2 В 1 на раме TREKKING",
-               image: "https://ir.ozone.ru/s3/multimedia-1-s/wc1000/8039793088.jpg", // Замени на реальный URL
-               quantity: 1
-            }
-         ]
-      },
-      {
-         id: "5454647",
-         status: "Получен",
-         date: "21.05.2020",
-         payment_method: "Картой онлайн",
-         total_amount: 152000,
-         delivery_method: "Транспортной компанией",
-         address: "Москва, ул. Московская 25-45",
-         recipient: "Анна Москова, +7 919 919 99 99",
-         delivery_date: "с 25 мая",
-         items: [
-            {
-               id: 1,
-               title: "Коляска CYBEX PRIAM LUX JEREMY SCOTT SPECIAL EDITION 2 В 1 на раме TREKKING",
-               image: "https://ir.ozone.ru/s3/multimedia-1-s/wc1000/8039793088.jpg", // Замени на реальный URL
-               quantity: 1
-            },
-            {
-               id: 2,
-               title: "Коляска CYBEX PRIAM LUX JEREMY SCOTT SPECIAL EDITION 2 В 1 на раме TREKKING",
-               image: "https://ir.ozone.ru/s3/multimedia-1-s/wc1000/8039793088.jpg", // Замени на реальный URL
-               quantity: 2
-            }
-         ]
-      },
-      {
-         id: "5454647",
-         status: "Получен",
-         date: "21.05.2020",
-         payment_method: "Картой онлайн",
-         total_amount: 152000,
-         delivery_method: "Транспортной компанией",
-         address: "Москва, ул. Московская 25-45",
-         recipient: "Анна Москова, +7 919 919 99 99",
-         delivery_date: "с 25 мая",
-         items: [
-            {
-               id: 1,
-               title: "Коляска CYBEX PRIAM LUX JEREMY SCOTT SPECIAL EDITION 2 В 1 на раме TREKKING",
-               image: "https://ir.ozone.ru/s3/multimedia-1-s/wc1000/8039793088.jpg", // Замени на реальный URL
-               quantity: 1
-            }
-         ]
-      },
-      {
-         id: "5454647",
-         status: "Получен",
-         date: "21.05.2020",
-         payment_method: "Картой онлайн",
-         total_amount: 152000,
-         delivery_method: "Транспортной компанией",
-         address: "Москва, ул. Московская 25-45",
-         recipient: "Анна Москова, +7 919 919 99 99",
-         delivery_date: "с 25 мая",
-         items: [
-            {
-               id: 1,
-               title: "Коляска CYBEX PRIAM LUX JEREMY SCOTT SPECIAL EDITION 2 В 1 на раме TREKKING",
-               image: "https://ir.ozone.ru/s3/multimedia-1-s/wc1000/8039793088.jpg", // Замени на реальный URL
-               quantity: 1
-            },
-            {
-               id: 2,
-               title: "Коляска CYBEX PRIAM LUX JEREMY SCOTT SPECIAL EDITION 2 В 1 на раме TREKKING",
-               image: "https://ir.ozone.ru/s3/multimedia-1-s/wc1000/8039793088.jpg", // Замени на реальный URL
-               quantity: 1
-            },
-            {
-               id: 3,
-               title: "Коляска CYBEX PRIAM LUX JEREMY SCOTT SPECIAL EDITION 2 В 1 на раме TREKKING",
-               image: "https://ir.ozone.ru/s3/multimedia-1-s/wc1000/8039793088.jpg", // Замени на реальный URL
-               quantity: 1
-            }
-         ]
-      }
-   ];
+
    // const mockOrders = [];
    const navigate = useNavigate();
+   const dispatch = useDispatch();
+   const { order, loading } = useSelector(state => state.order);
 
-   const currentOrders = mockOrders || [];
+   useEffect(() => {
+      const getUserOrders = async () => {
+         try {
+            const response = await dispatch(getOrders()).unwrap();
+            console.log(response)
+         } catch (error) {
+            console.log(error)
+         }
+      }
+
+      getUserOrders()
+
+   }, [dispatch])
 
 
    const getStatusColor = useCallback((status) => {
@@ -127,7 +36,36 @@ const OrdersPage = () => {
       }
    }, []);
 
-   if(currentOrders.length === 0) {
+   const getStatusName = useCallback((status) => {
+      switch (status) {
+         case 'delivered': return 'Получен/Доставлен';
+         case 'cancelled': return 'Отменен';
+         case 'processing': return 'В пути';
+         default: return 'Оформлен';
+      }
+   }, [])
+
+   const getPaymentMethodName = useCallback((paymentName) => {
+      switch (paymentName) {
+         case 'card': return 'Картой онлайн';
+         case 'cash_courier': return 'Наличными курьеру';
+         case 'paypal': return 'PayPal';
+         case 'cash_on_delivery': return 'Наличными при получении';
+         default: return 'Ожидание оплаты';
+      }
+   }, [])
+
+   // Способ получения
+   const getDeliveryMethodName = useCallback((deliveryName) => {
+      switch (deliveryName) {
+         case 'tk': return 'Транспортная компания';
+         case 'post': return 'Почта';
+         case 'self': return 'Самовывоз';
+         default: return 'Не выбрано';
+      }
+   }, [])
+
+   if (order.length === 0) {
       return (
          <div className={styles.notOrdersContainer}>
             У вас ещё нет заказов
@@ -138,21 +76,29 @@ const OrdersPage = () => {
       )
    }
 
+   if(loading) {
+      return (
+         <div>
+            <Loader/>
+         </div>
+      )
+   }
+
    return (
       <div className={styles.container}>
          <h1 className={styles.title}>Мои заказы</h1>
          <div className={styles.ordersGrid}>
-            {currentOrders.map((order) => (
-               <div key={order.id} className={styles.orderCard}>
+            {order.map((order) => (
+               <div key={order.order_id} className={styles.orderCard}>
                   {/* Шапка заказа */}
                   <div className={styles.orderHeader}>
-                     <span className={styles.orderNumber}>Заказ №{order.id}</span>
+                     <span className={styles.orderNumber}>Заказ №{order.order_id}</span>
                      <div className={styles.status}>
                         <span
                            className={styles.statusDot}
-                           style={{ backgroundColor: getStatusColor(order.status) }}
+                           style={{ backgroundColor: getStatusColor(order.order_status) }}
                         ></span>
-                        <span style={{ color: getStatusColor(order.status) }}>{order.status}</span>
+                        <span style={{ color: getStatusColor(order.status) }}>{getStatusName(order.order_status)}</span>
                      </div>
                   </div>
 
@@ -175,34 +121,50 @@ const OrdersPage = () => {
                   <div className={styles.detailsBody}>
                      <div className={styles.detailsRow}>
                         <span className={styles.label}>Дата оформления</span>
-                        <span className={styles.value}>{order.date}</span>
+                        <span className={styles.value}>{
+                           order.created_at.split('T')[0]
+                        }</span>
                      </div>
                      <div className={styles.detailsRow}>
                         <span className={styles.label}>Способ оплаты</span>
                         <span className={styles.value}>
-                           {order.payment_method} — {order.total_amount.toLocaleString()} ₽
+                           {getPaymentMethodName(order.payment_method)} — {order.total_amount.toLocaleString()} ₽
                         </span>
                      </div>
                      <div className={styles.detailsRow}>
                         <span className={styles.label}>Способ получения</span>
-                        <span className={styles.value}>{order.delivery_method}</span>
+                        <span className={styles.value}>{getDeliveryMethodName(order.delivery_method)}</span>
                      </div>
-                     <div className={styles.detailsRow}>
-                        <span className={styles.label}>Адрес доставки</span>
-                        <span className={styles.value}>{order.address}</span>
-                     </div>
+                     {
+                        order.delivery_method !== 'self' && (
+                           <div className={styles.detailsRow}>
+                              <span className={styles.label}>Адрес доставки</span>
+                              <span className={styles.value}>{order.address}</span>
+                           </div>
+                        )
+                     }
+
                      <div className={styles.detailsRow}>
                         <span className={styles.label}>Получатель</span>
-                        <span className={styles.value}>{order.recipient}</span>
+                        <span className={styles.value}>{order.contact_info.fullName}</span>
                      </div>
-                     <div className={styles.detailsRow}>
-                        <span className={styles.label}>Дата доставки</span>
-                        <span className={styles.value}>{order.delivery_date}</span>
-                     </div>
-                     <div className={styles.detailsRow}>
-                        <span className={styles.label}>Стоимость доставки</span>
-                        <span className={`${styles.value} ${styles.free}`}>Бесплатно</span>
-                     </div>
+                     {
+                        order.delivery_method !== 'self' && (
+                           <div className={styles.detailsRow}>
+                              <span className={styles.label}>Дата доставки</span>
+                              <span className={styles.value}>{order.delivery_date}</span>
+                           </div>
+                        )
+                     }
+
+                     {
+                        order.delivery_method !== 'self' && (
+                           <div className={styles.detailsRow}>
+                              <span className={styles.label}>Стоимость доставки</span>
+                              <span className={`${styles.value} ${styles.free}`}>Бесплатно</span>
+                           </div>
+                        )
+                     }
                   </div>
                </div>
             ))}
