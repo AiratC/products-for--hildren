@@ -176,3 +176,31 @@ export const createOrder = async (req, res) => {
       });
    };
 };
+
+// Получаем все заказы пользователя
+export const getMyOrders = async (req, res) => {
+   const userId = req.userId;
+
+   try {
+      const result = await query(`
+            SELECT 
+               o.order_id, o.order_status, o.created_at, o.payment_method, 
+               o.delivery_method, o.recipient_address, o.contact_info, o.total_amount, o.comment_the_order,
+               json_agg(json_build_object(
+                  'title', p.title,
+                  'image', p.product_images[1],
+                  'quantity', oi.quantity
+               )) as items
+            FROM orders o
+            JOIN order_items oi ON o.order_id = oi.order_id
+            JOIN products p ON p.product_id = oi.product_id
+            WHERE o.user_id = $1
+            GROUP BY o.order_id
+            ORDER BY o.created_at DESC
+      `, [userId]);
+
+      return res.status(200).json(result.rows);
+   } catch (error) {
+      res.status(500).json({ message: 'Ошибка при получении заказов', error: error.message });
+   }
+};
