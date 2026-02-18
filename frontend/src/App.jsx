@@ -26,8 +26,8 @@ function App() {
 
    useEffect(() => {
       dispatch(checkAuth());
-      dispatch(fetchFavorites())
-      dispatch(fetchCart())
+      dispatch(fetchFavorites());
+      dispatch(fetchCart());
    }, [dispatch]);
 
    return (
