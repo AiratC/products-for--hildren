@@ -14,8 +14,7 @@ const OrdersPage = () => {
    useEffect(() => {
       const getUserOrders = async () => {
          try {
-            const response = await dispatch(getOrders()).unwrap();
-            console.log(response)
+            await dispatch(getOrders()).unwrap();
          } catch (error) {
             console.log(error)
          }
