@@ -1,0 +1,125 @@
+.container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 0 15px;
+  font-family: 'Nunito', sans-serif;
+}
+
+.title {
+  font-size: clamp(24px, 5vw, 32px); /* Адаптивный размер заголовка */
+  color: #4a626d;
+  margin-bottom: 30px;
+}
+
+.userHeader {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 40px;
+}
+
+.avatar {
+  width: 50px;
+  height: 50px;
+  background: #eef7fc;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #86caed;
+  flex-shrink: 0;
+}
+
+.emailText {
+  font-size: 16px;
+  color: #4a626d;
+  word-break: break-all; /* Чтобы длинный email не вылезал за экран */
+}
+
+/* Секции данных */
+.section {
+  padding: 20px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.row {
+  display: flex;
+  flex-direction: row; /* Десктоп: в линию */
+  align-items: center;
+  gap: 10px;
+  min-height: 40px;
+}
+
+.label {
+  width: 120px;
+  font-size: 14px;
+  color: #829399;
+  flex-shrink: 0;
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.value {
+  font-size: 16px;
+  color: #4a626d;
+}
+
+.inputField {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #86caed;
+  border-radius: 8px;
+  font-family: inherit;
+  outline: none;
+}
+
+.editBtn, .addBtn {
+  background: none;
+  border: none;
+  color: #86caed;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 5px;
+  white-space: nowrap;
+}
+
+.passwordBox {
+  width: 100%;
+  max-width: 300px;
+  height: 45px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+  color: #829399;
+  letter-spacing: 2px;
+}
+
+/* --- АДАПТИВ (Мобильные устройства) --- */
+@media (max-width: 600px) {
+  .row {
+    flex-direction: column; /* Складываем в колонку */
+    align-items: flex-start;
+    gap: 5px;
+  }
+
+  .label {
+    width: 100%;
+    margin-bottom: 2px;
+  }
+
+  .content {
+    width: 100%;
+  }
+
+  .passwordBox {
+    max-width: 100%; /* Пароль на всю ширину */
+  }
+}

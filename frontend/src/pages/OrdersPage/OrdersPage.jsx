@@ -25,6 +25,12 @@ const OrdersPage = () => {
    }, [dispatch])
 
 
+
+   useEffect(() => {
+      window.scrollTo(0, 0);
+   }, []);
+
+
    const getStatusColor = useCallback((status) => {
       switch (status) {
          case 'delivered': return '#27ae60';  // Зеленый
@@ -85,86 +91,91 @@ const OrdersPage = () => {
       <div className={styles.container}>
          <h1 className={styles.title}>Мои заказы</h1>
          <div className={styles.ordersGrid}>
-            {orders.map((order) => (
-               <div key={order.order_id} className={styles.orderCard}>
-                  {/* Шапка заказа */}
-                  <div className={styles.orderHeader}>
-                     <span className={styles.orderNumber}>Заказ №{order.order_id}</span>
-                     <div className={styles.status}>
-                        <span
-                           className={styles.statusDot}
-                           style={{ backgroundColor: getStatusColor(order.order_status) }}
-                        ></span>
-                        <span style={{ color: getStatusColor(order.order_status) }}>{getStatusName(order.order_status)}</span>
-                     </div>
-                  </div>
-
-                  {/* СПИСОК ТОВАРОВ В ЗАКАЗЕ */}
-                  <div className={styles.itemsList}>
-                     {order.items.map((item) => (
-                        <div key={item.order_id + '-' + item.product_id} className={styles.productItem}>
-                           <div className={styles.productImgWrapper}>
-                              <img src={item.image} alt={item.title} className={styles.productImg} />
-                           </div>
-                           <div className={styles.productInfo}>
-                              <p className={styles.productTitle}>{item.title}</p>
-                              <span className={styles.productCount}>{item.quantity} шт.</span>
+            {
+               Array.isArray(orders) && (
+                  orders.map((order) => (
+                     <div key={order.order_id} className={styles.orderCard}>
+                        {/* Шапка заказа */}
+                        <div className={styles.orderHeader}>
+                           <span className={styles.orderNumber}>Заказ №{order.order_id}</span>
+                           <div className={styles.status}>
+                              <span
+                                 className={styles.statusDot}
+                                 style={{ backgroundColor: getStatusColor(order.order_status) }}
+                              ></span>
+                              <span style={{ color: getStatusColor(order.order_status) }}>{getStatusName(order.order_status)}</span>
                            </div>
                         </div>
-                     ))}
-                  </div>
 
-                  {/* Детальная информация */}
-                  <div className={styles.detailsBody}>
-                     <div className={styles.detailsRow}>
-                        <span className={styles.label}>Дата оформления</span>
-                        <span className={styles.value}>{
-                           new Date(order.created_at).toLocaleDateString('ru-RU')
-                        }</span>
-                     </div>
-                     <div className={styles.detailsRow}>
-                        <span className={styles.label}>Способ оплаты</span>
-                        <span className={styles.value}>
-                           {getPaymentMethodName(order.payment_method)} — {order.total_amount.toLocaleString()} ₽
-                        </span>
-                     </div>
-                     <div className={styles.detailsRow}>
-                        <span className={styles.label}>Способ получения</span>
-                        <span className={styles.value}>{getDeliveryMethodName(order.delivery_method)}</span>
-                     </div>
-                     {
-                        order.delivery_method !== 'self' && (
-                           <div className={styles.detailsRow}>
-                              <span className={styles.label}>Адрес доставки</span>
-                              <span className={styles.value}>{order.address}</span>
-                           </div>
-                        )
-                     }
+                        {/* СПИСОК ТОВАРОВ В ЗАКАЗЕ */}
+                        <div className={styles.itemsList}>
+                           {order.items.map((item) => (
+                              <div key={item.order_id + '-' + item.product_id} className={styles.productItem}>
+                                 <div className={styles.productImgWrapper}>
+                                    <img src={item.image} alt={item.title} className={styles.productImg} />
+                                 </div>
+                                 <div className={styles.productInfo}>
+                                    <p className={styles.productTitle}>{item.title}</p>
+                                    <span className={styles.productCount}>{item.quantity} шт.</span>
+                                 </div>
+                              </div>
+                           ))}
+                        </div>
 
-                     <div className={styles.detailsRow}>
-                        <span className={styles.label}>Получатель</span>
-                        <span className={styles.value}>{order.contact_info?.fullName || 'Не указан'}</span>
-                     </div>
-                     {
-                        order.delivery_method !== 'self' && (
+                        {/* Детальная информация */}
+                        <div className={styles.detailsBody}>
                            <div className={styles.detailsRow}>
-                              <span className={styles.label}>Дата доставки</span>
-                              <span className={styles.value}>{order.delivery_date}</span>
+                              <span className={styles.label}>Дата оформления</span>
+                              <span className={styles.value}>{
+                                 new Date(order.created_at).toLocaleDateString('ru-RU')
+                              }</span>
                            </div>
-                        )
-                     }
+                           <div className={styles.detailsRow}>
+                              <span className={styles.label}>Способ оплаты</span>
+                              <span className={styles.value}>
+                                 {getPaymentMethodName(order.payment_method)} — {order.total_amount.toLocaleString()} ₽
+                              </span>
+                           </div>
+                           <div className={styles.detailsRow}>
+                              <span className={styles.label}>Способ получения</span>
+                              <span className={styles.value}>{getDeliveryMethodName(order.delivery_method)}</span>
+                           </div>
+                           {
+                              order.delivery_method !== 'self' && (
+                                 <div className={styles.detailsRow}>
+                                    <span className={styles.label}>Адрес доставки</span>
+                                    <span className={styles.value}>{order.address}</span>
+                                 </div>
+                              )
+                           }
 
-                     {
-                        order.delivery_method !== 'self' && (
                            <div className={styles.detailsRow}>
-                              <span className={styles.label}>Стоимость доставки</span>
-                              <span className={`${styles.value} ${styles.free}`}>Бесплатно</span>
+                              <span className={styles.label}>Получатель</span>
+                              <span className={styles.value}>{order.contact_info?.fullName || 'Не указан'}</span>
                            </div>
-                        )
-                     }
-                  </div>
-               </div>
-            ))}
+                           {
+                              order.delivery_method !== 'self' && (
+                                 <div className={styles.detailsRow}>
+                                    <span className={styles.label}>Дата доставки</span>
+                                    <span className={styles.value}>{order.delivery_date}</span>
+                                 </div>
+                              )
+                           }
+
+                           {
+                              order.delivery_method !== 'self' && (
+                                 <div className={styles.detailsRow}>
+                                    <span className={styles.label}>Стоимость доставки</span>
+                                    <span className={`${styles.value} ${styles.free}`}>Бесплатно</span>
+                                 </div>
+                              )
+                           }
+                        </div>
+                     </div>
+                  ))
+               )
+
+            }
          </div>
       </div>
    );

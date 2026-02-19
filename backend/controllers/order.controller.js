@@ -32,6 +32,16 @@ export const createOrder = async (req, res) => {
       })
    };
 
+   if(
+      (!fullName && delivery_method === 'self') ||
+      (!email && delivery_method === 'self') ||
+      (!phone && delivery_method === 'self')
+   ) {
+      return res.status(400).json({
+         message: 'Заполните все поля адреса'
+      })
+   }
+
    if (
       (!fullName && delivery_method !== 'self') ||
       (!phone && delivery_method !== 'self') ||
