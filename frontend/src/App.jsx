@@ -17,6 +17,7 @@ import CartPage from "./pages/CartPage/CartPage";
 import CheckoutPage from "./pages/CheckoutPage/CheckoutPage";
 import PageNotFound from "./pages/PageNotFound/PageNotFound";
 import OrdersPage from "./pages/OrdersPage/OrdersPage";
+import ProfilePage from "./pages/ProfilePage/ProfilePage";
 
 function App() {
    useScrollRestoration();
@@ -78,6 +79,8 @@ function App() {
                <Route path="*" element={<PageNotFound/>}></Route>
                {/* Order Page */}
                <Route path="/orders" element={<OrdersPage/>}></Route>
+               {/* Profile Page */}
+               <Route path="/settings" element={<ProfilePage/>}></Route>
             </Route>
          </Routes>
       </>
