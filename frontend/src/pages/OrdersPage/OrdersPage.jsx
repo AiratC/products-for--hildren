@@ -9,7 +9,7 @@ const OrdersPage = () => {
 
    const navigate = useNavigate();
    const dispatch = useDispatch();
-   const { order, loading } = useSelector(state => state.order);
+   const { orders, loading } = useSelector(state => state.order);
 
    useEffect(() => {
       const getUserOrders = async () => {
@@ -27,10 +27,10 @@ const OrdersPage = () => {
 
    const getStatusColor = useCallback((status) => {
       switch (status) {
-         case 'Получен': return '#27ae60';
-         case 'Отменен': return '#eb5757';
-         case 'В пути': return '#56ccf2';
-         default: return '#829399';
+         case 'delivered': return '#27ae60';  // Зеленый
+         case 'cancelled': return '#eb5757';  // Красный
+         case 'processing': return '#56ccf2'; // Голубой
+         default: return '#829399';           // Серый
       }
    }, []);
 
@@ -63,21 +63,20 @@ const OrdersPage = () => {
       }
    }, [])
 
-   if (order.length === 0) {
+   // 3. Исправляем условие проверки (проверяем на массив и длину)
+   if (!loading && (!orders || orders.length === 0)) {
       return (
          <div className={styles.notOrdersContainer}>
-            У вас ещё нет заказов
-            <button onClick={() => navigate('/')}>
-               Главная
-            </button>
+            <p>У вас ещё нет заказов</p>
+            <button onClick={() => navigate('/')}>На главную</button>
          </div>
-      )
+      );
    }
 
-   if(loading) {
+   if (loading) {
       return (
          <div>
-            <Loader/>
+            <Loader />
          </div>
       )
    }
@@ -86,7 +85,7 @@ const OrdersPage = () => {
       <div className={styles.container}>
          <h1 className={styles.title}>Мои заказы</h1>
          <div className={styles.ordersGrid}>
-            {order.map((order) => (
+            {orders.map((order) => (
                <div key={order.order_id} className={styles.orderCard}>
                   {/* Шапка заказа */}
                   <div className={styles.orderHeader}>
@@ -96,14 +95,14 @@ const OrdersPage = () => {
                            className={styles.statusDot}
                            style={{ backgroundColor: getStatusColor(order.order_status) }}
                         ></span>
-                        <span style={{ color: getStatusColor(order.status) }}>{getStatusName(order.order_status)}</span>
+                        <span style={{ color: getStatusColor(order.order_status) }}>{getStatusName(order.order_status)}</span>
                      </div>
                   </div>
 
                   {/* СПИСОК ТОВАРОВ В ЗАКАЗЕ */}
                   <div className={styles.itemsList}>
                      {order.items.map((item) => (
-                        <div key={item.id} className={styles.productItem}>
+                        <div key={item.order_id + '-' + item.product_id} className={styles.productItem}>
                            <div className={styles.productImgWrapper}>
                               <img src={item.image} alt={item.title} className={styles.productImg} />
                            </div>
@@ -120,7 +119,7 @@ const OrdersPage = () => {
                      <div className={styles.detailsRow}>
                         <span className={styles.label}>Дата оформления</span>
                         <span className={styles.value}>{
-                           order.created_at.split('T')[0]
+                           new Date(order.created_at).toLocaleDateString('ru-RU')
                         }</span>
                      </div>
                      <div className={styles.detailsRow}>
@@ -144,7 +143,7 @@ const OrdersPage = () => {
 
                      <div className={styles.detailsRow}>
                         <span className={styles.label}>Получатель</span>
-                        <span className={styles.value}>{order.contact_info.fullName}</span>
+                        <span className={styles.value}>{order.contact_info?.fullName || 'Не указан'}</span>
                      </div>
                      {
                         order.delivery_method !== 'self' && (

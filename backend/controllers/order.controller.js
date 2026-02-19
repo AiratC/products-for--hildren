@@ -189,7 +189,9 @@ export const getMyOrders = async (req, res) => {
                json_agg(json_build_object(
                   'title', p.title,
                   'image', p.product_images[1],
-                  'quantity', oi.quantity
+                  'quantity', oi.quantity,
+                  'order_id', o.order_id,
+					   'product_id', p.product_id
                )) as items
             FROM orders o
             JOIN order_items oi ON o.order_id = oi.order_id
