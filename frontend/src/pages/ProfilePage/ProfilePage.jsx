@@ -19,6 +19,7 @@ const ProfilePage = () => {
    const [userData, setUserData] = useState({
       name: '',
       phone: '',
+      email: '',
       delivery_address: '',
       avatar: '',
       oldPassword: '',
@@ -36,6 +37,7 @@ const ProfilePage = () => {
          setUserData({
             name: user.name || '',
             phone: user.phone || '',
+            email: user.email,
             delivery_address: user.delivery_address || '',
             avatar: user.avatar || ''
          });
