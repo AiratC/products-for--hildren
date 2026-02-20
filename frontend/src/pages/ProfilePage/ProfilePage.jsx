@@ -99,7 +99,6 @@ const ProfilePage = () => {
 
       try {
          const response = await dispatch(updateUserProfile(formData)).unwrap();
-         console.log(response);
          toast.success(response.message)
          setUserData(prev => ({ ...prev, oldPassword: '', newPassword: '', repeatPassword: '' }))
       } catch (error) {
