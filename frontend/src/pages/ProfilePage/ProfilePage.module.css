@@ -147,6 +147,19 @@
    font-weight: bold;
 }
 
+.updateUserLoader {
+   display: flex;
+   justify-content: center;
+   max-width: 149px;
+   margin-bottom: 30px;
+}
+
+.updateUserLoader span {
+   width: 20px;
+   height: 20px;
+
+}
+
 /* --- АДАПТИВ (Мобильные устройства) --- */
 @media (max-width: 600px) {
    .row {

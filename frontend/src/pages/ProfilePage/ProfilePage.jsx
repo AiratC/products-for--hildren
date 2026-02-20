@@ -3,6 +3,8 @@ import styles from './ProfilePage.module.css';
 import { Pencil } from 'lucide-react';
 import { useDispatch, useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
+import { updateUserProfile } from '../../redux/slices/authUserSlice';
+import Loader from '../../components/Loader/Loader';
 
 const ProfilePage = () => {
    const [isEditing, setIsEditing] = useState({
@@ -15,7 +17,7 @@ const ProfilePage = () => {
       repeatPassword: false
 
    });
-   const { user } = useSelector(state => state.authUser)
+   const { user, loading } = useSelector(state => state.authUser);
    const [userData, setUserData] = useState({
       name: '',
       phone: '',
@@ -81,8 +83,8 @@ const ProfilePage = () => {
       formData.append('delivery_address', userData.delivery_address);
 
       // Если пользователь меняет пароль
-      if(userData.newPassword) {
-         if(userData.newPassword !== userData.repeatPassword) {
+      if (userData.newPassword) {
+         if (userData.newPassword !== userData.repeatPassword) {
             toast.error('Пароли не совпадают!');
             return;
          }
@@ -91,11 +93,20 @@ const ProfilePage = () => {
       };
 
       // Добавляем файл, если он был выбран (мы его сохранили в newAvatar)
-      if(userData.newAvatar) {
+      if (userData.newAvatar) {
          formData.append('newAvatar', userData.newAvatar);
       };
 
-   }, [userData])
+      try {
+         const response = await dispatch(updateUserProfile(formData)).unwrap();
+         console.log(response);
+         toast.success(response.message)
+         setUserData(prev => ({ ...prev, oldPassword: '', newPassword: '', repeatPassword: '' }))
+      } catch (error) {
+         toast.error(error.message)
+      }
+
+   }, [userData, dispatch])
 
    return (
       <div className={styles.container}>
@@ -214,9 +225,9 @@ const ProfilePage = () => {
                </div>
             </div>
             <div className={styles.specialCharactersContainer}>
-                  <h5>Длина пароля должна быть минимум 12 символов из них как минимум 4 спецсимвола</h5>
-                  <span>{specialCharacters}</span>
-               </div>
+               <h5>Длина пароля должна быть минимум 12 символов из них как минимум 4 спецсимвола</h5>
+               <span>{specialCharacters}</span>
+            </div>
             <div className={styles.changePasswordContainer}>
                <div>
                   <input
@@ -250,12 +261,20 @@ const ProfilePage = () => {
          </div>
 
          <div>
-            <button
-               className={styles.saveBtn}
-               onClick={handleSave}
-            >
-               Сохранить
-            </button>
+            {
+               loading ? (
+                  <div className={styles.updateUserLoader}>
+                     <Loader />
+                  </div>
+               ) : (
+                  <button
+                     className={styles.saveBtn}
+                     onClick={handleSave}
+                  >
+                     Сохранить
+                  </button>
+               )
+            }
          </div>
       </div>
    );

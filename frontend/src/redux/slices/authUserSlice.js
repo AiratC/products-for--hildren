@@ -40,6 +40,19 @@ export const checkAuth = createAsyncThunk(
    }
 );
 
+// Обновление данных пользователя
+export const updateUserProfile = createAsyncThunk(
+   'user/updateUserProfile',
+   async (formData, thunkAPI) => {
+      try {
+         const response = await fetchAxios.post('/api/user/update-user-profile', formData);
+         return response.data
+      } catch (error) {
+         return thunkAPI.rejectWithValue(error.response.data)
+      }
+   },
+);
+
 const initialState = {
    loading: false,
    error: false,
@@ -97,6 +110,17 @@ export const authUserSlice = createSlice({
          .addCase(checkAuth.rejected, (state) => {
             state.user = undefined;
             state.isCheckingAuth = false;
+         })
+         // Обновление данных пользователя
+         .addCase(updateUserProfile.pending, (state) => {
+            state.loading = true;
+         })
+         .addCase(updateUserProfile.fulfilled, (state, action) => {
+            state.loading = false;
+            state.user = action.payload.user;
+         })
+         .addCase(updateUserProfile.rejected, (state) => {
+            state.loading = false;
          })
    }
 })
