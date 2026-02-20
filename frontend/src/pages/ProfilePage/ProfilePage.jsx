@@ -50,8 +50,6 @@ const ProfilePage = () => {
       setUserData(prev => ({ ...prev, [field]: e.target.value }));
    };
 
-   console.log(userData)
-
    return (
       <div className={styles.container}>
          <h1 className={styles.title}>Личные данные</h1>
