@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styles from './ProfilePage.module.css';
 import { Pencil } from 'lucide-react';
 import { useSelector } from 'react-redux';
@@ -23,7 +23,8 @@ const ProfilePage = () => {
       avatar: '',
       oldPassword: '',
       newPassword: '',
-      repeatPassword: ''
+      repeatPassword: '',
+      newAvatar: ''
    });
 
    // Добавляем этот блок:
@@ -40,13 +41,33 @@ const ProfilePage = () => {
       }
    }, [user]); // Как только user в Redux изменится, данные попадут в локальный стейт
 
-   const toggleEdit = (field) => {
-      setIsEditing(prev => ({ ...prev, [field]: !prev[field] }));
-   };
+   useEffect(() => {
+      return () => {
+         // Если аватар — это Blob-ссылка (начинается с blob:), удаляем её при размонтировании
+         if (userData.avatar && userData.avatar.startsWith('blob:')) {
+            URL.revokeObjectURL(userData.avatar);
+         }
+      };
+   }, [userData.avatar]);
 
-   const handleChange = (e, field) => {
+   const toggleEdit = useCallback((field) => {
+      setIsEditing(prev => ({ ...prev, [field]: !prev[field] }));
+   }, []);
+
+   const handleChange = useCallback((e, field) => {
       setUserData(prev => ({ ...prev, [field]: e.target.value }));
-   };
+   }, []);
+
+   const handleChangeAvatar = useCallback((event) => {
+      const file = event.target.files[0];
+      if (file) {
+         // Создаем временную ссылку для отображения
+         const previewUrl = URL.createObjectURL(file);
+
+         setUserData(prevData => ({ ...prevData, [event.target.name]: previewUrl, newAvatar: file }))
+      }
+
+   }, []);
 
    return (
       <div className={styles.container}>
@@ -54,9 +75,21 @@ const ProfilePage = () => {
 
          <div className={styles.userHeader}>
             <div className={styles.avatar}>
-               <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                  <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2M12 11a4 4 0 100-8 4 4 0 000 8z" />
-               </svg>
+               {
+                  userData.avatar ? (
+                     <label className={styles.avatarContainer} htmlFor="avatar">
+                        <input onChange={handleChangeAvatar} type="file" name="avatar" id="avatar" />
+                        <img src={userData.avatar} alt="avatar" />
+                     </label>
+                  ) : (
+                     <label className={styles.avatarContainer} htmlFor="avatar">
+                        <input onChange={handleChangeAvatar} type="file" name="avatar" id="avatar" />
+                        <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                           <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2M12 11a4 4 0 100-8 4 4 0 000 8z" />
+                        </svg>
+                     </label>
+                  )
+               }
             </div>
             <span className={styles.emailText}>{userData.email}</span>
          </div>
@@ -152,36 +185,36 @@ const ProfilePage = () => {
                   </button>
                </div>
             </div>
-                  <div className={styles.changePasswordContainer}>
-                     <div>
-                        <input
-                           className={styles.inputField}
-                           type="password"
-                           placeholder='Старый пароль'
-                           value={userData.oldPassword}
-                           onChange={(e) => handleChange(e, 'oldPassword')}
-                        />
-                     </div>
-                     <div>
-                        <input
-                           className={styles.inputField}
-                           type="password"
-                           placeholder='Новый пароль'
-                           value={userData.newPassword}
-                           onChange={(e) => handleChange(e, 'newPassword')}
+            <div className={styles.changePasswordContainer}>
+               <div>
+                  <input
+                     className={styles.inputField}
+                     type="password"
+                     placeholder='Старый пароль'
+                     value={userData.oldPassword}
+                     onChange={(e) => handleChange(e, 'oldPassword')}
+                  />
+               </div>
+               <div>
+                  <input
+                     className={styles.inputField}
+                     type="password"
+                     placeholder='Новый пароль'
+                     value={userData.newPassword}
+                     onChange={(e) => handleChange(e, 'newPassword')}
 
-                        />
-                     </div>
-                     <div>
-                        <input
-                           className={styles.inputField}
-                           type="password"
-                           placeholder='Повторите новый пароль'
-                           value={userData.repeatPassword}
-                           onChange={(e) => handleChange(e, 'repeatPassword')}
-                        />
-                     </div>
-                  </div>
+                  />
+               </div>
+               <div>
+                  <input
+                     className={styles.inputField}
+                     type="password"
+                     placeholder='Повторите новый пароль'
+                     value={userData.repeatPassword}
+                     onChange={(e) => handleChange(e, 'repeatPassword')}
+                  />
+               </div>
+            </div>
          </div>
       </div>
    );

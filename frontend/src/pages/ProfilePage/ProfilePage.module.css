@@ -20,8 +20,8 @@
 }
 
 .avatar {
-   width: 50px;
-   height: 50px;
+   width: 80px;
+   height: 80px;
    background: #eef7fc;
    border-radius: 50%;
    display: flex;
@@ -29,6 +29,22 @@
    justify-content: center;
    color: #86caed;
    flex-shrink: 0;
+}
+
+.avatarContainer {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+}
+
+.avatarContainer img {
+   width: 80px;
+   height: 80px;
+   border-radius: 50%;
+}
+
+.avatarContainer input {
+   width: 0%;
 }
 
 .emailText {
