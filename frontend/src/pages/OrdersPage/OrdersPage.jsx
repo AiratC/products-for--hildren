@@ -81,7 +81,7 @@ const OrdersPage = () => {
 
    if (loading) {
       return (
-         <div>
+         <div className='preloader'>
             <Loader />
          </div>
       )
