@@ -25,8 +25,6 @@ const ProfilePage = () => {
       newPassword: '',
       repeatPassword: ''
    });
-   const [showChangePassword, setShowChangePassword] = useState(false);
-
 
    // Добавляем этот блок:
    useEffect(() => {
@@ -149,16 +147,11 @@ const ProfilePage = () => {
          <div className={styles.section} style={{ border: 'none' }}>
             <div className={styles.row}>
                <div className={styles.content}>
-                  <button onClick={() => setShowChangePassword(prev => !prev)} className={styles.editBtn}>
-                     {
-                        showChangePassword ? 'Закрыть' : 'Изменить пароль'
-                     }
-
+                  <button className={styles.editBtn}>
+                     Изменить пароль
                   </button>
                </div>
             </div>
-            {
-               showChangePassword && (
                   <div className={styles.changePasswordContainer}>
                      <div>
                         <input
@@ -189,9 +182,6 @@ const ProfilePage = () => {
                         />
                      </div>
                   </div>
-               )
-            }
-
          </div>
       </div>
    );
