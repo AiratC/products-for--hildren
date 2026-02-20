@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import styles from './ProfilePage.module.css';
 import { Pencil } from 'lucide-react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 const ProfilePage = () => {
    const [isEditing, setIsEditing] = useState({
@@ -26,6 +26,7 @@ const ProfilePage = () => {
       repeatPassword: '',
       newAvatar: ''
    });
+   const dispatch = useDispatch();
 
    // Добавляем этот блок:
    useEffect(() => {
@@ -68,6 +69,10 @@ const ProfilePage = () => {
       }
 
    }, []);
+
+   const handleSave = useCallback(async () => {
+
+   }, [])
 
    return (
       <div className={styles.container}>
@@ -215,6 +220,15 @@ const ProfilePage = () => {
                   />
                </div>
             </div>
+         </div>
+
+         <div>
+            <button
+               className={styles.saveBtn}
+               onClick={handleSave}
+            >
+               Сохранить
+            </button>
          </div>
       </div>
    );
