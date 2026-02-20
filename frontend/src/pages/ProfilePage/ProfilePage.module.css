@@ -142,6 +142,11 @@
    margin-bottom: 20px;
 }
 
+.specialCharactersContainer {
+   color: red;
+   font-weight: bold;
+}
+
 /* --- АДАПТИВ (Мобильные устройства) --- */
 @media (max-width: 600px) {
    .row {

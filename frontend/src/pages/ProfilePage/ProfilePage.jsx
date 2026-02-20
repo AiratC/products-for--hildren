@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import styles from './ProfilePage.module.css';
 import { Pencil } from 'lucide-react';
 import { useDispatch, useSelector } from 'react-redux';
+import toast from 'react-hot-toast';
 
 const ProfilePage = () => {
    const [isEditing, setIsEditing] = useState({
@@ -18,7 +19,6 @@ const ProfilePage = () => {
    const [userData, setUserData] = useState({
       name: '',
       phone: '',
-      email: '',
       delivery_address: '',
       avatar: '',
       oldPassword: '',
@@ -27,6 +27,7 @@ const ProfilePage = () => {
       newAvatar: ''
    });
    const dispatch = useDispatch();
+   const specialCharacters = `~ ! @ # $ % ^ & * ( )`;
 
    // Добавляем этот блок:
    useEffect(() => {
@@ -35,7 +36,6 @@ const ProfilePage = () => {
          setUserData({
             name: user.name || '',
             phone: user.phone || '',
-            email: user.email || '',
             delivery_address: user.delivery_address || '',
             avatar: user.avatar || ''
          });
@@ -71,8 +71,29 @@ const ProfilePage = () => {
    }, []);
 
    const handleSave = useCallback(async () => {
+      const formData = new FormData();
 
-   }, [])
+      // Добавляем текстовые поля
+      formData.append('name', userData.name);
+      formData.append('phone', userData.phone);
+      formData.append('delivery_address', userData.delivery_address);
+
+      // Если пользователь меняет пароль
+      if(userData.newPassword) {
+         if(userData.newPassword !== userData.repeatPassword) {
+            toast.error('Пароли не совпадают!');
+            return;
+         }
+         formData.append('oldPassword', userData.oldPassword);
+         formData.append('newPassword', userData.newPassword);
+      };
+
+      // Добавляем файл, если он был выбран (мы его сохранили в newAvatar)
+      if(userData.newAvatar) {
+         formData.append('newAvatar', userData.newAvatar);
+      };
+
+   }, [userData])
 
    return (
       <div className={styles.container}>
@@ -190,6 +211,10 @@ const ProfilePage = () => {
                   </button>
                </div>
             </div>
+            <div className={styles.specialCharactersContainer}>
+                  <h5>Длина пароля должна быть минимум 12 символов из них как минимум 4 спецсимвола</h5>
+                  <span>{specialCharacters}</span>
+               </div>
             <div className={styles.changePasswordContainer}>
                <div>
                   <input
