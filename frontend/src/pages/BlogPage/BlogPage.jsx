@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchBlogs, setCurrentPage } from '../../redux/slices/blogSlice';
 import styles from './BlogPage.module.css';
@@ -19,11 +19,11 @@ const BlogPage = () => {
    }, [dispatch, currentPage]);
 
    // Обработчик клика теперь ТУПО меняет номер в сторе
-   const handlePageChange = (page) => {
+   const handlePageChange = useCallback((page) => {
       if (typeof page === 'number' && page !== currentPage) {
          dispatch(setCurrentPage(page));
       }
-   };
+   }, [dispatch, currentPage]);
 
    return (
       <div className={styles.container} style={{ minHeight: '80vh', position: 'relative' }}>

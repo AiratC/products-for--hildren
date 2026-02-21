@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchStocks, setCurrentPage } from '../../redux/slices/stockSlice';
 import styles from './StocksPage.module.css';
@@ -26,11 +26,11 @@ const StocksPage = () => {
       fetchGetStocks()
    }, [dispatch, currentPage]);
 
-   const handlePageChange = (page) => {
+   const handlePageChange = useCallback((page) => {
       if (typeof page === 'number' && page !== currentPage) {
          dispatch(setCurrentPage(page));
       }
-   };
+   }, [dispatch, currentPage]);
 
    return (
       <div className={styles.container}>
