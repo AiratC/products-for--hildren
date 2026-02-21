@@ -14,7 +14,43 @@ import MobileMenu from '../MobileMenu/MobileMenu';
 import AuthPopup from '../AuthPopup/AuthPopup';
 import { useSelector } from 'react-redux';
 
-
+const links = [
+   {
+      id: 1,
+      link: '/stocks',
+      name: 'Акции'
+   },
+   {
+      id: 2,
+      link: '/about',
+      name: 'О нас'
+   },
+   {
+      id: 3,
+      link: '/blogs',
+      name: 'Блог'
+   },
+   {
+      id: 4,
+      link: '/wholesale-clients',
+      name: 'Оптовым клиентам'
+   },
+   {
+      id: 5,
+      link: '/return',
+      name: 'Возврат'
+   },
+   {
+      id: 6,
+      link: '/payment-and-delivery',
+      name: 'Оплата и доставка'
+   },
+   {
+      id: 7,
+      link: '/contacts',
+      name: 'Контакты'
+   }
+]
 
 const Navbar = () => {
    const [isMenuOpen, setIsMenuOpen] = useState(false); // Для мобильного меню
@@ -80,13 +116,18 @@ const Navbar = () => {
                </span>
                <div className={styles.navigationMenuBottomContainer}>
                   <ul className={`${styles.navigationMenuBottom}`}>
-                     <Link to={`/stocks`}><li>Акции</li></Link>
-                     <li>О нас</li>
-                     <Link to={`/blogs`}><li>Блог</li></Link>
-                     <li>Оптовым клиентам</li>
-                     <li>Возврат</li>
-                     <li>Оплата и доставка</li>
-                     <li>Контакты</li>
+                     {
+                        links.map((link) => (
+                           <Link
+                              key={link.id}
+                              to={`${link.link}`}
+                           >
+                              <li>
+                                 {link.name}
+                              </li>
+                           </Link>
+                        ))
+                     }
                   </ul>
                </div>
                <div className={styles.cityContainer}>
