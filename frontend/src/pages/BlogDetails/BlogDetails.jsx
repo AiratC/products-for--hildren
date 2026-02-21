@@ -10,7 +10,6 @@ const BlogDetails = () => {
    const navigate = useNavigate();
    const [blog, setBlog] = useState(null);
    const [loading, setLoading] = useState(true);
-   console.log(blog)
 
    useEffect(() => {
       const fetchFullBlog = async () => {
