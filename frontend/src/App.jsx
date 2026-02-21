@@ -22,6 +22,7 @@ import BlogPage from "./pages/BlogPage/BlogPage";
 import BlogDetails from "./pages/BlogDetails/BlogDetails";
 import StocksPage from "./pages/StocksPage/StocksPage";
 import StockDetails from "./pages/StockDetails/StockDetails";
+import ContactsPage from "./pages/ContactsPage/ContactsPage";
 
 function App() {
    useScrollRestoration();
@@ -93,6 +94,8 @@ function App() {
                <Route path="/stocks" element={<StocksPage/>}></Route>
                {/* Stock Details */}
                <Route path={`/stocks/:id`} element={<StockDetails/>}></Route>
+               {/* Contacts Page */}
+               <Route path="/contacts" element={<ContactsPage/>}></Route>
             </Route>
          </Routes>
       </>

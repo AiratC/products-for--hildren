@@ -1,0 +1,135 @@
+.containerContacts {
+   padding: 40px 10px;
+}
+
+.mainTitle {
+   font-size: 36px;
+   color: #4A627D;
+   margin-bottom: 40px;
+   font-weight: 600;
+}
+
+.contentWrapper {
+   display: flex;
+   gap: 60px;
+   margin-bottom: 80px;
+}
+
+.infoSide {
+   flex: 1;
+}
+
+.infoBlock {
+   margin-bottom: 32px;
+}
+
+.infoBlock h3 {
+   font-size: 18px;
+   color: #4A627D;
+   margin-bottom: 16px;
+   font-weight: 600;
+}
+
+.infoBlock p {
+   color: #7f8c8d;
+   margin-bottom: 8px;
+}
+
+.socialIcons {
+   display: flex;
+   gap: 15px;
+   align-items: center;
+   margin-top: 10px;
+}
+
+.vkIcon {
+   display: block;
+   background-color: #119cff;
+   padding: 8px 9px;
+   border-radius: 50%;
+   color: white;
+   font-size: 19px;
+   cursor: pointer;
+}
+
+.formSide {
+   flex: 1.5;
+}
+
+.formSide h3 {
+   font-size: 18px;
+   color: #4A627D;
+   margin-bottom: 28px;
+}
+
+.inputRow {
+   display: flex;
+   gap: 20px;
+   margin-bottom: 20px;
+}
+
+.inputRow input, textarea {
+   font-size: 18px;
+}
+
+.contactForm input[type="text"],
+.contactForm textarea {
+   width: 100%;
+   padding: 15px;
+   border: 1px solid #E2E8F0;
+   border-radius: 8px;
+   outline: none;
+   background-color: #fdfdfd;
+}
+
+.checkboxLabel {
+   display: flex;
+   align-items: center;
+   gap: 10px;
+   margin: 20px 0;
+   font-size: 14px;
+   color: #7f8c8d;
+   cursor: pointer;
+}
+
+.submitBtn {
+   background-color: #7FC9F0;
+   color: white;
+   border: none;
+   padding: 15px 40px;
+   border-radius: 8px;
+   width: 100%;
+   font-size: 16px;
+   cursor: pointer;
+   transition: background-color 0.3s;
+}
+
+.submitBtn:hover {
+   background-color: #79b4f0;
+}
+
+.mapContainer {
+   border-radius: 15px;
+   overflow: hidden;
+   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+
+/* --- ADAPTIVE --- */
+
+@media (max-width: 992px) {
+   .contentWrapper {
+      flex-direction: column;
+      gap: 40px;
+   }
+}
+
+@media (max-width: 600px) {
+   .inputRow {
+      flex-direction: column;
+   }
+   
+   .mainTitle {
+      font-size: 28px;
+   }
+}
