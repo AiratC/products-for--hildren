@@ -56,7 +56,13 @@ const AuthPopup = ({ isOpen, isAuth, user, onClose }) => {
                      <div className={styles.userHeader}>
                         <div className={styles.userDataContainer}>
                            <div className={styles.avatar}>
-                              <span>{user?.name?.[0] || 'Avatar'}</span>
+                              {
+                                 user?.avatar ? (
+                                    <img src={user?.avatar} alt={'Avatar'} />
+                                 ) : (
+                                    <span>{user?.name?.[0] || 'Avatar'}</span>
+                                 )
+                              }
                            </div>
                            <div className={styles.userText}>
                               <p className={styles.name}>{user?.name || 'Имя'}</p>

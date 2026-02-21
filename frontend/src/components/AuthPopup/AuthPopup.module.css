@@ -68,6 +68,10 @@
    font-weight: bold;
 }
 
+.avatar img {
+   border-radius: 50%;
+}
+
 .name {
    font-weight: 600;
    color: #4a6a7b;
