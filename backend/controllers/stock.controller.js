@@ -124,4 +124,35 @@ export const getAllStocks = async (req, res) => {
          success: false
       })
    }
+};
+
+// Получаем акции с постраничной пагинацией
+export const getStocks = async (req, res) => {
+   const page = parseInt(req.query.page) || 1;
+   const limit = parseInt(req.query.limit) || 6;
+   const offset = (page - 1) * limit;
+
+   try {
+      const totalStocks = await query(`SELECT COUNT(*) FROM Stock`);
+      const totalCount = parseInt(totalStocks.rows[0].count);
+
+      const stocks = await query(
+         `
+            SELECT * FROM Stock ORDER BY created_at DESC LIMIT $1 OFFSET $2
+         `,
+         [limit, offset]
+      );
+
+      return res.status(200).json({
+         stocks: stocks.rows,
+         totalPages: Math.ceil(totalCount / limit),
+         currentPage: page
+      });
+
+   } catch (error) {
+      console.log(error)
+      return res.status(500).json({
+         message: 'Ошибка на сервере',
+      })
+   }
 }

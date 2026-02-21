@@ -4,6 +4,7 @@ import favoriteReducer from './slices/favoriteSlice.js';
 import cartReducer from './slices/cartSlice.js';
 import orderReducer from './slices/orderSlice.js';
 import blogsReducer from './slices/blogSlice.js';
+import stockReducer from './slices/stockSlice.js';
 
 export const store = configureStore({
    reducer: {
@@ -11,6 +12,7 @@ export const store = configureStore({
       favorites: favoriteReducer,
       cart: cartReducer,
       order: orderReducer,
-      blogs: blogsReducer
+      blogs: blogsReducer,
+      stocks: stockReducer
    },
 })

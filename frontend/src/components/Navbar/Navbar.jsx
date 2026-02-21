@@ -80,7 +80,7 @@ const Navbar = () => {
                </span>
                <div className={styles.navigationMenuBottomContainer}>
                   <ul className={`${styles.navigationMenuBottom}`}>
-                     <li>Акции</li>
+                     <Link to={`/stocks`}><li>Акции</li></Link>
                      <li>О нас</li>
                      <Link to={`/blogs`}><li>Блог</li></Link>
                      <li>Оптовым клиентам</li>

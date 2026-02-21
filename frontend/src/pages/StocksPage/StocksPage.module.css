@@ -1,0 +1,91 @@
+.container {
+   max-width: 1200px;
+   margin: 0 auto;
+   padding: 20px;
+   min-height: 80vh;
+}
+
+.title {
+   font-size: 32px;
+   color: #4A627D;
+   margin-bottom: 30px;
+}
+
+.grid {
+   display: grid;
+   /* 2 колонки на десктопе для крупных баннеров */
+   grid-template-columns: repeat(2, 1fr);
+   gap: 30px;
+   margin-bottom: 50px;
+}
+
+.card {
+   cursor: pointer;
+}
+
+.imageBox img {
+   width: 100%;
+   aspect-ratio: 16 / 7; /* Соотношение сторон как у баннера */
+   border-radius: 12px;
+   object-fit: contain;
+}
+
+.date {
+   font-size: 15px;
+   color: #bdc3c7;
+   display: block;
+   margin-bottom: 8px;
+}
+
+.cardTitle {
+   font-size: 16px;
+   color: #4A627D;
+   font-weight: 500;
+}
+
+.loaderWrapper {
+   height: 400px;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
+
+/* Пагинация (стили те же, что и для блога для единообразия) */
+.pagination {
+   display: flex;
+   gap: 8px;
+   align-items: center;
+}
+
+.pageBtn {
+   width: 40px;
+   height: 40px;
+   border: 1px solid #E2E8F0;
+   background: #fff;
+   cursor: pointer;
+}
+
+.pageBtn.active {
+   border-color: #4A627D;
+   color: #4A627D;
+   font-weight: bold;
+}
+
+.nextBtn {
+   display: flex;
+   align-items: center;
+   gap: 8px;
+   margin-left: 10px;
+   background: transparent;
+   border: none;
+   color: #4A627D;
+   font-weight: 500;
+   cursor: pointer;
+}
+
+/* Адаптив */
+@media (max-width: 768px) {
+   .grid {
+      grid-template-columns: 1fr; /* На мобилках в одну колонку */
+   }
+}
