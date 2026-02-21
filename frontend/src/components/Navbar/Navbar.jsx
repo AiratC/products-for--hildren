@@ -57,6 +57,7 @@ const Navbar = () => {
    const [isCatalogOpen, setIsCatalogOpen] = useState(false); // Для десктопного и моб. каталога
    const [openAuthPopup, setIsOpenAuthPopup] = useState(false);
    const { user } = useSelector((state) => state.authUser);
+   const { cartItems } = useSelector(state => state.cart);
 
    return (
       <header className={styles.headerWrapper}>
@@ -102,7 +103,16 @@ const Navbar = () => {
                </div>
                <Link to={`/cart`}>
                   <div className={`${styles.cartLogoSvgContainer}`}>
-                     <img src={cartLogoSvg} alt="cart-logo" />
+                     <div className={styles.cartContainer}>
+                        <img src={cartLogoSvg} alt="cart-logo" />
+                        {
+                           cartItems.length > 0 && (
+                              <div className={styles.countCartContainer}>
+                                 {cartItems.length}
+                              </div>
+                           )
+                        }
+                     </div>
                      <span>Корзина</span>
                   </div>
                </Link>

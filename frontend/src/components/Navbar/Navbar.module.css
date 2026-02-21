@@ -44,6 +44,25 @@
    gap: 12px;
 }
 
+.cartContainer {
+   position: relative;
+}
+
+.countCartContainer {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   position: absolute;
+   color: white;
+   font-family: sans-serif;
+   top: -15px;
+   right: -10px;
+   background-color: #446B80;
+   width: 24px;
+   height: 24px;
+   border-radius: 50%;
+}
+
 /* Navbar secondaty */
 .secondaryNavContainer {
    padding: 16px 10px 16px;
@@ -127,7 +146,7 @@
    .cartLogoSvgContainer img {
       width: 33px;
    }
-   
+
    .mobileSearchContainer {
       display: flex;
       justify-content: center;
