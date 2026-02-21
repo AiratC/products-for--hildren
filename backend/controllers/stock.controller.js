@@ -155,4 +155,22 @@ export const getStocks = async (req, res) => {
          message: 'Ошибка на сервере',
       })
    }
-}
+};
+
+// Получаем конкретную акцию по ID
+export const getStockById = async (req, res) => {
+   const { id } = req.params;
+   try {
+      // Используем параметризованный запрос для безопасности
+      const { rows } = await query(`SELECT * FROM Stock WHERE stock_id = $1`, [id]);
+      
+      if (rows.length === 0) {
+         return res.status(404).json({ message: 'Акция не найдена' });
+      }
+
+      // Возвращаем объект акции
+      return res.status(200).json({ stock: rows[0] });
+   } catch (error) {
+      return res.status(500).json({ message: 'Ошибка сервера при получении акции' });
+   }
+};

@@ -6,7 +6,6 @@ export const fetchStocks = createAsyncThunk(
    async (page, thunkAPI) => {
       try {
          const response = await fetchAxios.get(`/api/stock/get-stocks?page=${page}`);
-         console.log(response)
          return response.data;
       } catch (error) {
          return thunkAPI.rejectWithValue(error.response.data)

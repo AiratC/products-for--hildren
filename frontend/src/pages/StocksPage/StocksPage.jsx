@@ -5,11 +5,13 @@ import styles from './StocksPage.module.css';
 import getPaginationRange from '../../utils/paginationRange';
 import Loader from '../../components/Loader/Loader';
 import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router';
 
 const StocksPage = () => {
    const dispatch = useDispatch();
    const { items, totalPages, currentPage, loading } = useSelector(state => state.stocks);
    const range = getPaginationRange(currentPage, totalPages);
+   const navigate = useNavigate();
 
    useEffect(() => {
       const fetchGetStocks = async () => {
@@ -40,7 +42,7 @@ const StocksPage = () => {
             <>
                <div className={styles.grid}>
                   {items.map((stock) => (
-                     <div key={stock.stok_id} className={styles.card}>
+                     <div onClick={() => navigate(`/stocks/${stock.stock_id}`)} key={stock.stock_id} className={styles.card}>
                         <div className={styles.imageBox}>
                            <img src={stock.stock_images?.[0]?.url} alt={stock.title} />
                         </div>
