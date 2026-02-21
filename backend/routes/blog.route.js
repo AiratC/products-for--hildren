@@ -1,7 +1,7 @@
 import express from 'express';
 import { isAdmin, verifyToken } from '../middleware/authMiddleware.js';
 import upload from '../config/cloudinary.js';
-import { addBlog, deleteBlog, getAllBlogs, getBlogs } from '../controllers/blog.controller.js';
+import { addBlog, deleteBlog, getAllBlogs, getBlogById, getBlogs } from '../controllers/blog.controller.js';
 
 const blogRouter = express.Router();
 
@@ -16,5 +16,8 @@ blogRouter.get(`/get-all-blogs`, getAllBlogs);
 
 // Получаем все блоги для фронтенда
 blogRouter.get('/get-blogs', getBlogs);
+
+// Получаем блог по ID
+blogRouter.get('/get-blog-by-id/:id', getBlogById);
 
 export default blogRouter;

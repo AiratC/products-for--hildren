@@ -166,4 +166,27 @@ export const getBlogs = async (req, res) => {
          message: 'Ошибка при получении блогов на сервере'
       })
    }
+};
+
+// Получаем блог по ID
+export const getBlogById = async (req, res) => {
+   const blogId = req.params.id;
+
+   try {
+      const { rows } = await query(`SELECT * FROM Blogs WHERE blog_id = $1`, [blogId]);
+
+      if(rows.length === 0) {
+         return res.status(404).json({
+            message: 'Статья не найдена'
+         });
+      };
+
+      return res.status(200).json({
+         blog: rows[0]
+      })
+   } catch (error) {
+      return res.status(500).json({
+         message: 'Ошибка сервера'
+      })
+   }
 }
