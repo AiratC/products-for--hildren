@@ -1,0 +1,106 @@
+.container {
+   max-width: 1100px;
+   /* Сужаем для удобства чтения текста */
+   margin: 0 auto;
+   padding: 40px 20px;
+   animation: fadeIn 0.5s ease-in;
+   min-height: 80vh;
+}
+
+.backBtn {
+   display: flex;
+   align-items: center;
+   gap: 8px;
+   background: none;
+   border: none;
+   color: #8da1b5;
+   cursor: pointer;
+   font-size: 16px;
+   padding: 0;
+   margin-bottom: 30px;
+   transition: color 0.2s;
+}
+
+.backBtn:hover {
+   color: #4a627d;
+}
+
+.header {
+   margin-bottom: 30px;
+}
+
+.title {
+   font-size: 36px;
+   color: #2c3e50;
+   line-height: 1.2;
+   margin-bottom: 15px;
+}
+
+.date {
+   font-size: 14px;
+   color: #cbd5e0;
+}
+
+.mainImage {
+   width: 100%;
+   margin-bottom: 40px;
+}
+
+.mainImage img {
+   width: 100%;
+   max-height: 500px;
+   object-fit: cover;
+   border-radius: 15px;
+   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+.content {
+   line-height: 1.8;
+   color: #4a5568;
+   font-size: 18px;
+}
+
+.text {
+   white-space: pre-line;
+   /* Чтобы сохранялись переносы строк из БД */
+}
+
+/* Стили для HTML-контента (если используешь Rich Text Editor) */
+.text p {
+   margin-bottom: 20px;
+}
+
+.text h2 {
+   margin: 40px 0 20px;
+   color: #2c3e50;
+}
+
+.center {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   min-height: 60vh;
+}
+
+@keyframes fadeIn {
+   from {
+      opacity: 0;
+      transform: translateY(10px);
+   }
+
+   to {
+      opacity: 1;
+      transform: translateY(0);
+   }
+}
+
+/* --- АДАПТИВ --- */
+@media (max-width: 768px) {
+   .title {
+      font-size: 28px;
+   }
+
+   .content {
+      font-size: 16px;
+   }
+}

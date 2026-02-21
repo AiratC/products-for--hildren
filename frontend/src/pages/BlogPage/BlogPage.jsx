@@ -5,6 +5,7 @@ import styles from './BlogPage.module.css';
 import { ChevronRight } from 'lucide-react';
 import getPaginationRange from '../../utils/paginationRange';
 import Loader from '../../components/Loader/Loader';
+import { Link } from 'react-router';
 
 const BlogPage = () => {
    const dispatch = useDispatch();
@@ -20,7 +21,7 @@ const BlogPage = () => {
    // Обработчик клика теперь ТУПО меняет номер в сторе
    const handlePageChange = (page) => {
       if (typeof page === 'number' && page !== currentPage) {
-         dispatch(setCurrentPage(page)); 
+         dispatch(setCurrentPage(page));
       }
    };
 
@@ -45,7 +46,9 @@ const BlogPage = () => {
                            <h3 className={styles.cardTitle}>{blog.blog_title}</h3>
                            <p className={styles.description}>{blog.description}</p>
                            <div className={styles.footer}>
-                              <button className={styles.readBtn}>Читать</button>
+                              <Link to={`/blog/${blog.blog_id}`}>
+                                 <button className={styles.readBtn}>Читать</button>
+                              </Link>
                               <span className={styles.date}>
                                  {new Date(blog.created_at).toLocaleDateString()}
                               </span>
