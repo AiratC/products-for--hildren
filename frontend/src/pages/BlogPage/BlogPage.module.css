@@ -1,0 +1,168 @@
+.container {
+   padding: 40px 10px;
+}
+
+.title {
+   color: #446B80;
+   font-size: 48px;
+}
+
+.grid {
+   display: grid;
+   /* Адаптивная сетка: минимум 280px на карточку, максимум 4 колонки */
+   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+   gap: 30px;
+   margin-bottom: 50px;
+   margin-top: 32px;
+}
+
+.card {
+   display: flex;
+   flex-direction: column;
+   background: #fff;
+   transition: transform 0.2s;
+}
+
+.card:hover {
+   transform: translateY(-5px);
+}
+
+.imageWrapper img {
+   width: 100%;
+   height: 200px;
+   object-fit: cover;
+   border-radius: 12px;
+}
+
+.content {
+   padding: 15px 0;
+   flex-grow: 1;
+   display: flex;
+   flex-direction: column;
+}
+
+.cardTitle {
+   font-size: 18px;
+   color: #2c3e50;
+   margin-bottom: 10px;
+   font-weight: 600;
+}
+
+.description {
+   font-size: 14px;
+   color: #7f8c8d;
+   line-height: 1.6;
+   margin-bottom: 20px;
+   /* Ограничение текста до 3 строк */
+   display: -webkit-box;
+   -webkit-line-clamp: 3;
+   -webkit-box-orient: vertical;
+   overflow: hidden;
+}
+
+.footer {
+   margin-top: auto;
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+}
+
+.readBtn {
+   padding: 8px 20px;
+   border: 1px solid #dcdde1;
+   background: transparent;
+   border-radius: 6px;
+   color: #2c3e50;
+   cursor: pointer;
+}
+
+.pagination {
+   display: flex;
+   align-items: center;
+   gap: 8px;
+   /* Небольшой отступ между кнопками */
+   margin-top: 40px;
+   flex-wrap: wrap;
+   /* Чтобы на мобилках пагинация переносилась */
+}
+
+
+.pageBtn {
+   /* Жестко фиксируем размер, чтобы цифры не растягивали кнопки */
+   width: 40px;
+   height: 40px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+
+   border: 1px solid #E2E8F0;
+   background: #fff;
+   color: #4A5568;
+   font-size: 14px;
+   cursor: pointer;
+   transition: all 0.2s;
+   border-radius: 4px;
+   /* Если хочешь как на макете, можно убрать или оставить 2px */
+}
+
+.pageBtn.active {
+   border-color: #4A627D;
+   background-color: #F8FAFC;
+   color: #4A627D;
+   font-weight: 600;
+}
+
+.pageBtn:hover:not(.dots):not(.active) {
+   border-color: #CBD5E0;
+   background-color: #EDF2F7;
+}
+
+.pageBtn.dots {
+   border: none;
+   cursor: default;
+   background: transparent;
+}
+
+.nextBtn {
+   display: flex;
+   align-items: center;
+   gap: 8px;
+   margin-left: 10px;
+   background: transparent;
+   border: none;
+   color: #4A627D;
+   font-weight: 500;
+   cursor: pointer;
+}
+
+.blogPageLoader {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   min-height: 70vh;
+}
+
+@media (max-width: 1024px) {
+   .grid {
+      grid-template-columns: repeat(3, 1fr);
+   }
+}
+
+@media (max-width: 768px) {
+   .grid {
+      grid-template-columns: repeat(2, 1fr);
+   }
+
+   .pageBtn {
+      width: 35px;
+      height: 35px;
+   }
+
+   /* Чуть меньше на мобилках */
+}
+
+@media (max-width: 480px) {
+   .grid {
+      grid-template-columns: 1fr;
+   }
+}

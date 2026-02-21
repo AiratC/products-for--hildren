@@ -82,7 +82,7 @@ const Navbar = () => {
                   <ul className={`${styles.navigationMenuBottom}`}>
                      <li>Акции</li>
                      <li>О нас</li>
-                     <li>Блог</li>
+                     <Link to={`/blogs`}><li>Блог</li></Link>
                      <li>Оптовым клиентам</li>
                      <li>Возврат</li>
                      <li>Оплата и доставка</li>

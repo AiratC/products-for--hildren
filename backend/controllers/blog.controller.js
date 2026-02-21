@@ -134,4 +134,36 @@ export const getAllBlogs = async (req, res) => {
          success: false
       })
    }
+};
+
+
+// Получаем блоги для frontend
+export const getBlogs = async (req, res) => {
+   const page = parseInt(req.query.page) || 1;
+   const limit = parseInt(req.query.limit) || 4;
+   const offset = (page - 1) * limit;
+
+   try {
+      // 1. Получаем общее кол-во блогов для пагинации
+      const totalBlogs = await query(`SELECT COUNT(*) FROM Blogs`);
+      const totalCount = parseInt(totalBlogs.rows[0].count);
+
+      // 2. Получаем данные блогов
+      const blogs = await query(
+         `SELECT * FROM Blogs ORDER BY created_at DESC LIMIT $1 OFFSET $2`,
+         [limit, offset]
+      );
+
+      return res.status(200).json({
+         blogs: blogs.rows,
+         totalPages: Math.ceil(totalCount / limit),
+         currentPage: page,
+         totalCount
+      });
+
+   } catch (error) {
+      return res.status(500).json({
+         message: 'Ошибка при получении блогов на сервере'
+      })
+   }
 }
