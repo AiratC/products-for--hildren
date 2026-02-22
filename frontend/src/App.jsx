@@ -28,7 +28,7 @@ function App() {
    useScrollRestoration();
    const { isCheckingAuth } = useSelector((state) => state.authUser);
 
-   const dispatch = useDispatch()
+   const dispatch = useDispatch();
 
    useEffect(() => {
       dispatch(checkAuth());

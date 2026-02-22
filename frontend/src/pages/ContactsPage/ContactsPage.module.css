@@ -114,6 +114,17 @@
    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 
+.contactLoader {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+}
+
+.contactLoader span {
+   width: 27px;
+   height: 27px;
+}
+
 
 /* --- ADAPTIVE --- */
 

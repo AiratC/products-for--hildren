@@ -1,6 +1,8 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import styles from './ContactsPage.module.css';
-import { useDispatch } from 'react-redux';
+import Loader from '../../components/Loader/Loader';
+import fetchAxios from '../../utils/fetchAxios';
+import toast from 'react-hot-toast';
 
 const ContactsPage = () => {
    const [formData, setFormData] = useState({
@@ -9,13 +11,28 @@ const ContactsPage = () => {
       message: '',
       is_agree: false
    });
-   
-   const dispatch = useDispatch();
+   const [loading, setLoading] = useState(null);
 
-   const handleSubmit = useCallback(async (e) => {
+   const handleSubmit = async (e) => {
       e.preventDefault();
-      console.log('Данные формы: ', formData)
-   }, [formData]);
+      try {
+         setLoading(true)
+         const response = await fetchAxios.post('/api/contact/send-user-message', formData);
+         if (response.data.success) {
+            toast.success(response.data.message);
+            setFormData({
+               name: '',
+               phone: '',
+               message: '',
+               is_agree: false
+            })
+         }
+      } catch (error) {
+         toast.error(error.response.data.message)
+      } finally {
+         setLoading(false)
+      }
+   };
 
    return (
       <div className={styles.containerContacts}>
@@ -60,29 +77,45 @@ const ContactsPage = () => {
                         type="text"
                         placeholder='Имя'
                         required
+                        value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                      />
                      <input
                         type="text"
                         placeholder='Телефон'
                         required
+                        value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                      />
                   </div>
                   <textarea
                      placeholder='Сообщение'
                      rows={5}
+                     value={formData.message}
                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                   ></textarea>
 
                   <label htmlFor='agree' className={styles.checkboxLabel}>
-                     <input onChange={(e) => setFormData({ ...formData, is_agree: e.target.checked })} id='agree' type="checkbox" required />
+                     <input 
+                     onChange={(e) => setFormData({ ...formData, is_agree: e.target.checked })} 
+                     id='agree' 
+                     type="checkbox" 
+                     required 
+                     checked={formData.is_agree}
+                     />
                      <span>Соглашение на обработку данных и пользовательское соглашение</span>
                   </label>
-
-                  <button type='submit' className={styles.submitBtn}>
-                     Отправить
-                  </button>
+                  {
+                     loading ? (
+                        <div className={styles.contactLoader}>
+                           <Loader />
+                        </div>
+                     ) : (
+                        <button type='submit' className={styles.submitBtn}>
+                           Отправить
+                        </button>
+                     )
+                  }
                </form>
             </div>
          </div>
@@ -93,7 +126,7 @@ const ContactsPage = () => {
                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2132.112514147926!2d49.11956207674841!3d55.79151547309856!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x415ead113f612155%3A0x511435c1a5fe3603!2z0YPQuy4g0JrRgNC10LzQu9C10LLRgdC60LDRjywgMTAxLCDQmtCw0LfQsNC90YwsINCg0LXRgdC_LiDQotCw0YLQsNGA0YHRgtCw0L0sINCg0L7RgdGB0LjRjywgNDIwMDA4!5e1!3m2!1sru!2sca!4v1771694054207!5m2!1sru!2sca"
                width="100%"
                height="450"
-               styles={{ border: 0 }}
+               style={{ border: 0 }}
                allowFullScreen=""
                loading="lazy"
             ></iframe>
