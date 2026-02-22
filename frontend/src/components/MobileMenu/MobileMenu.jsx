@@ -14,6 +14,7 @@ import { userLogout } from '../../redux/slices/authUserSlice'
 import toast from 'react-hot-toast'
 import Loader from '../Loader/Loader'
 import { Link } from 'react-router-dom'
+import { links } from '../../utils/arrayMenu'
 
 const MobileMenu = ({ setIsMenuOpen, setIsCatalogOpen, isMenuOpen }) => {
    const [openLoginForm, setOpenLoginForm] = useState(false)
@@ -81,7 +82,7 @@ const MobileMenu = ({ setIsMenuOpen, setIsCatalogOpen, isMenuOpen }) => {
                            <div className={styles.userName}>{user?.name || 'Имя'}</div>
                            <div className={styles.userEmail}>{user?.email || 'email@gmail.com'}</div>
                            <div className={styles.menuData}>
-                              <Link>
+                              <Link to={`/orders`} onClick={handleClickMenuItem}>
                                  <img src={orderMobileLogo} alt="Мои заказы лого" />
                                  <span>Мои заказы</span>
                               </Link>
@@ -89,7 +90,7 @@ const MobileMenu = ({ setIsMenuOpen, setIsCatalogOpen, isMenuOpen }) => {
                                  <img src={favoritesMobileLogo} alt="Мое избранное лого" />
                                  <span>Мое избранное</span>
                               </Link>
-                              <Link>
+                              <Link to={`/settings`} onClick={handleClickMenuItem}>
                                  <img src={settingsMobileLogo} alt="Личные данные лого" />
                                  <span>Личные данные</span>
                               </Link>
@@ -118,13 +119,20 @@ const MobileMenu = ({ setIsMenuOpen, setIsCatalogOpen, isMenuOpen }) => {
             </div>
 
             <ul className={`${styles.mobileLinks}`}>
-               <li>Акции</li>
-               <li>О нас</li>
-               <li>Блог</li>
-               <li>Оптовым клиентам</li>
-               <li>Возврат</li>
-               <li>Оплата и доставка</li>
-               <li>Контакты</li>
+               {
+                  links.map((link) => (
+                     <Link
+                        key={link.id}
+                        to={`${link.link}`}
+                        style={{ color: 'black' }}
+                        onClick={() => setIsMenuOpen(false)}
+                     >
+                        <li>
+                           {link.name}
+                        </li>
+                     </Link>
+                  ))
+               }
             </ul>
 
             <div className={styles.citySelection}>

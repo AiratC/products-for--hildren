@@ -106,6 +106,10 @@
    cursor: pointer;
 }
 
+.colorItem {
+   color: black;
+}
+
 @media (max-width: 1120px) {
 
    .userLoginSvgContainer span,

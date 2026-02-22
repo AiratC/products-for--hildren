@@ -53,7 +53,6 @@
 }
 
 .menuLink {
-   font-weight: bold;
    border-bottom: 1px solid #eee;
    padding-bottom: 15px;
    cursor: pointer;
@@ -124,6 +123,7 @@
    gap: 8px;
    font-size: 16px;
    margin-top: 8px;
+   color: black;
 }
 
 .menuData div {

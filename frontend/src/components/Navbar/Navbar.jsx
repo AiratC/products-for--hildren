@@ -13,44 +13,7 @@ import mobileBurgerMenuIcon from './../../assets/svg/mobile-burger-menu.svg'
 import MobileMenu from '../MobileMenu/MobileMenu';
 import AuthPopup from '../AuthPopup/AuthPopup';
 import { useSelector } from 'react-redux';
-
-const links = [
-   {
-      id: 1,
-      link: '/stocks',
-      name: 'Акции'
-   },
-   {
-      id: 2,
-      link: '/about',
-      name: 'О нас'
-   },
-   {
-      id: 3,
-      link: '/blogs',
-      name: 'Блог'
-   },
-   {
-      id: 4,
-      link: '/wholesale-clients',
-      name: 'Оптовым клиентам'
-   },
-   {
-      id: 5,
-      link: '/return',
-      name: 'Возврат'
-   },
-   {
-      id: 6,
-      link: '/payment-and-delivery',
-      name: 'Оплата и доставка'
-   },
-   {
-      id: 7,
-      link: '/contacts',
-      name: 'Контакты'
-   }
-]
+import { links } from '../../utils/arrayMenu';
 
 const Navbar = () => {
    const [isMenuOpen, setIsMenuOpen] = useState(false); // Для мобильного меню
@@ -131,6 +94,7 @@ const Navbar = () => {
                            <Link
                               key={link.id}
                               to={`${link.link}`}
+                              className={styles.colorItem}
                            >
                               <li>
                                  {link.name}
@@ -167,6 +131,7 @@ const Navbar = () => {
          {isCatalogOpen && (
             <Catalog
                onClose={() => setIsCatalogOpen(false)}
+               onCloseMobileMenu={() => setIsMenuOpen(false)}
                isMobile={true}
             />
          )}

@@ -6,7 +6,7 @@ import Loader from '../Loader/Loader';
 import { Link, useLocation } from 'react-router-dom';
 
 
-const Catalog = ({ onClose }) => {
+const Catalog = ({ onClose, onCloseMobileMenu }) => {
    const [catalogs, setCatalogs] = useState([]);
    const [categories, setCategories] = useState('Выберите категорию');
    const [loadingCatalog, setLoadingCatalog] = useState(true);
@@ -105,7 +105,12 @@ const Catalog = ({ onClose }) => {
                         </div>
                      ) : (
                         catalogs.map((catalogItem) => (
-                           <Link to={`/catalog/${catalogItem.slug}`} key={catalogItem.catalog_id} className={styles.catalogItamContainer}>
+                           <Link 
+                           to={`/catalog/${catalogItem.slug}`} 
+                           key={catalogItem.catalog_id} 
+                           className={styles.catalogItamContainer}
+                           onClick={() => { onCloseMobileMenu(); onClose()}}
+                           >
                               {catalogItem.name}
                            </Link>
                         ))
