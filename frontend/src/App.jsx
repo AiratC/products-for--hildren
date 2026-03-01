@@ -23,6 +23,7 @@ import BlogDetails from "./pages/BlogDetails/BlogDetails";
 import StocksPage from "./pages/StocksPage/StocksPage";
 import StockDetails from "./pages/StockDetails/StockDetails";
 import ContactsPage from "./pages/ContactsPage/ContactsPage";
+import CategoryPage from "./pages/CategoryPage/CategoryPage";
 
 function App() {
    useScrollRestoration();
@@ -96,6 +97,8 @@ function App() {
                <Route path={`/stocks/:id`} element={<StockDetails/>}></Route>
                {/* Contacts Page */}
                <Route path="/contacts" element={<ContactsPage/>}></Route>
+               {/* Catalog Page */}
+               <Route path="/catalog/:slug" element={<CategoryPage/>}></Route>
             </Route>
          </Routes>
       </>

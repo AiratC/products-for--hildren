@@ -64,7 +64,7 @@ const Navbar = () => {
                      user={user}
                   />
                </div>
-               <Link to={`/cart`}>
+               <Link to={`/cart`} style={{ color: 'black' }}>
                   <div className={`${styles.cartLogoSvgContainer}`}>
                      <div className={styles.cartContainer}>
                         <img src={cartLogoSvg} alt="cart-logo" />
