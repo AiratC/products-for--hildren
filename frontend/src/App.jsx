@@ -99,6 +99,8 @@ function App() {
                <Route path="/contacts" element={<ContactsPage/>}></Route>
                {/* Catalog Page */}
                <Route path="/catalog/:slug" element={<CategoryPage/>}></Route>
+               {/* Product Page */}
+               <Route path="/product-page/:id"></Route>
             </Route>
          </Routes>
       </>

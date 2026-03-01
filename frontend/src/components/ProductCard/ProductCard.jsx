@@ -8,6 +8,7 @@ import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai'; // Популяр�
 import Loader from '../Loader/Loader';
 import { useCallback } from 'react';
 import { updateCartAction } from '../../redux/slices/cartSlice';
+import { useNavigate } from 'react-router';
 
 const ProductCard = ({ data }) => {
    const {
@@ -19,6 +20,8 @@ const ProductCard = ({ data }) => {
       characteristics,
       product_id
    } = data;
+
+   const navigate = useNavigate();
 
    const dispatch = useDispatch();
    const { loading, items } = useSelector((state) => state.favorites);
@@ -41,7 +44,7 @@ const ProductCard = ({ data }) => {
    const inCart = cartItems.find(item => item.product_id === product_id);
 
    const handleFavorite = useCallback(async (event) => {
-      event.preventDefault();
+      event.stopPropagation();
 
       try {
          const result = await dispatch(toggleFavoriteAction({ productId: product_id })).unwrap()
@@ -51,7 +54,8 @@ const ProductCard = ({ data }) => {
       }
    }, [dispatch, product_id])
 
-   const handleClickCart = useCallback(async (productId, action) => {
+   const handleClickCart = useCallback(async (e, productId, action) => {
+      e.stopPropagation();
       const data = { productId: productId, action: action }
       try {
          switch (action) {
@@ -75,10 +79,15 @@ const ProductCard = ({ data }) => {
          toast.error(error.message)
       }
 
-   }, [dispatch]) 
+   }, [dispatch]);
+
+   const handleClickProductCard = (e, id) => {
+      e.stopPropagation();
+      navigate(`/product-page/${id}`)
+   }
 
    return (
-      <div className={styles.card}>
+      <div onClick={(e) => handleClickProductCard(e, product_id)} className={styles.card}>
          <div className={styles.imageWrapper}>
             {is_new && <span className={styles.badgeNew}>NEW</span>}
             {
@@ -88,7 +97,7 @@ const ProductCard = ({ data }) => {
                   </div>
                ) : (
                   <div
-                     onClick={handleFavorite}
+                     onClick={(e) => handleFavorite(e)}
                      className={`${styles.favoriteIcon} favorite-btn ${isFavorite ? 'active' : ''}`}
                   >
                      {
@@ -132,7 +141,7 @@ const ProductCard = ({ data }) => {
                               <Button
                                  type="primary"
                                  className={styles.buyBtn}
-                                 onClick={() => handleClickCart(product_id, 'add')}
+                                 onClick={(e) => handleClickCart(e, product_id, 'add')}
                               >
                                  В корзину
                               </Button>
