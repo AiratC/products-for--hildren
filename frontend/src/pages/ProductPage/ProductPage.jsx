@@ -16,8 +16,8 @@ const ProductPage = () => {
       const fetchProduct = async () => {
          try {
             setLoading(true);
-            const { data } = await fetchAxios.get(`/api/products/get-product/${id}`);
-            setProduct(data);
+            const { data } = await fetchAxios.get(`/api/products/get-product?productId=${id}`);
+            setProduct(data.product);
          } catch (error) {
             console.error("Ошибка загрузки товара:", error);
          } finally {
@@ -35,7 +35,7 @@ const ProductPage = () => {
    };
 
    return (
-      <div className={styles.container}>
+      <div className={styles.containerProductPage}>
          <div className={styles.productMain}>
             {/* Левая часть: Галерея */}
             <div className={styles.gallery}>
@@ -46,6 +46,24 @@ const ProductPage = () => {
                      className={styles.mainImage}
                   />
                </div>
+            </div>
+
+            {/* Правая часть: Инфо */}
+            <div className={styles.info}>
+               <div className={styles.header}>
+                  <span className={styles.article}>Артикул {product.article}</span>
+                  <h1 className={styles.title}>{product.title}</h1>
+                  <div className={styles.ratingRow}>
+                     <span className={styles.stars}>☆☆☆☆☆</span>
+                     <span className={styles.noReviews}>Нет отзывов</span>
+                  </div>
+                  <button className={styles.favoriteBtn}>
+                     <Heart size={20} /> <span>В избранное</span>
+                  </button>
+               </div>
+
+               <p className={styles.colorLabel}>Цвет товара: <b>Белый</b></p>
+
                <div className={styles.thumbnails}>
                   {product.product_images?.map((img, idx) => (
                      <div
@@ -57,23 +75,6 @@ const ProductPage = () => {
                      </div>
                   ))}
                </div>
-            </div>
-
-            {/* Правая часть: Инфо */}
-            <div className={styles.info}>
-               <div className={styles.header}>
-                  <span className={styles.article}>Артикул {product.article}</span>
-                  <h1 className={styles.title}>{product.title}</h1>
-                  <div className={styles.ratingRow}>
-                     <div className={styles.stars}>☆☆☆☆☆</div>
-                     <span className={styles.noReviews}>Нет отзывов</span>
-                     <button className={styles.favoriteBtn}>
-                        <Heart size={20} /> <span>В избранное</span>
-                     </button>
-                  </div>
-               </div>
-
-               <p className={styles.colorLabel}>Цвет товара: <b>Белый</b></p>
 
                <div className={styles.priceSection}>
                   <span className={styles.price}>{Number(product.price).toLocaleString()} ₽</span>
@@ -89,30 +90,33 @@ const ProductPage = () => {
                   <a href="#delivery">Подробнее о доставке</a>
                </div>
 
-               {/* Аккордеоны (Описание, Характеристики) */}
-               <div className={styles.accordionContainer}>
-                  <div className={styles.accordionItem}>
-                     <button onClick={() => toggleSection('description')}>
-                        Описание {openSection === 'description' ? <ChevronUp /> : <ChevronDown />}
-                     </button>
-                     {openSection === 'description' && (
-                        <div className={styles.accordionContent}>
-                           <p>{product.description}</p>
-                        </div>
-                     )}
-                  </div>
-                  <div className={styles.accordionItem}>
-                     <button onClick={() => toggleSection('specs')}>
-                        Характеристики {openSection === 'specs' ? <ChevronUp /> : <ChevronDown />}
-                     </button>
-                     {openSection === 'specs' && (
-                        <div className={styles.accordionContent}>
-                           {/* Здесь можно вывести таблицу характеристик */}
-                           <p>Материал: Береза, МДФ</p>
-                        </div>
-                     )}
-                  </div>
+               <div>
+                  <span>Нашли дешевле?</span>
                </div>
+            </div>
+         </div>
+         {/* Аккордеоны (Описание, Характеристики) */}
+         <div className={styles.accordionContainer}>
+            <div className={styles.accordionItem}>
+               <button onClick={() => toggleSection('description')}>
+                  Описание {openSection === 'description' ? <ChevronUp /> : <ChevronDown />}
+               </button>
+               {openSection === 'description' && (
+                  <div className={styles.accordionContent}>
+                     <p>{product.description}</p>
+                  </div>
+               )}
+            </div>
+            <div className={styles.accordionItem}>
+               <button onClick={() => toggleSection('specs')}>
+                  Характеристики {openSection === 'specs' ? <ChevronUp /> : <ChevronDown />}
+               </button>
+               {openSection === 'specs' && (
+                  <div className={styles.accordionContent}>
+                     {/* Здесь можно вывести таблицу характеристик */}
+                     <p>Материал: Береза, МДФ</p>
+                  </div>
+               )}
             </div>
          </div>
       </div>

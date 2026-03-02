@@ -351,4 +351,33 @@ export const getAllNewProducts = async (req, res) => {
          success: false
       });
    }
+};
+
+// Получаем товар по id
+export const getProductById = async (req, res) => {
+   const { productId } = req.query;
+
+   try {
+      const product = await query(`SELECT * FROM Products WHERE product_id = $1`, [productId]);
+
+      if(product.rows.length === 0) {
+         return res.status(404).json({
+            message: 'Товар не найден',
+            success: false,
+            error: true
+         })
+      };
+
+      return res.status(200).json({
+         product: product.rows[0],
+         success: true,
+         error: false
+      })
+   } catch (error) {
+      return res.status(500).json({
+         message: 'Ошибка сервера',
+         error: true,
+         success: false
+      })
+   }
 }

@@ -24,6 +24,7 @@ import StocksPage from "./pages/StocksPage/StocksPage";
 import StockDetails from "./pages/StockDetails/StockDetails";
 import ContactsPage from "./pages/ContactsPage/ContactsPage";
 import CategoryPage from "./pages/CategoryPage/CategoryPage";
+import ProductPage from "./pages/ProductPage/ProductPage";
 
 function App() {
    useScrollRestoration();
@@ -100,7 +101,7 @@ function App() {
                {/* Catalog Page */}
                <Route path="/catalog/:slug" element={<CategoryPage/>}></Route>
                {/* Product Page */}
-               <Route path="/product-page/:id"></Route>
+               <Route path="/product-page/:id" element={<ProductPage/>}></Route>
             </Route>
          </Routes>
       </>

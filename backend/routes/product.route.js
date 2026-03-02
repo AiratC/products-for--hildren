@@ -4,6 +4,7 @@ import {
    createProduct, 
    deleteProduct, 
    getAllNewProducts, 
+   getProductById, 
    getProductsByCategory, 
    getProductsByFilters, 
    getTwoRandomProduct, 
@@ -34,5 +35,8 @@ productRouter.get('/get-two-random-products', getTwoRandomProduct);
 
 // Получаем все новинки
 productRouter.get('/get-all-new-products', getAllNewProducts);
+
+// Получаем товар по id для ProductPage
+productRouter.get('/get-product', getProductById)
 
 export default productRouter;

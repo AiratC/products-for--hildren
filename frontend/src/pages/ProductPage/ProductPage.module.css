@@ -1,0 +1,138 @@
+.containerProductPage {
+   padding: 42px 10px;
+}
+
+.productMain {
+   display: flex;
+   gap: 40px;
+}
+
+/* Галерея */
+.gallery {
+   flex: 0.9;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   justify-content: center;
+   gap: 15px;
+}
+
+.mainImageWrapper {
+   width: 100%;
+   aspect-ratio: 1/1;
+   border: 1px solid #eee;
+   border-radius: 8px;
+   overflow: hidden;
+}
+
+.mainImage {
+   width: 100%;
+   height: 100%;
+   object-fit: contain;
+}
+
+.thumbnails {
+   display: flex;
+   gap: 10px;
+}
+
+.thumb {
+   width: 80px;
+   height: 80px;
+   border: 1px solid #ddd;
+   border-radius: 4px;
+   cursor: pointer;
+}
+
+.activeThumb {
+   border-color: #72c0d8;
+}
+
+/* Инфо */
+.info {
+   flex: 1;
+   display: flex;
+   flex-direction: column;
+   gap: 20px;
+}
+
+.article {
+   color: #446B80;
+   font-size: 16px;
+}
+
+.title {
+   margin-top: 10px;
+   color: #446B80;
+   font-size: 24px;
+}
+
+.price {
+   font-size: 2.5rem;
+   font-weight: bold;
+}
+
+.actions {
+   display: flex;
+   gap: 15px;
+}
+
+.fastOrderBtn {
+   background-color: #87ceeb;
+   color: white;
+   border: none;
+   padding: 15px 30px;
+   border-radius: 8px;
+   flex: 1;
+   cursor: pointer;
+}
+
+.addToCartBtn {
+   border: 1px solid #87ceeb;
+   color: #87ceeb;
+   background: transparent;
+   padding: 15px 30px;
+   border-radius: 8px;
+   flex: 1;
+   cursor: pointer;
+}
+
+/* АДАПТИВ (как на втором фото) */
+@media (max-width: 768px) {
+   .productMain {
+      flex-direction: column;
+      /* Блоки встают друг под друга */
+   }
+
+   .gallery {
+      order: 1;
+   }
+
+   .info {
+      order: 2;
+   }
+
+   .actions {
+      flex-direction: column;
+      /* Кнопки тоже в колонку */
+   }
+}
+
+/* Стили для аккордеона */
+.accordionItem button {
+   width: 100%;
+   padding: 15px 0;
+   display: flex;
+   justify-content: space-between;
+   background: none;
+   border: none;
+   border-bottom: 1px solid #eee;
+   font-size: 1.1rem;
+   cursor: pointer;
+}
+
+.accordionContent {
+   padding: 15px 0;
+   color: #666;
+   line-height: 1.6;
+}
