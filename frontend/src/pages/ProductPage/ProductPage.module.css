@@ -34,6 +34,7 @@
 .thumbnails {
    display: flex;
    gap: 10px;
+   margin-top: 24px;
 }
 
 .thumb {
@@ -67,14 +68,73 @@
    font-size: 24px;
 }
 
+.ratingRow {
+   display: flex;
+   align-items: center;
+   gap: 48px;
+   margin-top: 16px;
+}
+
+.starsContainer {
+   display: flex;
+   align-items: center;
+   gap: 16px;
+}
+
+.noReviews {
+   font-size: 18px;
+   color: #446B80;
+}
+
+.stars {
+   color: #7FC9F0;
+}
+
+/* .star {
+   color: rgb(244, 244, 17);
+} */
+
+.favoriteBtn {
+   display: flex;
+   align-items: center;
+   background-color: white;
+   gap: 16px;
+}
+
+.colorLabel {
+   display: flex;
+   align-items: center;
+   gap: 8px;
+   margin-top: 48px;
+   color: #446B80;
+}
+
+.priceSection {
+   margin-top: 48px;
+}
+
 .price {
-   font-size: 2.5rem;
+   font-size: 48px;
    font-weight: bold;
+   margin-top: 48px;
+   color: #446B80;
 }
 
 .actions {
    display: flex;
    gap: 15px;
+}
+
+.deliveryInfo {
+   margin-top: 48px;
+   font-size: 18px;
+   color: #446B80;
+}
+
+.foundCheaper {
+   font-size: 18px;
+   font-weight: bold;
+   color: #446B80
 }
 
 .fastOrderBtn {
@@ -95,6 +155,29 @@
    border-radius: 8px;
    flex: 1;
    cursor: pointer;
+}
+
+/* Стили для аккордеона */
+.accordionContainer {
+   display: flex;
+   gap: 48px;
+   margin-top: 48px;
+   border-bottom: 1px solid #223540;
+   padding-bottom: 8px;
+}
+
+.accordionItem button {
+   background-color: white;
+   font-size: 18px;
+   color: #446B80;
+}
+
+.accordionItem button.buttonActive {
+   color: #7FC9F0;
+}
+
+.accordionContent {
+   margin-top: 40px;
 }
 
 /* АДАПТИВ (как на втором фото) */
@@ -118,21 +201,8 @@
    }
 }
 
-/* Стили для аккордеона */
-.accordionItem button {
-   width: 100%;
-   padding: 15px 0;
-   display: flex;
-   justify-content: space-between;
-   background: none;
-   border: none;
-   border-bottom: 1px solid #eee;
-   font-size: 1.1rem;
-   cursor: pointer;
-}
-
-.accordionContent {
-   padding: 15px 0;
-   color: #666;
-   line-height: 1.6;
+@media (max-width: 431px) {
+   .ratingRow {
+      flex-direction: column;
+   }
 }

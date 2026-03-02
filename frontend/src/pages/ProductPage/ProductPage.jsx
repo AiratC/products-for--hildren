@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from 'react-router';
-import { Heart, ChevronDown, ChevronUp } from 'lucide-react';
+import { Heart } from 'lucide-react';
 import fetchAxios from '../../utils/fetchAxios';
 import styles from './ProductPage.module.css';
 import Loader from '../../components/Loader/Loader';
+import { RiStarSFill } from "react-icons/ri";
 
 const ProductPage = () => {
    const { id } = useParams(); // Предположим, роут /product/:id
@@ -54,12 +55,20 @@ const ProductPage = () => {
                   <span className={styles.article}>Артикул {product.article}</span>
                   <h1 className={styles.title}>{product.title}</h1>
                   <div className={styles.ratingRow}>
-                     <span className={styles.stars}>☆☆☆☆☆</span>
-                     <span className={styles.noReviews}>Нет отзывов</span>
+                     <div className={styles.starsContainer}>
+                        <span className={styles.stars}>
+                           <RiStarSFill className={styles.star} size={24} />
+                           <RiStarSFill className={styles.star} size={24} />
+                           <RiStarSFill className={styles.star} size={24} />
+                           <RiStarSFill className={styles.star} size={24} />
+                           <RiStarSFill className={styles.star} size={24} />
+                        </span>
+                        <span className={styles.noReviews}>Нет отзывов</span>
+                     </div>
+                     <button className={styles.favoriteBtn}>
+                        <Heart size={24} /> <span>В избранное</span>
+                     </button>
                   </div>
-                  <button className={styles.favoriteBtn}>
-                     <Heart size={20} /> <span>В избранное</span>
-                  </button>
                </div>
 
                <p className={styles.colorLabel}>Цвет товара: <b>Белый</b></p>
@@ -77,7 +86,7 @@ const ProductPage = () => {
                </div>
 
                <div className={styles.priceSection}>
-                  <span className={styles.price}>{Number(product.price).toLocaleString()} ₽</span>
+                  <span className={styles.price}>{Number(product.price).toLocaleString()} <span>₽</span></span>
                </div>
 
                <div className={styles.actions}>
@@ -90,35 +99,53 @@ const ProductPage = () => {
                   <a href="#delivery">Подробнее о доставке</a>
                </div>
 
-               <div>
+               <div className={styles.foundCheaper}>
                   <span>Нашли дешевле?</span>
                </div>
             </div>
          </div>
+
          {/* Аккордеоны (Описание, Характеристики) */}
          <div className={styles.accordionContainer}>
             <div className={styles.accordionItem}>
-               <button onClick={() => toggleSection('description')}>
-                  Описание {openSection === 'description' ? <ChevronUp /> : <ChevronDown />}
+               <button
+               className={`${openSection === 'description' && styles.buttonActive}`} 
+               onClick={() => toggleSection('description')}>
+                  Описание
                </button>
-               {openSection === 'description' && (
-                  <div className={styles.accordionContent}>
-                     <p>{product.description}</p>
-                  </div>
-               )}
             </div>
             <div className={styles.accordionItem}>
-               <button onClick={() => toggleSection('specs')}>
-                  Характеристики {openSection === 'specs' ? <ChevronUp /> : <ChevronDown />}
+               <button
+               className={`${openSection === 'specs' && styles.buttonActive}`} 
+               onClick={() => toggleSection('specs')}>
+                  Характеристики
                </button>
-               {openSection === 'specs' && (
-                  <div className={styles.accordionContent}>
-                     {/* Здесь можно вывести таблицу характеристик */}
-                     <p>Материал: Береза, МДФ</p>
-                  </div>
-               )}
+            </div>
+            <div className={styles.accordionItem}>
+               <button
+               className={`${openSection === 'reviews' && styles.buttonActive}`} 
+               onClick={() => toggleSection('reviews')}>
+                  Отзывы
+               </button>
             </div>
          </div>
+
+         {/* Отображение контента описание, характеристик, отзывов */}
+         {openSection === 'description' && (
+            <div className={styles.accordionContent}>
+               Описание контент
+            </div>
+         )}
+
+         {openSection === 'specs' && (
+            <div className={styles.accordionContent}>
+               Характеристики контент
+            </div>
+         )}
+
+         {openSection === 'reviews' && (
+            <div className={styles.accordionContent}>Отзывы контент</div>
+         )}
       </div>
    );
 };
