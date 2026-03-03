@@ -18,6 +18,8 @@ const ProductPage = () => {
    const [totalPages, setTotalPages] = useState(0);
    const [totalCount, setTotalCount] = useState(0);
    const [canReview, setCanReview] = useState(null);
+   // стейт для ID позиции заказа
+   const [availableOrderItemId, setAvailableOrderItemId] = useState(null);
    const range = getPaginationRange(currentPage, totalPages);
 
    // Загрузка самого товара
@@ -54,16 +56,20 @@ const ProductPage = () => {
    // Эффект для показа кнопки если пользователь после покупки не оставил отзыв
    useEffect(() => {
       const fetchCheckReview = async () => {
+         // Проверяй наличие токена/юзера, чтобы не спамить впустую на бэк
          try {
             const { data } = await fetchAxios.get(`/api/reviews/check-review-eligibility?productId=${id}`);
-            setCanReview(data.canReview)
-         } catch (error) {
-            console.log(error)
+            setCanReview(data.canReview);
+            setAvailableOrderItemId(data.availableOrderItemId); // Сохраняем ID позиции
+         } catch (err) {
+            // Если 401 (не авторизован), просто сетим false
+            setCanReview(false);
+            console.log(err);
          }
       };
 
-      fetchCheckReview()
-   }, [id])
+      if (id) fetchCheckReview();
+   }, [id]);
 
 
    const toggleSection = useCallback((section) => {
@@ -77,6 +83,12 @@ const ProductPage = () => {
          document.getElementById('tabs-start')?.scrollIntoView({ behavior: 'smooth' });
       }
    };
+
+   const handleOpenReviewModal = useCallback(async (orderItemId) => {
+      if(!orderItemId) return;
+
+      console.log(orderItemId)
+   }, [])
 
    if (loading) return <div className="preloader"><Loader /></div>;
    if (!product) return <div>Товар не найден</div>;
@@ -195,13 +207,14 @@ const ProductPage = () => {
 
             {openSection === 'reviews' && (
                <div>
-                  {
-                     canReview && (
-                        <button className={styles.sendReview}>
-                           Оставить отзыв
-                        </button>
-                     )
-                  }
+                  {canReview && (
+                     <button
+                        className={styles.sendReview}
+                        onClick={() => handleOpenReviewModal(availableOrderItemId)}
+                     >
+                        Оставить отзыв
+                     </button>
+                  )}
 
                   <div className={styles.accordionContent}>
                      {reviews.length === 0 ? (
