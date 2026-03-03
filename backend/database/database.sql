@@ -168,6 +168,7 @@ CREATE TABLE Reviews (
    user_id INT REFERENCES Users(user_id) ON DELETE CASCADE NOT NULL,
    -- При удалении Продукта, удаляются все связанные Отзывы. (Уже было CASCADE)
    product_id INT REFERENCES Products(product_id) ON DELETE CASCADE,
+   order_item_id INT REFERENCES Order_Items(order_item_id) ON DELETE CASCADE NOT NULL,
    name VARCHAR(300),
    -- Достоинства
    advantages TEXT,

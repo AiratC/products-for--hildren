@@ -180,6 +180,97 @@
    margin-top: 40px;
 }
 
+.accordionContent p {
+   font-size: 18px;
+   font-weight: bold;
+   color: #446B80;
+}
+
+.description {
+   font-size: 18px;
+   color: #446B80;
+   max-width: 716px;
+}
+
+.characteristicsContainer {
+   display: flex;
+   flex-direction: column;
+   gap: 15px;
+   font-size: 18px;
+   color: #446B80;
+   padding: 0 20px;
+}
+
+.sendReview {
+   background-color: white;
+   padding: 12px 16px;
+   border: 2px solid #446B80;
+   color: #446B80;
+   font-size: 16px;
+   border-radius: 8px;
+   margin-top: 30px;
+}
+
+/* Пагинация */
+.pagination {
+   display: flex;
+   align-items: center;
+   gap: 8px;
+   /* Небольшой отступ между кнопками */
+   margin-top: 40px;
+   flex-wrap: wrap;
+   /* Чтобы на мобилках пагинация переносилась */
+}
+
+
+.pageBtn {
+   /* Жестко фиксируем размер, чтобы цифры не растягивали кнопки */
+   width: 40px;
+   height: 40px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+
+   border: 1px solid #E2E8F0;
+   background: #fff;
+   color: #4A5568;
+   font-size: 14px;
+   cursor: pointer;
+   transition: all 0.2s;
+   border-radius: 4px;
+   /* Если хочешь как на макете, можно убрать или оставить 2px */
+}
+
+.pageBtn.active {
+   border-color: #4A627D;
+   background-color: #F8FAFC;
+   color: #4A627D;
+   font-weight: 600;
+}
+
+.pageBtn:hover:not(.dots):not(.active) {
+   border-color: #CBD5E0;
+   background-color: #EDF2F7;
+}
+
+.pageBtn.dots {
+   border: none;
+   cursor: default;
+   background: transparent;
+}
+
+.nextBtn {
+   display: flex;
+   align-items: center;
+   gap: 8px;
+   margin-left: 10px;
+   background: transparent;
+   border: none;
+   color: #4A627D;
+   font-weight: 500;
+   cursor: pointer;
+}
+
 /* АДАПТИВ (как на втором фото) */
 @media (max-width: 768px) {
    .productMain {

@@ -54,5 +54,84 @@ export const addReviews = async (req, res) => {
          success: false
       })
    }
+};
+
+// Получаем все отзывы конкретного товара
+export const getAllReviewsById = async (req, res) => {
+   const { id } = req.params;
+   const page = parseInt(req.query.page) || 1;
+   const limit = parseInt(req.query.limit) || 2;
+   const offset = (page - 1) * limit;
+
+   try {
+      // 1. Получаем общее кол-во отзывов конкретного товара для пагинации
+      const totalReviews = await query(`SELECT COUNT(*) FROM Reviews WHERE product_id = $1`, [id]);
+      const totalCount = parseInt(totalReviews.rows[0].count);
+
+      // Получаем отзывы конкретного товара
+      const reviewsResult = await query(
+         `SELECT * FROM Reviews WHERE product_id = $1 ORDER BY created_at DESC LIMIT $2 OFFSET $3`,
+         [id, limit, offset]
+      );
+
+      if(reviewsResult.rows.length === 0) {
+         return res.status(200).json({
+            reviews: [],
+            totalPages: 0,
+            currentPage: page,
+            totalCount: 0
+         })
+      };
+
+      return res.status(200).json({
+         reviews: reviewsResult.rows,
+         totalPages: Math.ceil(totalCount / limit),
+         currentPage: page,
+         totalCount
+      })
+   } catch (error) {
+      return res.status(500).json({
+         message: 'Ошибка при получении отзывов на сервере'
+      })
+   }
+};
+
+// Контроллер для отображения кнопки оставить отзыв
+export const checkReviewEligibility = async (req, res) => {
+   // Получаем id пользователя
+   const userId = req.userId;
+   // Получаем id товара
+   const { productId } = req.query;
+
+   try {
+      const result = await query(
+         `
+            SELECT oi.order_item_id
+            FROM order_items oi
+            JOIN orders o ON o.order_id = oi.order_id
+            WHERE oi.product_id = $1
+               AND o.user_id = $2
+               AND o.order_status = 'delivered'
+               AND oi.order_item_id NOT IN (
+                  SELECT order_item_id FROM reviews WHERE order_item_id IS NOT NULL
+               )
+            LIMIT 1
+         `, [productId, userId]
+      );
+
+      return res.status(200).json({
+         // Если массив rows не пустой, значит есть покупка без отзыва
+         canReview: result.rows.length > 0,
+         // Теперь здесь будет реальный ID, а не undefined
+         availableOrderItemId: result.rows.length > 0 ? result.rows[0].order_item_id : null,
+         success: true
+      })
+
+   } catch (error) {
+      console.log(error)
+      return res.status(500).json({
+         message: 'Ошибка сервера'
+      })
+   }
 }
 

@@ -157,9 +157,9 @@ const ProductCard = ({ data }) => {
                               </div>
                            ) : (
                               <div className={styles.quantityControls}>
-                                 <button onClick={() => handleClickCart(product_id, 'decrement')}>-</button>
+                                 <button onClick={(e) => handleClickCart(e, product_id, 'decrement')}>-</button>
                                  <span className={styles.count}>{inCart.quantity}</span>
-                                 <button onClick={() => handleClickCart(product_id, 'increment')}>+</button>
+                                 <button onClick={(e) => handleClickCart(e, product_id, 'increment')}>+</button>
                               </div>
                            )
                         }
