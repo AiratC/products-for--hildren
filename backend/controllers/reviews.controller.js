@@ -70,7 +70,14 @@ export const getAllReviewsById = async (req, res) => {
 
       // Получаем отзывы конкретного товара
       const reviewsResult = await query(
-         `SELECT * FROM Reviews WHERE product_id = $1 ORDER BY created_at DESC LIMIT $2 OFFSET $3`,
+         `SELECT 
+            r.*, 
+            u.avatar
+         FROM Reviews r
+         LEFT JOIN Users u ON r.user_id = u.user_id
+         WHERE r.product_id = $1 
+         ORDER BY r.created_at DESC 
+         LIMIT $2 OFFSET $3`,
          [id, limit, offset]
       );
 

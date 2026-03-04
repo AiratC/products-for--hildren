@@ -1,0 +1,88 @@
+.reviewCard {
+   padding: 25px 0;
+   border-bottom: 1px solid #f0f0f0;
+   display: flex;
+   flex-direction: column;
+   gap: 15px;
+   max-width: 662px;
+}
+
+.header {
+   display: flex;
+   flex-direction: column;
+   gap: 12px;
+}
+
+.avatar {
+   width: 40px;
+   height: 40px;
+   background: #f8f9fa;
+   border-radius: 8px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   border: 1px solid #eef0f2;
+}
+
+.avatar img {
+   border-radius: 50%;
+}
+
+.authorInfo {
+   display: flex;
+   flex-direction: column;
+   flex-grow: 1;
+}
+
+.authorName {
+   margin: 0;
+   font-size: 16px;
+   color: #4a6675;
+   font-weight: 500;
+}
+
+.date {
+   font-size: 13px;
+   color: #99abb4;
+}
+
+.rating {
+   display: flex;
+   gap: 2px;
+}
+
+.content {
+   display: flex;
+   flex-direction: column;
+   gap: 12px;
+   /* Выравнивание текста под именем (40px аватар + 12px gap) */
+}
+
+.section {
+   display: flex;
+   flex-direction: column;
+   gap: 4px;
+}
+
+.sectionTitle {
+   margin: 0;
+   font-size: 15px;
+   color: #4a6675;
+   font-weight: 600;
+}
+
+.text {
+   margin: 0;
+   font-size: 15px;
+   line-height: 1.5;
+   color: #5a717d;
+   white-space: pre-line;
+   /* Чтобы сохранялись переносы строк из textarea */
+}
+
+/* Адаптивность для мобильных */
+@media (max-width: 600px) {
+   .content {
+      padding-left: 0;
+   }
+}

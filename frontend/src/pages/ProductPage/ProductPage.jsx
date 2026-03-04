@@ -7,6 +7,7 @@ import Loader from '../../components/Loader/Loader';
 import { RiStarSFill } from "react-icons/ri";
 import getPaginationRange from '../../utils/paginationRange';
 import ReviewModal from '../../components/ReviewModal/ReviewModal';
+import ReviewItem from '../../components/ReviewItem/ReviewItem';
 
 const ProductPage = () => {
    const { id } = useParams();
@@ -226,9 +227,9 @@ const ProductPage = () => {
                         <>
                            <div className={styles.reviewsList}>
                               {reviews.map(review => (
-                                 <div key={review.id} className={styles.reviewItem}>
+                                 <div key={review.review_id} className={styles.reviewItem}>
                                     {/* Здесь верстка одного отзыва */}
-                                    <p>{review.comment}</p>
+                                    <ReviewItem review={review}/>
                                  </div>
                               ))}
                            </div>
