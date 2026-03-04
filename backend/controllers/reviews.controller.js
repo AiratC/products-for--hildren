@@ -133,5 +133,64 @@ export const checkReviewEligibility = async (req, res) => {
          message: 'Ошибка сервера'
       })
    }
+};
+
+// Создание и добавление отзыва
+export const createReview = async (req, res) => {
+   const {
+      productId, 
+      orderItemId, 
+      name, 
+      advantages, 
+      flaws, 
+      comment, 
+      rating
+   } = req.body;
+
+   // ID пользователя из middleware авторизации
+   const userId = req.userId;
+
+   try {
+      // Сначала проверим, не оставлял ли пользователь отзыв на этот order_item_id ранее
+      const existingReview = await query(
+         `SELECT review_id FROM Reviews WHERE order_item_id = $1`, [orderItemId]
+      );
+
+      if(existingReview.rows.length > 0) {
+         return res.status(400).json({
+            success: false,
+            message: 'Вы уже оставляли отзыв на этот товар'
+         })
+      };
+
+      // Сохраняем отзыв в базу
+      const newReview = await query(
+         `
+            INSERT INTO Reviews (
+               user_id,
+               product_id,
+               order_item_id,
+               name,
+               advantages,
+               flaws,
+               comment,
+               rating
+            )
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *
+         ` , [userId, productId, orderItemId, name, advantages, flaws, comment, rating]
+      );
+
+      return res.status(200).json({
+         message: 'Отзыв опубликован',
+         success: true,
+         review: newReview.rows[0]
+      })
+   } catch (error) {
+      return res.status(500).json({
+         message: 'Ошибка публикации отзыва',
+         success: false,
+         error: true
+      })
+   }
 }
 

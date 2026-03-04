@@ -41,7 +41,7 @@ const ProductPage = () => {
    }, [id]);
 
    // Загрузка отзывов (срабатывает при изменении id или страницы)
-   const fetchAllReviews = async () => {
+   const fetchAllReviews = useCallback(async () => {
          try {
             const { data } = await fetchAxios.get(`/api/reviews/get-all-reviews/${id}?page=${currentPage}`);
             setReviews(data.reviews || []);
@@ -50,10 +50,11 @@ const ProductPage = () => {
          } catch (error) {
             console.error("Ошибка загрузки отзывов:", error);
          }
-      };
+      }, [id, currentPage]);
 
    useEffect(() => {
       if (id) fetchAllReviews();
+   // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [id, currentPage]);
 
    // Эффект для показа кнопки если пользователь после покупки не оставил отзыв

@@ -1,5 +1,5 @@
 import express from 'express';
-import { addReviews, checkReviewEligibility, getAllReviewsById } from '../controllers/reviews.controller.js';
+import { addReviews, checkReviewEligibility, createReview, getAllReviewsById } from '../controllers/reviews.controller.js';
 import { protect } from '../middleware/authMiddleware.js';
 
 const reviewsRouter = express.Router();
@@ -12,6 +12,9 @@ reviewsRouter.get('/get-all-reviews/:id', getAllReviewsById);
 
 // Отображаем кнопку отзыва на товар на котором ещё нет отзыва после покупки
 reviewsRouter.get('/check-review-eligibility', protect, checkReviewEligibility);
+
+// Создание и отправка отзыва
+reviewsRouter.post('/create-review', protect, createReview)
 
 
 export default reviewsRouter;

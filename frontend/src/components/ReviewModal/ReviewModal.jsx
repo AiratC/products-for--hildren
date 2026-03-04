@@ -17,28 +17,44 @@ const ReviewModal = ({ isOpen, onClose, productId, orderItemId, onReviewSuccess 
 
    if (!isOpen) return null;
 
+   // Функция для полной очистки формы
+   const handleClose = () => {
+      setRating(0);
+      setFormData({
+         name: '',
+         advantages: '',
+         flaws: '',
+         comment: ''
+      });
+      onClose();
+   }
+
    const handleSubmit = async (e) => {
       e.preventDefault();
       if (rating === 0) return toast.error('Пожалуйста, поставьте оценку');
 
       try {
-         await fetchAxios.post('/api/reviews/create-review', {
+         const { data } = await fetchAxios.post('/api/reviews/create-review', {
             productId,
             orderItemId,
             rating,
             ...formData
          });
-         // Обновляем список отзывов и скрываем кнопку
-         onReviewSuccess();
-         onClose();
+         if (data.success) {
+            toast.success(data.message);
+            // Обновляем список отзывов и скрываем кнопку
+            onReviewSuccess();
+            handleClose();
+         }
+
       } catch (error) {
-         toast.error(error.message)
+         toast.error(error.response?.data?.message || 'Ошибка при отправке')
       }
    }
    return (
-      <div className={styles.overlay} onClick={onClose}>
+      <div className={styles.overlay} onClick={handleClose}>
          <div className={styles.modal} onClick={e => e.stopPropagation()}>
-            <button className={styles.closeBtn} onClick={onClose}><X size={20} /></button>
+            <button className={styles.closeBtn} onClick={handleClose}><X size={20} /></button>
 
             <h2 className={styles.modalTitle}>Напишите отзыв о нашем товаре</h2>
 
