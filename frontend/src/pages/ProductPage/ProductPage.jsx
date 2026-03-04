@@ -24,6 +24,7 @@ const ProductPage = () => {
    const [availableOrderItemId, setAvailableOrderItemId] = useState(null);
    const range = getPaginationRange(currentPage, totalPages);
    const [isModalOpen, setIsModalOpen] = useState(false);
+   const [averageRating, setAverageRating] = useState(null);
 
    // Загрузка самого товара
    useEffect(() => {
@@ -43,19 +44,20 @@ const ProductPage = () => {
 
    // Загрузка отзывов (срабатывает при изменении id или страницы)
    const fetchAllReviews = useCallback(async () => {
-         try {
-            const { data } = await fetchAxios.get(`/api/reviews/get-all-reviews/${id}?page=${currentPage}`);
-            setReviews(data.reviews || []);
-            setTotalPages(data.totalPages || 0);
-            setTotalCount(data.totalCount || 0);
-         } catch (error) {
-            console.error("Ошибка загрузки отзывов:", error);
-         }
-      }, [id, currentPage]);
+      try {
+         const { data } = await fetchAxios.get(`/api/reviews/get-all-reviews/${id}?page=${currentPage}`);
+         setReviews(data.reviews || []);
+         setTotalPages(data.totalPages || 0);
+         setTotalCount(data.totalCount || 0);
+         setAverageRating(data.averageRating)
+      } catch (error) {
+         console.error("Ошибка загрузки отзывов:", error);
+      }
+   }, [id, currentPage]);
 
    useEffect(() => {
       if (id) fetchAllReviews();
-   // eslint-disable-next-line react-hooks/exhaustive-deps
+      // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [id, currentPage]);
 
    // Эффект для показа кнопки если пользователь после покупки не оставил отзыв
@@ -90,7 +92,7 @@ const ProductPage = () => {
    };
 
    const handleOpenReviewModal = useCallback(async (orderItemId) => {
-      if(!orderItemId) return;
+      if (!orderItemId) return;
       setIsModalOpen(true);
    }, [])
 
@@ -118,7 +120,12 @@ const ProductPage = () => {
                      <div className={styles.starsContainer}>
                         <span className={styles.stars}>
                            {[...Array(5)].map((_, i) => (
-                              <RiStarSFill key={i} className={styles.star} size={24} />
+                              <RiStarSFill
+                                 key={i}
+                                 className={styles.star}
+                                 size={24}
+                                 color={i < Math.round(averageRating) ? "#edf824" : "#e4e5e9"}
+                              />
                            ))}
                         </span>
                         <span className={styles.noReviews}>
@@ -229,7 +236,7 @@ const ProductPage = () => {
                               {reviews.map(review => (
                                  <div key={review.review_id} className={styles.reviewItem}>
                                     {/* Здесь верстка одного отзыва */}
-                                    <ReviewItem review={review}/>
+                                    <ReviewItem review={review} />
                                  </div>
                               ))}
                            </div>

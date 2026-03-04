@@ -64,9 +64,23 @@ export const getAllReviewsById = async (req, res) => {
    const offset = (page - 1) * limit;
 
    try {
-      // 1. Получаем общее кол-во отзывов конкретного товара для пагинации
-      const totalReviews = await query(`SELECT COUNT(*) FROM Reviews WHERE product_id = $1`, [id]);
-      const totalCount = parseInt(totalReviews.rows[0].count);
+      // Получаем общее кол-во и СРЕДНИЙ рейтинг
+      const statsResult = await query(
+         `
+            SELECT
+               COUNT(*) as total_count,
+               AVG(rating) as average_rating
+            FROM Reviews
+            WHERE product_id = $1
+         `,
+         [id]
+      );
+
+      const totalCount = parseInt(statsResult.rows[0].total_count) || 0;
+      // Округляем до 1 знака после запятой (например, 4.5)
+      const averageRating = totalCount > 0 ?
+         parseFloat(Number(statsResult.rows[0].average_rating).toFixed(1)) :
+         0;
 
       // Получаем отзывы конкретного товара
       const reviewsResult = await query(
@@ -86,7 +100,8 @@ export const getAllReviewsById = async (req, res) => {
             reviews: [],
             totalPages: 0,
             currentPage: page,
-            totalCount: 0
+            totalCount: 0,
+            averageRating
          })
       };
 
@@ -94,7 +109,8 @@ export const getAllReviewsById = async (req, res) => {
          reviews: reviewsResult.rows,
          totalPages: Math.ceil(totalCount / limit),
          currentPage: page,
-         totalCount
+         totalCount,
+         averageRating
       })
    } catch (error) {
       return res.status(500).json({
