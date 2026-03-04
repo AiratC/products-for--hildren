@@ -1,5 +1,10 @@
+.reviewItemContainer {
+   display: flex;
+   gap: 14px;
+}
+
 .reviewCard {
-   padding: 25px 0;
+   padding: 0 0 20px 0;
    border-bottom: 1px solid #f0f0f0;
    display: flex;
    flex-direction: column;
@@ -19,12 +24,17 @@
    background: #f8f9fa;
    border-radius: 8px;
    display: flex;
+   flex-shrink: 0;
    align-items: center;
    justify-content: center;
    border: 1px solid #eef0f2;
 }
 
-.avatar img {
+.avatarImg {
+   width: 100%;
+   aspect-ratio: 1 / 1;
+   /* Квадрат */
+   object-fit: cover;
    border-radius: 50%;
 }
 

@@ -160,6 +160,7 @@
 /* Стили для аккордеона */
 .accordionContainer {
    display: flex;
+   flex-wrap: wrap;
    gap: 48px;
    margin-top: 48px;
    border-bottom: 1px solid #223540;

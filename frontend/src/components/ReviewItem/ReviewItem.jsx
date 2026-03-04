@@ -11,20 +11,20 @@ const ReviewItem = ({ review }) => {
       day: 'numeric'
    });
 
-   console.log(review)
-
    return (
-      <div className={styles.reviewCard}>
-         <div className={styles.header}>
-            <div className={styles.avatar}>
+      <>
+      <div className={styles.reviewItemContainer}>
+         <div className={styles.avatar}>
                {
                   review.avatar ? (
-                     <img src={review.avatar} alt="" />
+                     <img className={styles.avatarImg} src={review.avatar} alt="" />
                   ) : (
                      <User size={24} color="#7bc9ef" />
                   )
                }
-            </div>
+         </div>
+         <div className={styles.reviewCard}>
+         <div className={styles.header}>
             <div className={styles.rating}>
                {[...Array(5)].map((_, i) => (
                   <RiStarSFill
@@ -64,6 +64,9 @@ const ReviewItem = ({ review }) => {
             )}
          </div>
       </div>
+      </div>
+      </>
+      
    );
 }
 
