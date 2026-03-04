@@ -6,6 +6,7 @@ import styles from './ProductPage.module.css';
 import Loader from '../../components/Loader/Loader';
 import { RiStarSFill } from "react-icons/ri";
 import getPaginationRange from '../../utils/paginationRange';
+import ReviewModal from '../../components/ReviewModal/ReviewModal';
 
 const ProductPage = () => {
    const { id } = useParams();
@@ -21,6 +22,7 @@ const ProductPage = () => {
    // стейт для ID позиции заказа
    const [availableOrderItemId, setAvailableOrderItemId] = useState(null);
    const range = getPaginationRange(currentPage, totalPages);
+   const [isModalOpen, setIsModalOpen] = useState(false);
 
    // Загрузка самого товара
    useEffect(() => {
@@ -39,8 +41,7 @@ const ProductPage = () => {
    }, [id]);
 
    // Загрузка отзывов (срабатывает при изменении id или страницы)
-   useEffect(() => {
-      const fetchAllReviews = async () => {
+   const fetchAllReviews = async () => {
          try {
             const { data } = await fetchAxios.get(`/api/reviews/get-all-reviews/${id}?page=${currentPage}`);
             setReviews(data.reviews || []);
@@ -50,6 +51,8 @@ const ProductPage = () => {
             console.error("Ошибка загрузки отзывов:", error);
          }
       };
+
+   useEffect(() => {
       if (id) fetchAllReviews();
    }, [id, currentPage]);
 
@@ -86,8 +89,7 @@ const ProductPage = () => {
 
    const handleOpenReviewModal = useCallback(async (orderItemId) => {
       if(!orderItemId) return;
-
-      console.log(orderItemId)
+      setIsModalOpen(true);
    }, [])
 
    if (loading) return <div className="preloader"><Loader /></div>;
@@ -255,6 +257,18 @@ const ProductPage = () => {
                </div>
             )}
          </div>
+
+         {/* Модальное окно для отзыва */}
+         <ReviewModal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            productId={id}
+            orderItemId={availableOrderItemId}
+            onReviewSuccess={() => {
+               setCanReview(false);
+               fetchAllReviews();
+            }}
+         />
       </div>
    );
 };
