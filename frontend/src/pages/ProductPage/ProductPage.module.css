@@ -58,13 +58,13 @@
 }
 
 .article {
-   color: #446B80;
+   color: #446b80;
    font-size: 16px;
 }
 
 .title {
    margin-top: 10px;
-   color: #446B80;
+   color: #446b80;
    font-size: 24px;
 }
 
@@ -83,11 +83,11 @@
 
 .noReviews {
    font-size: 18px;
-   color: #446B80;
+   color: #446b80;
 }
 
 .stars {
-   color: #7FC9F0;
+   color: #7fc9f0;
 }
 
 /* .star {
@@ -99,6 +99,7 @@
    align-items: center;
    background-color: white;
    gap: 16px;
+   cursor: pointer;
 }
 
 .colorLabel {
@@ -106,7 +107,7 @@
    align-items: center;
    gap: 8px;
    margin-top: 48px;
-   color: #446B80;
+   color: #446b80;
 }
 
 .priceSection {
@@ -117,24 +118,34 @@
    font-size: 48px;
    font-weight: bold;
    margin-top: 48px;
-   color: #446B80;
+   color: #446b80;
 }
 
 .actions {
    display: flex;
+   justify-content: center;
+   align-items: center;
    gap: 15px;
+}
+
+.actions div button {
+   width: 100%;
+}
+
+.actions div {
+   width: 100%;
 }
 
 .deliveryInfo {
    margin-top: 48px;
    font-size: 18px;
-   color: #446B80;
+   color: #446b80;
 }
 
 .foundCheaper {
    font-size: 18px;
    font-weight: bold;
-   color: #446B80
+   color: #446b80;
 }
 
 .fastOrderBtn {
@@ -170,12 +181,12 @@
 .accordionItem button {
    background-color: white;
    font-size: 18px;
-   color: #446B80;
+   color: #446b80;
    cursor: pointer;
 }
 
 .accordionItem button.buttonActive {
-   color: #7FC9F0;
+   color: #7fc9f0;
 }
 
 .accordionContent {
@@ -185,12 +196,12 @@
 .accordionContent p {
    font-size: 18px;
    font-weight: bold;
-   color: #446B80;
+   color: #446b80;
 }
 
 .description {
    font-size: 18px;
-   color: #446B80;
+   color: #446b80;
    max-width: 716px;
 }
 
@@ -199,19 +210,93 @@
    flex-direction: column;
    gap: 15px;
    font-size: 18px;
-   color: #446B80;
+   color: #446b80;
    padding: 0 20px;
 }
 
 .sendReview {
    background-color: white;
    padding: 12px 16px;
-   border: 2px solid #446B80;
-   color: #446B80;
+   border: 2px solid #446b80;
+   color: #446b80;
    font-size: 16px;
    border-radius: 8px;
    margin-top: 30px;
    cursor: pointer;
+}
+
+.cartLoaderContainer {
+   display: flex;
+   justify-content: center;
+}
+
+
+.favoriteLoaderContainer {
+   position: relative;
+}
+
+.favoriteLoader {
+   position: absolute;
+   top: -12px;
+   right: -14px;
+}
+
+.favoriteLoader span {
+   width: 19px;
+   height: 19px;
+}
+
+.cartLoader {
+   max-width: 40px;
+}
+
+.cartLoader span {
+   width: 20px;
+   height: 20px;
+}
+
+.cartLoader span::before {
+   border: 3px solid #17a1f7;
+}
+
+.buyBtn {
+   background-color: #87ceeb;
+   color: white;
+   border: none;
+   padding: 15px 30px;
+   border-radius: 8px;
+   flex: 1;
+   cursor: pointer;
+}
+
+.quantityControls {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   background: #f0f7fb;
+   border-radius: 8px;
+   padding: 4px;
+   height: 47px;
+   gap: 10px;
+}
+
+.quantityControls button {
+   border: none;
+   background: white;
+   width: 30px;
+   height: 30px;
+   border-radius: 6px;
+   cursor: pointer;
+   font-weight: bold;
+   color: #5bc0de;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.count {
+   font-weight: 600;
 }
 
 /* Пагинация */
@@ -225,7 +310,6 @@
    /* Чтобы на мобилках пагинация переносилась */
 }
 
-
 .pageBtn {
    /* Жестко фиксируем размер, чтобы цифры не растягивали кнопки */
    width: 40px;
@@ -234,9 +318,9 @@
    align-items: center;
    justify-content: center;
 
-   border: 1px solid #E2E8F0;
+   border: 1px solid #e2e8f0;
    background: #fff;
-   color: #4A5568;
+   color: #4a5568;
    font-size: 14px;
    cursor: pointer;
    transition: all 0.2s;
@@ -245,15 +329,15 @@
 }
 
 .pageBtn.active {
-   border-color: #4A627D;
-   background-color: #F8FAFC;
-   color: #4A627D;
+   border-color: #4a627d;
+   background-color: #f8fafc;
+   color: #4a627d;
    font-weight: 600;
 }
 
 .pageBtn:hover:not(.dots):not(.active) {
-   border-color: #CBD5E0;
-   background-color: #EDF2F7;
+   border-color: #cbd5e0;
+   background-color: #edf2f7;
 }
 
 .pageBtn.dots {
@@ -269,7 +353,7 @@
    margin-left: 10px;
    background: transparent;
    border: none;
-   color: #4A627D;
+   color: #4a627d;
    font-weight: 500;
    cursor: pointer;
 }

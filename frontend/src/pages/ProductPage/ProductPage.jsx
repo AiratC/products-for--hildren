@@ -8,13 +8,20 @@ import { RiStarSFill } from "react-icons/ri";
 import getPaginationRange from '../../utils/paginationRange';
 import ReviewModal from '../../components/ReviewModal/ReviewModal';
 import ReviewItem from '../../components/ReviewItem/ReviewItem';
+import { useDispatch, useSelector } from 'react-redux';
+import { toggleFavoriteAction } from '../../redux/slices/favoriteSlice';
+import toast from 'react-hot-toast';
+import { updateCartAction } from '../../redux/slices/cartSlice';
+import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
+import { Button } from 'antd';
 
 const ProductPage = () => {
-   const { id } = useParams();
+   const params = useParams();
+   const id = Number(params.id)
    const [product, setProduct] = useState(null);
    const [activeImage, setActiveImage] = useState(0);
    const [openSection, setOpenSection] = useState('description');
-   const [loading, setLoading] = useState(false);
+   const [loadingProductPage, setLoadingProductPage] = useState(false);
    const [reviews, setReviews] = useState([]);
    const [currentPage, setCurrentPage] = useState(1);
    const [totalPages, setTotalPages] = useState(0);
@@ -26,17 +33,74 @@ const ProductPage = () => {
    const [isModalOpen, setIsModalOpen] = useState(false);
    const [averageRating, setAverageRating] = useState(null);
 
+   const dispatch = useDispatch();
+
+   const { loading, items } = useSelector((state) => state.favorites);
+   const { loadingId, cartItems } = useSelector((state) => state.cart);
+
+   // Проверяем загрузку именно ДЛЯ ЭТОЙ карточки
+   const isThisProductFavoriteLoading = loading === id;
+
+   // Проверяем загрузку именно для этой карточки - добавление, прибавление, уменьшение товара в корзине
+   const isThisProductCartLoading = loadingId === id;
+
+   // Проверяем, в избранном ли товар
+   const isFavorite = items.includes(id);
+
+   // Ищем есть ли этот товар в корзине
+   const inCart = cartItems.find(item => item.product_id === id);
+
+   // Изброннаое
+   const handleFavorite = useCallback(async (event) => {
+      event.stopPropagation();
+
+      try {
+         const result = await dispatch(toggleFavoriteAction({ productId: id })).unwrap()
+         toast.success(result.message);
+      } catch (error) {
+         toast.error(error.message)
+      }
+   }, [dispatch, id])
+
+   // Корзина
+   const handleClickCart = useCallback(async (e, productId, action) => {
+      e.stopPropagation();
+      const data = { productId: productId, action: action }
+      try {
+         switch (action) {
+            case 'add': {
+               const response = await dispatch(updateCartAction(data)).unwrap();
+               toast.success(response.message)
+               break;
+            };
+            case 'decrement': {
+               const response = await dispatch(updateCartAction(data)).unwrap();
+               toast.success(response.message)
+               break;
+            };
+            case 'increment': {
+               const response = await dispatch(updateCartAction(data)).unwrap();
+               toast.success(response.message)
+               break;
+            }
+         }
+      } catch (error) {
+         toast.error(error.message)
+      }
+
+   }, [dispatch]);
+
    // Загрузка самого товара
    useEffect(() => {
       const fetchProduct = async () => {
          try {
-            setLoading(true);
+            setLoadingProductPage(true);
             const { data } = await fetchAxios.get(`/api/products/get-product?productId=${id}`);
             setProduct(data.product);
          } catch (error) {
             console.error("Ошибка загрузки товара:", error);
          } finally {
-            setLoading(false);
+            setLoadingProductPage(false);
          }
       };
       fetchProduct();
@@ -96,7 +160,7 @@ const ProductPage = () => {
       setIsModalOpen(true);
    }, [])
 
-   if (loading) return <div className="preloader"><Loader /></div>;
+   if (loadingProductPage) return <div className="preloader"><Loader /></div>;
    if (!product) return <div>Товар не найден</div>;
 
    return (
@@ -132,9 +196,28 @@ const ProductPage = () => {
                            {totalCount > 0 ? `Отзывов: ${totalCount}` : 'Нет отзывов'}
                         </span>
                      </div>
-                     <button className={styles.favoriteBtn}>
-                        <Heart size={24} /> <span>В избранное</span>
-                     </button>
+                     <div className={styles.favoriteLoaderContainer}>
+                        {
+                        isThisProductFavoriteLoading ? (
+                           <div className={styles.favoriteLoader}>
+                              <Loader />
+                           </div>
+                        ) : (
+                           <button onClick={(e) => handleFavorite(e)} className={styles.favoriteBtn}>
+                              {
+                                 isFavorite ? (
+                                    <AiFillHeart size={25} color='#5bc0de' />
+                                 ) : (
+                                    <AiOutlineHeart size={25} />
+                                 )
+                              }
+                              <span>В избранное</span>
+                           </button>
+                        )
+                     }
+                     </div>
+                     
+
                   </div>
                </div>
 
@@ -157,8 +240,50 @@ const ProductPage = () => {
                </div>
 
                <div className={styles.actions}>
-                  <button className={styles.fastOrderBtn}>Быстрый заказ</button>
-                  <button className={styles.addToCartBtn}>В корзину</button>
+                  <div>
+                     <button className={styles.fastOrderBtn}>Быстрый заказ</button>
+                  </div>
+
+                  <div >
+                     <div className={styles.actions}>
+                        {
+                           !inCart ? (
+                              <div className={styles.cartLoaderContainer}>
+                                 {
+                                    isThisProductCartLoading ? (
+                                       <div className={styles.cartLoader}>
+                                          <Loader />
+                                       </div>
+                                    ) : (
+                                       <button
+                                          className={styles.buyBtn}
+                                          onClick={(e) => handleClickCart(e, id, 'add')}
+                                       >
+                                          В корзину
+                                       </button>
+                                    )
+                                 }
+                              </div>
+                           ) : (
+                              <div>
+                                 {
+                                    isThisProductCartLoading ? (
+                                       <div className={styles.cartLoader}>
+                                          <Loader />
+                                       </div>
+                                    ) : (
+                                       <div className={styles.quantityControls}>
+                                          <button onClick={(e) => handleClickCart(e, id, 'decrement')}>-</button>
+                                          <span className={styles.count}>{inCart.quantity}</span>
+                                          <button onClick={(e) => handleClickCart(e, id, 'increment')}>+</button>
+                                       </div>
+                                    )
+                                 }
+                              </div>
+                           )
+                        }
+                     </div>
+                  </div>
                </div>
 
                <div className={styles.deliveryInfo}>
