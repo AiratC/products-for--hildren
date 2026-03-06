@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router';
-import { ChevronRight, Heart } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
 import fetchAxios from '../../utils/fetchAxios';
 import styles from './ProductPage.module.css';
 import Loader from '../../components/Loader/Loader';
