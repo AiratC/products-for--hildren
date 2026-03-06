@@ -358,6 +358,100 @@
    cursor: pointer;
 }
 
+/* Контейнер картинки */
+.mainImageWrapper {
+   position: relative;
+   cursor: pointer;
+   overflow: hidden;
+   border-radius: 8px;
+}
+
+/* Кнопка "Увеличить" */
+.zoomBadge {
+   position: absolute;
+   top: 50%;
+   left: 50%;
+   transform: translate(-50%, -50%);
+   background: rgba(123, 201, 239, 0.8); /* Твой голубой цвет с прозрачностью */
+   color: white;
+   padding: 10px 20px;
+   border-radius: 30px;
+   display: flex;
+   align-items: center;
+   gap: 8px;
+   opacity: 0;
+   transition: opacity 0.3s ease;
+   pointer-events: none; /* Чтобы не мешала клику по обертке */
+   white-space: nowrap;
+}
+
+/* Показываем кнопку при наведении (только на устройствах с мышкой) */
+@media (hover: hover) {
+   .mainImageWrapper:hover .zoomBadge {
+      opacity: 1;
+   }
+   
+   .mainImageWrapper:hover .mainImage {
+      transform: scale(1.05);
+      transition: transform 0.5s ease;
+   }
+}
+
+/* Модальное окно (Overlay) */
+.imageOverlay {
+   position: fixed;
+   top: 0;
+   left: 0;
+   width: 100%;
+   height: 100%;
+   background: rgba(0, 0, 0, 0.4); /* Затемнение фона как на скрине */
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   z-index: 2000;
+   backdrop-filter: blur(2px);
+}
+
+.imageModalContent {
+   position: relative;
+   background: white;
+   padding: 40px;
+   border-radius: 12px;
+   max-width: 90%;
+   max-height: 90%;
+   display: flex;
+   justify-content: center;
+}
+
+.imageModalContent img {
+   max-width: 100%;
+   max-height: 80vh;
+   object-fit: contain;
+}
+
+.closeBtn {
+   position: absolute;
+   top: 15px;
+   right: 15px;
+   background: none;
+   border: none;
+   cursor: pointer;
+   color: #333;
+   z-index: 10;
+}
+
+/* Адаптив для мобилок */
+@media (max-width: 768px) {
+   .zoomBadge {
+      display: none; /* На мобилках кнопку наведения лучше скрыть */
+   }
+   
+   .imageModalContent {
+      width: 95%;
+      padding: 20px;
+   }
+}
+
 /* АДАПТИВ (как на втором фото) */
 @media (max-width: 768px) {
    .productMain {

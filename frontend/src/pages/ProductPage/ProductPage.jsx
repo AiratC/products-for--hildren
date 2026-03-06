@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, Search } from 'lucide-react';
 import fetchAxios from '../../utils/fetchAxios';
 import styles from './ProductPage.module.css';
 import Loader from '../../components/Loader/Loader';
@@ -32,6 +32,7 @@ const ProductPage = () => {
    const range = getPaginationRange(currentPage, totalPages);
    const [isModalOpen, setIsModalOpen] = useState(false);
    const [averageRating, setAverageRating] = useState(null);
+   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
 
    const dispatch = useDispatch();
 
@@ -164,6 +165,19 @@ const ProductPage = () => {
    const handleOpenReviewModal = useCallback(async (orderItemId) => {
       if (!orderItemId) return;
       setIsModalOpen(true);
+   }, []);
+
+   // Функция открытия модалки изображения
+   const handleZoomClick = useCallback(() => {
+      setIsImageModalOpen(true);
+      // Блокируем скролл основной страницы при открытой модалке
+      document.body.style.overflow = 'hidden';
+   }, []);
+
+   // Функция закрытия модалки изображения
+   const closeImageModal = useCallback(() => {
+      setIsImageModalOpen(false);
+      document.body.style.overflow = 'auto';
    }, [])
 
    if (loadingProductPage) return <div className="preloader"><Loader /></div>;
@@ -173,12 +187,17 @@ const ProductPage = () => {
       <div className={styles.containerProductPage}>
          <div className={styles.productMain}>
             <div className={styles.gallery}>
-               <div className={styles.mainImageWrapper}>
+               <div className={styles.mainImageWrapper} onClick={handleZoomClick}>
                   <img
                      src={product.product_images?.[activeImage]}
                      alt={product.title}
                      className={styles.mainImage}
                   />
+                  {/* Кнопка увеличить, которая видна при наведении на десктопе */}
+                  <div className={styles.zoomBadge}>
+                     <Search size={20} />
+                     <span>Увеличить</span>
+                  </div>
                </div>
             </div>
 
@@ -293,6 +312,23 @@ const ProductPage = () => {
                </div>
             </div>
          </div>
+
+         {/* Модальное окно с картинкой */}
+         {
+            isImageModalOpen && (
+               <div className={styles.imageOverlay} onClick={closeImageModal}>
+                  <div className={styles.imageModalContent} onClick={(e) => e.stopPropagation()}>
+                     <button className={styles.closeBtn} onClick={closeImageModal}>
+                        <ChevronRight style={{ transform: 'rotate(45deg)' }} size={32}/>
+                     </button>
+                     <img
+                        src={product.product_images?.[activeImage]}
+                        alt="Full size"
+                     />
+                  </div>
+               </div>
+            )
+         }
 
          {/* Точка для скролла при пагинации */}
          <div className={styles.accordionContainer}>
