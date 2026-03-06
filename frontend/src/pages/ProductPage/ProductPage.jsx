@@ -232,7 +232,7 @@ const ProductPage = () => {
                         <p>Отзывов пока нет. Станьте первым!</p>
                      ) : (
                         <>
-                           <div className={styles.reviewsList}>
+                           <div id='tabs-start' className={styles.reviewsList}>
                               {reviews.map(review => (
                                  <div key={review.review_id} className={styles.reviewItem}>
                                     {/* Здесь верстка одного отзыва */}
