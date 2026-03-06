@@ -112,7 +112,6 @@ const ProductPage = () => {
    // Загрузка отзывов (срабатывает при изменении id или страницы)
    const fetchAllReviews = useCallback(async () => {
       try {
-         // !!!
          setLoadingReview(true)
          const { data } = await fetchAxios.get(`/api/reviews/get-all-reviews/${id}?page=${currentPage}`);
          setReviews(data.reviews || []);
