@@ -312,23 +312,7 @@ const ProductPage = () => {
                </div>
             </div>
          </div>
-
-         {/* Модальное окно с картинкой */}
-         {
-            isImageModalOpen && (
-               <div className={styles.imageOverlay} onClick={closeImageModal}>
-                  <div className={styles.imageModalContent} onClick={(e) => e.stopPropagation()}>
-                     <button className={styles.closeBtn} onClick={closeImageModal}>
-                        <ChevronRight style={{ transform: 'rotate(45deg)' }} size={32}/>
-                     </button>
-                     <img
-                        src={product.product_images?.[activeImage]}
-                        alt="Full size"
-                     />
-                  </div>
-               </div>
-            )
-         }
+         
 
          {/* Точка для скролла при пагинации */}
          <div className={styles.accordionContainer}>
@@ -447,6 +431,23 @@ const ProductPage = () => {
                fetchAllReviews();
             }}
          />
+
+         {/* Модальное окно с картинкой */}
+         {
+            isImageModalOpen && (
+               <div className={styles.imageOverlay} onClick={closeImageModal}>
+                  <div className={styles.imageModalContent} onClick={(e) => e.stopPropagation()}>
+                     <button className={styles.closeBtn} onClick={closeImageModal}>
+                        <ChevronRight style={{ transform: 'rotate(45deg)' }} size={32}/>
+                     </button>
+                     <img
+                        src={product.product_images?.[activeImage]}
+                        alt="Full size"
+                     />
+                  </div>
+               </div>
+            )
+         }
       </div>
    );
 };
