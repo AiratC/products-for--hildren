@@ -14,6 +14,7 @@ import toast from 'react-hot-toast';
 import { updateCartAction } from '../../redux/slices/cartSlice';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 import { Button } from 'antd';
+import RatingStars from '../../components/RatingStars/RatingStars';
 
 const ProductPage = () => {
    const params = useParams();
@@ -22,6 +23,7 @@ const ProductPage = () => {
    const [activeImage, setActiveImage] = useState(0);
    const [openSection, setOpenSection] = useState('description');
    const [loadingProductPage, setLoadingProductPage] = useState(false);
+   const [loadingReview, setLoadingReview] = useState(false);
    const [reviews, setReviews] = useState([]);
    const [currentPage, setCurrentPage] = useState(1);
    const [totalPages, setTotalPages] = useState(0);
@@ -97,6 +99,9 @@ const ProductPage = () => {
             setLoadingProductPage(true);
             const { data } = await fetchAxios.get(`/api/products/get-product?productId=${id}`);
             setProduct(data.product);
+
+            // Сбрасываем страницу на 1-ю при смене товара
+            setCurrentPage(1);
          } catch (error) {
             console.error("Ошибка загрузки товара:", error);
          } finally {
@@ -109,13 +114,17 @@ const ProductPage = () => {
    // Загрузка отзывов (срабатывает при изменении id или страницы)
    const fetchAllReviews = useCallback(async () => {
       try {
+         // !!!
+         setLoadingReview(true)
          const { data } = await fetchAxios.get(`/api/reviews/get-all-reviews/${id}?page=${currentPage}`);
          setReviews(data.reviews || []);
          setTotalPages(data.totalPages || 0);
          setTotalCount(data.totalCount || 0);
-         setAverageRating(data.averageRating)
+         setAverageRating(data.averageRating);
       } catch (error) {
          console.error("Ошибка загрузки отзывов:", error);
+      } finally {
+         setLoadingReview(false)
       }
    }, [id, currentPage]);
 
@@ -182,41 +191,32 @@ const ProductPage = () => {
                   <h1 className={styles.title}>{product.title}</h1>
                   <div className={styles.ratingRow}>
                      <div className={styles.starsContainer}>
-                        <span className={styles.stars}>
-                           {[...Array(5)].map((_, i) => (
-                              <RiStarSFill
-                                 key={i}
-                                 className={styles.star}
-                                 size={24}
-                                 color={i < Math.round(averageRating) ? "#edf824" : "#e4e5e9"}
-                              />
-                           ))}
-                        </span>
+                        <RatingStars rating={averageRating} size={24} />
                         <span className={styles.noReviews}>
                            {totalCount > 0 ? `Отзывов: ${totalCount}` : 'Нет отзывов'}
                         </span>
                      </div>
                      <div className={styles.favoriteLoaderContainer}>
                         {
-                        isThisProductFavoriteLoading ? (
-                           <div className={styles.favoriteLoader}>
-                              <Loader />
-                           </div>
-                        ) : (
-                           <button onClick={(e) => handleFavorite(e)} className={styles.favoriteBtn}>
-                              {
-                                 isFavorite ? (
-                                    <AiFillHeart size={25} color='#5bc0de' />
-                                 ) : (
-                                    <AiOutlineHeart size={25} />
-                                 )
-                              }
-                              <span>В избранное</span>
-                           </button>
-                        )
-                     }
+                           isThisProductFavoriteLoading ? (
+                              <div className={styles.favoriteLoader}>
+                                 <Loader />
+                              </div>
+                           ) : (
+                              <button onClick={(e) => handleFavorite(e)} className={styles.favoriteBtn}>
+                                 {
+                                    isFavorite ? (
+                                       <AiFillHeart size={25} color='#5bc0de' />
+                                    ) : (
+                                       <AiOutlineHeart size={25} />
+                                    )
+                                 }
+                                 <span>В избранное</span>
+                              </button>
+                           )
+                        }
                      </div>
-                     
+
 
                   </div>
                </div>
@@ -265,7 +265,7 @@ const ProductPage = () => {
                                  }
                               </div>
                            ) : (
-                              <div>
+                              <div className={styles.cartLoaderContainer}>
                                  {
                                     isThisProductCartLoading ? (
                                        <div className={styles.cartLoader}>
@@ -357,13 +357,24 @@ const ProductPage = () => {
                         <p>Отзывов пока нет. Станьте первым!</p>
                      ) : (
                         <>
+
                            <div id='tabs-start' className={styles.reviewsList}>
-                              {reviews.map(review => (
-                                 <div key={review.review_id} className={styles.reviewItem}>
-                                    {/* Здесь верстка одного отзыва */}
-                                    <ReviewItem review={review} />
-                                 </div>
-                              ))}
+                              {
+                                 loadingReview ? (
+                                    <div className='preloader'>
+                                       <Loader />
+                                    </div>
+                                 ) : (
+                                    <div>
+                                       {reviews.map(review => (
+                                          <div key={review.review_id} className={styles.reviewItem}>
+                                             {/* Здесь верстка одного отзыва */}
+                                             <ReviewItem review={review} />
+                                          </div>
+                                       ))}
+                                    </div>
+                                 )
+                              }
                            </div>
 
                            {totalPages > 1 && (

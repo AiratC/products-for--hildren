@@ -5,7 +5,7 @@ import { RiStarSFill } from 'react-icons/ri';
 
 const ReviewItem = ({ review }) => {
    // Форматируем дату из TIMESTAMP WITH TIME ZONE
-   const date = new Date(review.created_at).toLocaleDateString('ru-Ru', {
+   const date = new Date(review.created_at).toLocaleDateString('ru-RU', {
       year: 'numeric',
       month: 'long',
       day: 'numeric'

@@ -1,0 +1,27 @@
+.starWrapper {
+   position: relative;
+   display: inline-block; /* Изменяем на inline-block для жестких размеров */
+   line-height: 0; /* Убираем лишние отступы снизу от иконок */
+   user-select: none;
+   vertical-align: middle;
+}
+
+.starsEmpty {
+   display: flex;
+   color: #e4e5e9; /* Светло-серый */
+}
+
+.starsFilled {
+   position: absolute;
+   top: 0;
+   left: 0;
+   height: 100%;
+   overflow: hidden; /* Это "окно", которое показывает только часть звезд */
+   color: #edf824; /* Твой желтый цвет */
+   transition: width 0.5s ease;
+   pointer-events: none; /* Чтобы маска не мешала кликам, если они будут */
+}
+
+.starsFilledInner {
+   display: flex; /* Иконки внутри всегда в ряд и полной ширины */
+}
