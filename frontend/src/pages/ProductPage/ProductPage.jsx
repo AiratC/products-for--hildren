@@ -4,7 +4,6 @@ import { ChevronRight, Heart } from 'lucide-react';
 import fetchAxios from '../../utils/fetchAxios';
 import styles from './ProductPage.module.css';
 import Loader from '../../components/Loader/Loader';
-import { RiStarSFill } from "react-icons/ri";
 import getPaginationRange from '../../utils/paginationRange';
 import ReviewModal from '../../components/ReviewModal/ReviewModal';
 import ReviewItem from '../../components/ReviewItem/ReviewItem';
@@ -13,7 +12,6 @@ import { toggleFavoriteAction } from '../../redux/slices/favoriteSlice';
 import toast from 'react-hot-toast';
 import { updateCartAction } from '../../redux/slices/cartSlice';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
-import { Button } from 'antd';
 import RatingStars from '../../components/RatingStars/RatingStars';
 
 const ProductPage = () => {
