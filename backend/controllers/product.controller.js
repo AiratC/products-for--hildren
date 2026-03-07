@@ -428,3 +428,40 @@ export const foundCheaper = async (req, res) => {
       });
    };
 };
+
+// Контроллер поиска
+export const searchProducts = async (req, res) => {
+   const { query: searchText } = req.query;
+
+   if(!searchText) {
+      return res.status(400).json({
+         message: 'Введите текст для поиска',
+         error: true,
+         success: false
+      });
+   };
+
+   try {
+      // Используем % для поиска подстроки в любом месте названия
+      const products = await query(
+         `
+            SELECT * FROM products
+            WHERE title ILIKE $1 OR description ILIKE $1
+            ORDER BY title ASC
+         `,
+         [`%${searchText}%`]
+      );
+
+      return res.status(200).json({
+         success: true,
+         results: products.rows,
+         count: products.length
+      })
+   } catch (error) {
+      return res.status(500).json({
+         message: 'Ошибка на сервере',
+         error: true,
+         success: false
+      })
+   }
+}

@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import searchSvg from './../../assets/svg/search.svg'
 import styles from './Search.module.css';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { FaArrowLeft } from "react-icons/fa";
 
 const Search = () => {
@@ -13,7 +13,7 @@ const Search = () => {
       event.preventDefault();
       if (searchQuery.trim()) {
          // Переходим на страницу поиска с параметром в URL
-         navigate(`/search?query=${encodeURIComponent(searchQuery)}`);
+         navigate(`/search?text=${encodeURIComponent(searchQuery)}`);
       }
    }
 

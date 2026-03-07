@@ -9,6 +9,7 @@ import {
    getProductsByCategory, 
    getProductsByFilters, 
    getTwoRandomProduct, 
+   searchProducts, 
    updateProduct 
 } from '../controllers/product.controller.js';
 import upload from '../config/cloudinary.js';
@@ -42,5 +43,8 @@ productRouter.get('/get-product', getProductById);
 
 // Нашли дешевле
 productRouter.post('/found-cheaper', foundCheaper);
+
+// Поисковик
+productRouter.get(`/search`, searchProducts)
 
 export default productRouter;
