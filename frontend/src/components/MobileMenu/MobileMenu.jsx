@@ -78,7 +78,15 @@ const MobileMenu = ({ setIsMenuOpen, setIsCatalogOpen, isMenuOpen }) => {
                   ) : (
                      <div className={styles.userMenu}>
                         <div className={styles.userData}>
-                           <img src={userMobileMenu} alt="user" />
+                           <div className={styles.userAvatar}>
+                              {
+                                 user?.avatar ? (
+                                    <img src={user.avatar} alt='user avatar'/>
+                                 ) : (
+                                    <img src={userMobileMenu} alt="user" />
+                                 )
+                              }
+                           </div>
                            <div className={styles.userName}>{user?.name || 'Имя'}</div>
                            <div className={styles.userEmail}>{user?.email || 'email@gmail.com'}</div>
                            <div className={styles.menuData}>

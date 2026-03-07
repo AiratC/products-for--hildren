@@ -1,0 +1,88 @@
+.container {
+   max-width: 1200px;
+   margin: 40px auto;
+   padding: 0 20px;
+   font-family: 'Inter', sans-serif;
+   color: #1a4f6a;
+}
+
+.mainTitle {
+   font-size: 32px;
+   margin-bottom: 30px;
+   font-weight: 600;
+}
+
+.tabSwitcher {
+   display: flex;
+   gap: 15px;
+   margin-bottom: 40px;
+   border-bottom: 1px solid #eee;
+   padding-bottom: 20px;
+}
+
+.tabBtn {
+   padding: 10px 25px;
+   border: 1px solid #e2e8f0;
+   background: #fff;
+   border-radius: 8px;
+   cursor: pointer;
+   font-size: 14px;
+   transition: all 0.2s;
+   color: #8e99a4;
+}
+
+.tabBtn.active {
+   border-color: #7bc9ef;
+   color: #1a4f6a;
+   box-shadow: 0 2px 8px rgba(123, 201, 239, 0.2);
+}
+
+.gridSection {
+   display: grid;
+   grid-template-columns: 1fr 1fr;
+   gap: 40px;
+   margin-bottom: 50px;
+}
+
+.column h3 {
+   font-size: 18px;
+   margin-bottom: 20px;
+}
+
+.column ol {
+   padding-left: 20px;
+   color: #4a5568;
+   line-height: 1.6;
+}
+
+.column li {
+   margin-bottom: 10px;
+}
+
+.textBlock {
+   margin-top: 40px;
+   padding-top: 40px;
+   border-top: 1px solid #eee;
+}
+
+.textBlock h3 {
+   font-size: 20px;
+   margin-bottom: 15px;
+}
+
+.textBlock p {
+   color: #4a5568;
+   line-height: 1.6;
+   margin-bottom: 15px;
+}
+
+.details {
+   font-style: italic;
+   font-size: 14px;
+}
+
+@media (max-width: 768px) {
+   .gridSection {
+      grid-template-columns: 1fr;
+   }
+}

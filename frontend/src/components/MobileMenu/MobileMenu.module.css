@@ -149,3 +149,8 @@
    width: 23px;
    height: 23px;
 }
+
+.userAvatar img {
+   width: 40px;
+   border-radius: 50%;
+}
