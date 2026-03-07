@@ -34,6 +34,11 @@ const ProductPage = () => {
    const [averageRating, setAverageRating] = useState(null);
    const [isImageModalOpen, setIsImageModalOpen] = useState(false);
    const [isCheaperModalOpen, setIsCheaperModalOpen] = useState(false);
+   const [cheaperFormData, setCheaperFormData] = useState({
+      link: '',
+      phone: ''
+   });
+   const [cheaperLoading, setCheaperLoading] = useState(false)
 
    const dispatch = useDispatch();
 
@@ -192,7 +197,29 @@ const ProductPage = () => {
    const handleCloseCheaperModal = useCallback(() => {
       setIsCheaperModalOpen(false);
       document.body.style.overflow = 'auto';
-   }, [])
+   }, []);
+
+   const handleFormCheaper = useCallback(async (event) => {
+      event.preventDefault();
+      try {
+         setCheaperLoading(true);
+         const response = await fetchAxios.post('/api/products/found-cheaper', {
+            link: cheaperFormData.link,
+            phone: cheaperFormData.phone,
+            productId: id // id товара из useParams
+         });
+
+         if (response.data.success) {
+            toast.success(response.data.message);
+            handleCloseCheaperModal();
+            setCheaperFormData({ link: '', phone: '' }); // Очистка формы
+         }
+      } catch (error) {
+         toast.error(error.response?.data?.message || 'Ошибка отправки');
+      } finally {
+         setCheaperLoading(false);
+      }
+   }, [cheaperFormData, handleCloseCheaperModal, id])
 
    if (loadingProductPage) return <div className="preloader"><Loader /></div>;
    if (!product) return <div>Товар не найден</div>;
@@ -473,10 +500,12 @@ const ProductPage = () => {
 
                   <h3 className={styles.cheaperTitle}>Нашли дешевле?</h3>
 
-                  <form className={styles.cheaperForm}>
+                  <form onSubmit={handleFormCheaper} className={styles.cheaperForm}>
                      <div className={styles.inputGroup}>
                         <label>Ссылка на товар*</label>
                         <textarea
+                           name='link'
+                           onChange={(e) => setCheaperFormData({ ...cheaperFormData, [e.target.name]: e.target.value })}
                            placeholder="www.akusherstvo.ru/catalog/..."
                            className={styles.cheaperTextarea}
                         />
@@ -485,6 +514,8 @@ const ProductPage = () => {
                      <div className={styles.inputGroup}>
                         <label>Ваш телефон*</label>
                         <input
+                           name='phone'
+                           onChange={(e) => setCheaperFormData({ ...cheaperFormData, [e.target.name]: e.target.value })}
                            type="tel"
                            placeholder="+7 (___) ___-__-__"
                            className={styles.cheaperInput}
@@ -495,9 +526,17 @@ const ProductPage = () => {
                         Мы проверим информацию и свяжемся с Вами
                      </p>
 
-                     <button type="submit" className={styles.cheaperSubmitBtn}>
-                        Отправить
-                     </button>
+                     {
+                        cheaperLoading ? (
+                           <div className={styles.cheaperLoader}>
+                              <Loader />
+                           </div>
+                        ) : (
+                           <button type="submit" className={styles.cheaperSubmitBtn}>
+                              Отправить
+                           </button>
+                        )
+                     }
                   </form>
                </div>
             </div>

@@ -27,6 +27,7 @@
     "node-pg-migrate": "^8.0.4",
     "nodemon": "^3.1.11",
     "pg": "^8.16.3",
-    "svg-captcha": "^1.4.0"
+    "svg-captcha": "^1.4.0",
+    "validator": "^13.15.26"
   }
 }

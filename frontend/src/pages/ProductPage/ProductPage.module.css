@@ -520,6 +520,15 @@
    background-color: #5fb5e0;
 }
 
+.cheaperLoader {
+   display: flex;
+   justify-content: center;
+}
+
+.cheaperLoader span {
+   width: 30px;
+   height: 30px;
+}
 
 
 /* Адаптив для мобилок */

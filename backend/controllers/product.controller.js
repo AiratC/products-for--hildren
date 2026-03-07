@@ -1,5 +1,6 @@
 import { query } from "../config/db.js";
 import { v2 as cloudinary } from 'cloudinary';
+import validator from 'validator';
 
 // ! Создаем товар
 export const createProduct = async (req, res) => {
@@ -380,4 +381,50 @@ export const getProductById = async (req, res) => {
          success: false
       })
    }
-}
+};
+
+// Нашли дешевле
+export const foundCheaper = async (req, res) => {
+   const { link, phone, productId } = req.body;
+
+   if(!link?.trim() || !phone?.trim() || !productId) {
+      return res.status(400).json({
+         message: 'Заполните все поля',
+         error: true,
+         success: false
+      });
+   };
+
+   // Валидация ссылки
+   if(!validator.isURL(link, { require_protocol: true })) {
+      return res.status(400).json({
+         message: 'Укажите корректную ссылку с http/https',
+         error: true,
+         success: false
+      })
+   };
+
+   try {
+      // Санитизация (очистка от лишних пробелов и символов)
+      const cleanLink = validator.escape(link.trim());
+
+      await query(
+         `
+            INSERT INTO found_cheaper (product_id, link, phone)
+            VALUES ($1, $2, $3)
+         `, [productId, cleanLink, phone]
+      );
+
+      return res.status(200).json({
+         message: 'Сообщение отправлено',
+         error: false,
+         success: true
+      });
+   } catch (error) {
+      return res.status(500).json({
+         message: 'Ошибка на сервере',
+         error: true,
+         success: false
+      });
+   };
+};

@@ -3,6 +3,7 @@ import { isAdmin, verifyToken } from '../middleware/authMiddleware.js';
 import { 
    createProduct, 
    deleteProduct, 
+   foundCheaper, 
    getAllNewProducts, 
    getProductById, 
    getProductsByCategory, 
@@ -37,6 +38,9 @@ productRouter.get('/get-two-random-products', getTwoRandomProduct);
 productRouter.get('/get-all-new-products', getAllNewProducts);
 
 // Получаем товар по id для ProductPage
-productRouter.get('/get-product', getProductById)
+productRouter.get('/get-product', getProductById);
+
+// Нашли дешевле
+productRouter.post('/found-cheaper', foundCheaper);
 
 export default productRouter;
