@@ -146,6 +146,7 @@
    font-size: 18px;
    font-weight: bold;
    color: #446b80;
+   cursor: pointer;
 }
 
 .fastOrderBtn {
@@ -440,6 +441,87 @@
    z-index: 10;
 }
 
+/* Модальное окно нашли дешевле */
+.cheaperModalContent {
+   background: #fff;
+   padding: 40px;
+   border-radius: 12px;
+   width: 100%;
+   max-width: 450px; /* Узкое окно как на макете */
+   position: relative;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+}
+
+.cheaperTitle {
+   font-size: 20px;
+   color: #1a4f6a;
+   margin-bottom: 25px;
+   font-weight: 600;
+}
+
+.cheaperForm {
+   width: 100%;
+   display: flex;
+   flex-direction: column;
+   gap: 20px;
+}
+
+.inputGroup {
+   display: flex;
+   flex-direction: column;
+   gap: 8px;
+}
+
+.inputGroup label {
+   font-size: 13px;
+   color: #8e99a4;
+}
+
+.cheaperInput, .cheaperTextarea {
+   width: 100%;
+   padding: 12px 15px;
+   border: 1px solid #e2e8f0;
+   border-radius: 8px;
+   font-size: 14px;
+   outline: none;
+   transition: border-color 0.2s;
+}
+
+.cheaperTextarea {
+   height: 80px;
+   resize: none;
+}
+
+.cheaperInput:focus, .cheaperTextarea:focus {
+   border-color: #7bc9ef;
+}
+
+.cheaperNote {
+   font-size: 13px;
+   color: #8e99a4;
+   text-align: center;
+   line-height: 1.4;
+}
+
+.cheaperSubmitBtn {
+   background-color: #7bc9ef; /* Твой фирменный голубой */
+   color: white;
+   padding: 14px;
+   border: none;
+   border-radius: 8px;
+   font-weight: 500;
+   cursor: pointer;
+   transition: background 0.3s;
+}
+
+.cheaperSubmitBtn:hover {
+   background-color: #5fb5e0;
+}
+
+
+
 /* Адаптив для мобилок */
 @media (max-width: 768px) {
    .zoomBadge {
@@ -470,6 +552,13 @@
    .actions {
       flex-direction: column;
       /* Кнопки тоже в колонку */
+   }
+}
+
+@media (max-width: 480px) {
+   .cheaperModalContent {
+      width: 90%;
+      padding: 30px 20px;
    }
 }
 

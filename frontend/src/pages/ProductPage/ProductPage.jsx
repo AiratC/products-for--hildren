@@ -33,6 +33,7 @@ const ProductPage = () => {
    const [isModalOpen, setIsModalOpen] = useState(false);
    const [averageRating, setAverageRating] = useState(null);
    const [isImageModalOpen, setIsImageModalOpen] = useState(false);
+   const [isCheaperModalOpen, setIsCheaperModalOpen] = useState(false);
 
    const dispatch = useDispatch();
 
@@ -180,6 +181,19 @@ const ProductPage = () => {
       document.body.style.overflow = 'auto';
    }, [])
 
+   // Функция открытия модалки нашли дешевле
+   const handleOpenCheaperModal = useCallback(() => {
+      setIsCheaperModalOpen(true);
+      // Блокируем скролл основной страницы при открытой модалке
+      document.body.style.overflow = 'hidden';
+   }, []);
+
+   // Функция закрытия модалки нашли дешевле
+   const handleCloseCheaperModal = useCallback(() => {
+      setIsCheaperModalOpen(false);
+      document.body.style.overflow = 'auto';
+   }, [])
+
    if (loadingProductPage) return <div className="preloader"><Loader /></div>;
    if (!product) return <div>Товар не найден</div>;
 
@@ -307,12 +321,12 @@ const ProductPage = () => {
                   <a href="#delivery">Подробнее о доставке</a>
                </div>
 
-               <div className={styles.foundCheaper}>
+               <div onClick={handleOpenCheaperModal} className={styles.foundCheaper}>
                   <span>Нашли дешевле?</span>
                </div>
             </div>
          </div>
-         
+
 
          {/* Точка для скролла при пагинации */}
          <div className={styles.accordionContainer}>
@@ -438,7 +452,7 @@ const ProductPage = () => {
                <div className={styles.imageOverlay} onClick={closeImageModal}>
                   <div className={styles.imageModalContent} onClick={(e) => e.stopPropagation()}>
                      <button className={styles.closeBtn} onClick={closeImageModal}>
-                        <ChevronRight style={{ transform: 'rotate(45deg)' }} size={32}/>
+                        <ChevronRight style={{ transform: 'rotate(45deg)' }} size={32} />
                      </button>
                      <img
                         src={product.product_images?.[activeImage]}
@@ -448,6 +462,46 @@ const ProductPage = () => {
                </div>
             )
          }
+
+         {/* Модалка "Нашли дешевле" */}
+         {isCheaperModalOpen && (
+            <div className={styles.imageOverlay} onClick={handleCloseCheaperModal}>
+               <div className={styles.cheaperModalContent} onClick={(e) => e.stopPropagation()}>
+                  <button className={styles.closeBtn} onClick={handleCloseCheaperModal}>
+                     <ChevronRight style={{ transform: 'rotate(45deg)' }} size={24} />
+                  </button>
+
+                  <h3 className={styles.cheaperTitle}>Нашли дешевле?</h3>
+
+                  <form className={styles.cheaperForm}>
+                     <div className={styles.inputGroup}>
+                        <label>Ссылка на товар*</label>
+                        <textarea
+                           placeholder="www.akusherstvo.ru/catalog/..."
+                           className={styles.cheaperTextarea}
+                        />
+                     </div>
+
+                     <div className={styles.inputGroup}>
+                        <label>Ваш телефон*</label>
+                        <input
+                           type="tel"
+                           placeholder="+7 (___) ___-__-__"
+                           className={styles.cheaperInput}
+                        />
+                     </div>
+
+                     <p className={styles.cheaperNote}>
+                        Мы проверим информацию и свяжемся с Вами
+                     </p>
+
+                     <button type="submit" className={styles.cheaperSubmitBtn}>
+                        Отправить
+                     </button>
+                  </form>
+               </div>
+            </div>
+         )}
       </div>
    );
 };
