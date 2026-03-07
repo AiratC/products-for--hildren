@@ -35,7 +35,7 @@ export const getOrders = createAsyncThunk(
 
 
 const initialState = {
-   loading: true,
+   loading: false,
    orders: null,
    error: null
 };

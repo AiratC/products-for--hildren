@@ -103,7 +103,8 @@ export const logoutAdmin = async (req, res) => {
 // ! Контроллер getMe
 export const getMe = async (req, res) => {
    try {
-      const result = await query(`SELECT user_id, name, email, role_id FROM Users WHERE user_id = $1`, [req.user.userId]);
+      // const result = await query(`SELECT user_id, name, email, role_id FROM Users WHERE user_id = $1`, [req.user.userId]);
+      const result = await query(`SELECT * FROM Users WHERE user_id = $1`, [req.user.userId]);
 
       if(result.rows.length === 0) {
          return res.status(404).json({

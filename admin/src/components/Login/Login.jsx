@@ -12,18 +12,16 @@ const Login = () => {
    const navigate = useNavigate();
    
    const onFinish = async (values) => {
-      console.log(values)
       try {
          // unwrap() заставляет промис выбросить настоящую ошибку, если запрос не удался
          const result =  await dispatch(adminLogin(values)).unwrap();
-         console.log(result)
          if(result.success) {
             message.success(`Добро пожаловать, ${result.user.name}`);
             navigate('/dashboard');
          }
       } catch (error) {
          console.log(error);
-         message.error(error || 'Ошибка авторизации')
+         message.error(error.response?.message || 'Ошибка авторизации')
       }
    }
 
