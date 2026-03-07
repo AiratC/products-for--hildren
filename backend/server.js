@@ -39,7 +39,7 @@ app.use(cookieParser());
 app.use(session({
    secret: process.env.SESSION_SECRET_KEY,
    resave: false,
-   saveUninitialized: true,
+   saveUninitialized: false,
    cookie: { 
       maxAge: 600000,
       // secure: process.env.NODE_ENV === 'production', // true только для HTTPS

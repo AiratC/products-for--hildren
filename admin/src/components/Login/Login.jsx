@@ -16,6 +16,7 @@ const Login = () => {
       try {
          // unwrap() заставляет промис выбросить настоящую ошибку, если запрос не удался
          const result =  await dispatch(adminLogin(values)).unwrap();
+         console.log(result)
          if(result.success) {
             message.success(`Добро пожаловать, ${result.user.name}`);
             navigate('/dashboard');

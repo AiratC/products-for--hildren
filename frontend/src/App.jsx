@@ -26,6 +26,7 @@ import ContactsPage from "./pages/ContactsPage/ContactsPage";
 import CategoryPage from "./pages/CategoryPage/CategoryPage";
 import ProductPage from "./pages/ProductPage/ProductPage";
 import DeliveryPayment from "./pages/DeliveryPayment/DeliveryPayment";
+import WholesaleCustomers from "./pages/WholesaleCustomers/WholesaleCustomers";
 
 function App() {
    useScrollRestoration();
@@ -105,6 +106,8 @@ function App() {
                <Route path="/product-page/:id" element={<ProductPage/>}></Route>
                {/* DeliveryPayment */}
                <Route path="/payment-and-delivery" element={<DeliveryPayment/>}></Route>
+               {/* WholesaleCustomers / Оптовым клиентам */}
+               <Route path="/wholesale-clients" element={<WholesaleCustomers/>}></Route>
             </Route>
          </Routes>
       </>

@@ -3,6 +3,7 @@ import { query } from "../config/db.js";
 // ! Добавление заявки от оптового клиента
 export const addWholesaleRequest = async (req, res) => {
    const { name, phone, email, city, captcha, is_agree } = req.body;
+   console.log({ name, phone, email, city, captcha, is_agree })
 
    // Пример базовой очистки строк перед сохранением
    const cleanName = name.trim().replace(/[<>]/g, "");
@@ -35,7 +36,9 @@ export const addWholesaleRequest = async (req, res) => {
    };
 
    // Логика проверки капчи - проверяем совпадает ли капча с той что в сессии
-   if (!req.session.captcha || captcha !== req.session.captcha) {
+   if (!req.session.captcha || captcha.toLowerCase() !== req.session.captcha) {
+      console.log(req.session.captcha);
+      console.log(captcha)
       return res.status(400).json({
          message: 'Неверная капча',
          error: true,
@@ -64,6 +67,7 @@ export const addWholesaleRequest = async (req, res) => {
 
 
    } catch (error) {
+      console.log(error)
       return res.status(500).json({
          message: 'Ошибка при отправке заявки на сервере',
          error: true,

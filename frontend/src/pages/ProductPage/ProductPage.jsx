@@ -97,6 +97,10 @@ const ProductPage = () => {
 
    }, [dispatch]);
 
+   useEffect(() => {
+      window.scrollTo(0, 0)
+   }, [])
+
    // Загрузка самого товара
    useEffect(() => {
       const fetchProduct = async () => {

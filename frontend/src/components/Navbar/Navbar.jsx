@@ -22,6 +22,7 @@ const Navbar = () => {
    const { user } = useSelector((state) => state.authUser);
    const { cartItems } = useSelector(state => state.cart);
 
+
    return (
       <header className={styles.headerWrapper}>
          <nav style={{ borderBottom: '2px solid rgb(224 221 221)' }}>
@@ -69,7 +70,7 @@ const Navbar = () => {
                      <div className={styles.cartContainer}>
                         <img src={cartLogoSvg} alt="cart-logo" />
                         {
-                           cartItems.length > 0 && (
+                           (cartItems?.length > 0 && user?.user_id) && (
                               <div className={styles.countCartContainer}>
                                  {cartItems.length}
                               </div>

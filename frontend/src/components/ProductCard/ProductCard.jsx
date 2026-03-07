@@ -23,6 +23,8 @@ const ProductCard = ({ data }) => {
 
    const navigate = useNavigate();
 
+   const { user } = useSelector((state) => state.authUser);
+
    const dispatch = useDispatch();
    const { loading, items } = useSelector((state) => state.favorites);
    const { loadingId, cartItems } = useSelector((state) => state.cart);
@@ -57,6 +59,9 @@ const ProductCard = ({ data }) => {
    const handleClickCart = useCallback(async (e, productId, action) => {
       e.stopPropagation();
       const data = { productId: productId, action: action }
+
+      if(!user) return toast.error('Вы не авторизованы!');
+      
       try {
          switch (action) {
             case 'add': {
@@ -79,7 +84,7 @@ const ProductCard = ({ data }) => {
          toast.error(error.message)
       }
 
-   }, [dispatch]);
+   }, [dispatch, user]);
 
    const handleClickProductCard = (e, id) => {
       e.stopPropagation();
