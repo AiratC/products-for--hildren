@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styles from './OrdersPage.module.css';
 import { fetchOrders } from '../../redux/slices/ordersSlice';
 
 const OrdersPage = () => {
    const dispatch = useDispatch();
-   const { items, loading } = useSelector(state => state.orders);
+   const { items } = useSelector(state => state.orders);
 
    useEffect(() => {
       dispatch(fetchOrders());
