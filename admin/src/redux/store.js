@@ -5,6 +5,7 @@ import productReducer from './slices/productSlice';
 import contactReducer from './slices/contactSlice';
 import stockReducer from './slices/stockSlice'
 import blogReducer from './slices/blogSlice'
+import wholesaleReducer from './slices/wholesaleSlice'
 
 
 export const store = configureStore({
@@ -14,6 +15,7 @@ export const store = configureStore({
       product: productReducer,
       contact: contactReducer,
       stock: stockReducer,
-      blog: blogReducer
+      blog: blogReducer,
+      wholesale: wholesaleReducer
    },
 })
