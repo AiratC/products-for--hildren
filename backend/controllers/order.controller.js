@@ -216,3 +216,29 @@ export const getMyOrders = async (req, res) => {
       res.status(500).json({ message: 'Ошибка при получении заказов', error: error.message });
    }
 };
+
+// Получаем все заказы
+export const getOrders = async (req, res) => {
+   try {
+      const orders = await query(
+         'SELECT * FROM Orders ORDER BY created_at DESC'
+      );
+      res.status(200).json(orders.rows);
+   } catch (error) {
+      res.status(500).json({ message: 'Ошибка при получении заказов' });
+   }
+};
+
+export const updateOrderStatus = async (req, res) => {
+   const { id } = req.params;
+   const { order_status } = req.body;
+   try {
+      await query(
+         'UPDATE Orders SET order_status = $1, updated_at = CURRENT_TIMESTAMP WHERE order_id = $2',
+         [order_status, id]
+      );
+      res.status(200).json({ success: true });
+   } catch (error) {
+      res.status(500).json({ message: 'Ошибка обновления статуса' });
+   }
+};
